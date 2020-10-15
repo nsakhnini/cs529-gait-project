@@ -1,0 +1,10 @@
+-Data Cleaning
+  -Export the cleaned data to a JS/D3 friendly format
+-UI Design
+  -The Interface part for Collaboration and Saving
+	-Creating place holders for visualizations
+-Backend Building
+  -Exploring how to implement the collaboration, meeting with team and choosing one method
+  -Implementing the collaboration when the team decides upon, the steps will be clearer.
+-Viewing All the Data
+  -Add the Dynamic Aspect, let that participant move
