@@ -1,0 +1,29 @@
+
+Marius tasks:
+
+-Data Cleaning
+	-Implement the solution for data problems
+-Data Preparation
+	-Import the data to the website and make it processing ready
+-UI Building -- The front-end HTML/CSS
+	-Attributions page
+	-Documentation Page
+	-The interface part for Filter
+-Backend Building
+	-Testing the collaboration
+-Viewing All the Data
+	-Load One participant’s gait to the view, make the code modular, make sure that the user can choose to show a part of the body, for filtering
+
+
+
+Team tasks (we all work on these):
+
+-Data Exploring:
+	-Exploring raw data using MOKKA
+	-using pandas/c3d package to explore attributes and items
+	-make a list of possible sources for problems in the data e.g. missing data
+	-propose to the teams the problem and possible solutions, discuss, and find a solution
+-UI Design
+	-Come up with 3 distinct designs (paper prototypes)
+	-Meet with the team and discuss all designs and decide upon one design
+
