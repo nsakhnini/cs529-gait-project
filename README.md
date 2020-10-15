@@ -1,1 +1,3 @@
-# cs529-gait-project
+# Project website
+
+https://eyesongait.herokuapp.com
