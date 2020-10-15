@@ -1,10 +1,18 @@
+-Data Exploring:
+	-Exploring raw data using MOKKA
+	-using pandas/c3d package to explore attributes and items
+	-make a list of possible sources for problems in the data e.g. missing data 
+	-propose to the teams the problem and possible solutions, discuss, and find a solution
 -Data Cleaning
-  -Export the cleaned data to a JS/D3 friendly format
+	-Export the cleaned data to a JS/D3 friendly format
 -UI Design
-  -The Interface part for Collaboration and Saving
+	-Come up with 3 distinct designs (paper prototypes)
+	-Meet with the team and discuss all designs and decide upon one design
+-UI Building (Just the front-end HTML/CSS, no functionality yet)
+	-The Interface part for Collaboration and Saving
 	-Creating place holders for visualizations
 -Backend Building
-  -Exploring how to implement the collaboration, meeting with team and choosing one method
-  -Implementing the collaboration when the team decides upon, the steps will be clearer.
+ -Exploring how to implement the collaboration, meeting with team and choosing one method
+ -Implementing the collaboration when the team decides upon, the steps will be clearer.
 -Viewing All the Data
   -Add the Dynamic Aspect, let that participant move
