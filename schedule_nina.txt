@@ -1,0 +1,17 @@
+Nina's tasks until Alpha Release:
+Data:
+--Exploring raw data using the existing tool called MOKKA.
+--Importing data to jupyter notebook.
+--Make a list of possible sources for problems in the data, e.g. missing data.
+--Propose to the teams the problems in the data and possible solutions, discuss, and find a solution.
+--Modifying the data to be groupable to body parts, in the raw data it is just joints.
+UI Design:
+--Come up with 3 distinct designs (paper prototypes).
+--Meet with the team, discuss all designs, and decide upon one design.
+UI Building:
+--The Interface part for generating 2D plots.
+Backend Building:
+--Exploring how to implement the collaboration, meeting with team and choosing one method.
+--Implementing the collaboration. When the team decides upon method, the steps will be clearer.
+View ALL the gait data:
+--Scale the visualization produced by other team members to show all 50 participants in the same view.
