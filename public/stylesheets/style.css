@@ -12,23 +12,23 @@ canvas { display: block; }
 }
 
 #filter-sidebar{
-background-color: lemonchiffon;
-}
-
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
+  background-color: lavender;
   transition: 0.5s;
-  padding-top: 60px;
+  padding: 10px;
+  left: 25px;
+}
+#two-d-sidebar{
+  background-color: lavender;
+  transition: 0.5s;
+  padding: 10px;
 }
 
-.sidebar a {
+#scene-section{
+  background-color: black;
+  height: 100%;
+}
+
+.my-sidebar a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
@@ -37,11 +37,11 @@ background-color: lemonchiffon;
   transition: 0.3s;
 }
 
-.sidebar a:hover {
-  color: #f1f1f1;
+.my-sidebar a:hover {
+  color: indigo;
 }
 
-.sidebar .closebtn {
+.filter-toggle-btn {
   position: absolute;
   top: 0;
   right: 25px;
@@ -49,19 +49,19 @@ background-color: lemonchiffon;
   margin-left: 50px;
 }
 
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
 
-.openbtn:hover {
-  background-color: #444;
+#slider-1{
+  width: 90%;
 }
-
+#slider-2{
+  width: 90%;
+}
+#slider-3{
+  width: 90%;
+}
+#slider-4{
+  width: 90%;
+}
 [slider] {
   position: relative;
   height: 14px;
