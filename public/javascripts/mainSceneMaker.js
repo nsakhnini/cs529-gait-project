@@ -44,3 +44,26 @@ const animate = function () {
 };
 
 animate();
+
+markers_data = [];
+demo_data = [];
+async function loadData(){
+    var markers_file = "./data/markers.csv";
+    var demo_file = "./data/markers.csv";
+
+    await  d3.csv(markers_file, function(d) {
+        console.log(d);
+        /*markers_data.push({
+            concentration: Number(d.concentration),
+
+        });*/
+    });
+    await  d3.csv(demo_file, function(d) {
+        /*demo_data.push({
+            concentration: Number(d.concentration),
+
+        });*/
+    });
+}
+
+loadData();
