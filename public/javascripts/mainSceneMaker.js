@@ -360,19 +360,38 @@ function move(data, person){
 }
 
 function loadParticipantsDataToFilter(pList){
-    let minAge = 100, maxAge = 0, filterDemo;
+    let minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
+    let filterDemo;
 
     //Subset demographic data to current participant selection
     filterDemo = demo_data.filter(function(d,i){
         return participants.indexOf(d.ID) >= 0
     });
 
-    //Get min and max age of subset
+    //Get min and max of subset variables
     for (let i = 0; i<filterDemo.length; i++){
+        //Age
         if(parseInt(filterDemo[i].Age) < minAge)
             minAge = parseInt(filterDemo[i].Age);
         if(parseInt(filterDemo[i].Age) > maxAge)
             maxAge = parseInt(filterDemo[i].Age);
+
+        //Height
+        if((parseFloat(filterDemo[i].Height).toFixed(2))*100 < minH)
+            minH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2)) *100;
+        if((parseFloat(filterDemo[i].Height).toFixed(2))*100 > maxH)
+            maxH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2))*100;
+
+        minH = parseInt(minH);
+        maxH = parseInt(maxH);
+
+
+        //Weight
+        if(parseFloat(filterDemo[i].Weight) < minW)
+            minW = parseInt(filterDemo[i].Weight);
+        if(parseFloat(filterDemo[i].Weight) > maxW)
+            maxW = parseInt(filterDemo[i].Weight);
+
     }
 
     //Update the Age slider
@@ -385,6 +404,36 @@ function loadParticipantsDataToFilter(pList){
 
     sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
+
+
+    //Update the Height slider
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("step", 1);
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("step", 1);
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("min", minH-1);
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("min", minH-1);
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("max", maxH+1);
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("max", maxH+1);
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("value", minH );
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("value", maxH );
+
+
+    sliderLowerHandleController(document.getElementsByClassName("height-slider-input")[0]);
+    sliderUpperHandleController(document.getElementsByClassName("height-slider-input")[1]);
+
+    //Update the Age slider
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("min", minW);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("min", minW);
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("max", maxW);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("max", maxW);
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("value", minW +1);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", maxW );
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("step", 0.5);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("step", 0.5);
+
+    sliderLowerHandleController(document.getElementsByClassName("weight-slider-input")[0]);
+    sliderUpperHandleController(document.getElementsByClassName("weight-slider-input")[1]);
+
+    console.log(filterDemo);
 
     //Load participant IDs to current selectors
     for(let i = 0; i< pList.length; i++) {

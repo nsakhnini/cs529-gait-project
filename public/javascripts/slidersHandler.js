@@ -1,6 +1,6 @@
 function sliderLowerHandleController(val){
     val.value=Math.min(val.value,val.parentNode.childNodes[5].value-1);
-    var value=(100/(parseInt(val.max)-parseInt(val.min)))*parseInt(val.value)-(100/(parseInt(val.max)-parseInt(val.min)))*parseInt(val.min);
+    var value=(100/(parseFloat(val.max)-parseFloat(val.min)))*parseFloat(val.value)-(100/(parseFloat(val.max)-parseFloat(val.min)))*parseFloat(val.min);
     var children = val.parentNode.childNodes[1].childNodes;
     children[1].style.width=value+'%';
     children[5].style.left=value+'%';
@@ -9,7 +9,7 @@ function sliderLowerHandleController(val){
 }
 function sliderUpperHandleController(val){
     val.value=Math.max(val.value,val.parentNode.childNodes[3].value-(-1));
-    var value = (100/(parseInt(val.max)-parseInt(val.min)))*parseInt(val.value)-(100/(parseInt(val.max)-parseInt(val.min)))*parseInt(val.min);
+    var value = (100/(parseFloat(val.max)-parseFloat(val.min)))*parseFloat(val.value)-(100/(parseFloat(val.max)-parseFloat(val.min)))*parseFloat(val.min);
     var children = val.parentNode.childNodes[1].childNodes;
     children[3].style.width=(100-value)+'%';
     children[5].style.right=(100-value)+'%';
