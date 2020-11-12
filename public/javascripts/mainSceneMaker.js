@@ -47,7 +47,7 @@ animate();
 
 let markers_data = [];
 let demo_data = [];
-let markerByParticipant, p1s1t1Data;
+let markerByParticipant, p1s1t1Data, participant;
 
 async function loadData(){
     var markers_file = "./data/markers.csv";
@@ -68,6 +68,10 @@ async function loadData(){
 
     drawHumanDots(p1s1t1Data[0])
 
+    camera.position.x = p1s1t1Data[0].CV7_X;
+    camera.position.y =  p1s1t1Data[0].CV7_Y;
+    camera.position.z =  p1s1t1Data[0].CV7_Z;
+
     console.log(p1s1t1Data[0]);
 
     console.log(scene)
@@ -77,14 +81,14 @@ async function loadData(){
 
 function drawPoint(geometry, x,y,z,pid){
     let meshMaterial = new THREE.MeshBasicMaterial();
-    meshMaterial.color.setHex(0x000000);
+    meshMaterial.color.setHex(0xeb3434);
     var mesh = new THREE.Mesh(geometry, meshMaterial);
 
     mesh.position.x = x;
     mesh.position.y = y;
-    mesh.position.z =z;
+    mesh.position.z =z - 300;
 
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = 1;
+    mesh.scale.x = mesh.scale.y = mesh.scale.z = 500;
 
     //If needed to add later data to points
     mesh.userData = {id: pid};
@@ -94,7 +98,7 @@ function drawPoint(geometry, x,y,z,pid){
 function drawHumanDots(data){
     //dot geometry
     let geometry = new THREE.SphereBufferGeometry(0.01, 0.01, 0.01);
-    let participant = new THREE.Group();
+    participant = new THREE.Group();
 
     participant.add(drawPoint(geometry,data.CV7_X, data.CV7_Y, data.CV7_Z, data.Participant));
     participant.add(drawPoint(geometry,data.L_FAL_X, data.L_FAL_Y, data.L_FAL_Z, data.Participant));
@@ -152,4 +156,5 @@ function drawHumanDots(data){
     scene.add(participant);
     console.log("done adding participant");
 }
+
 loadData();
