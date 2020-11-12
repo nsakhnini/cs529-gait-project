@@ -13,7 +13,7 @@
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js" integrity="sha512-yNJzAsg5JyP91u+sLHlUDULMBd3hmEiVkYeeN1cQBKaLZ7EyT6oH2u5THNIRM2Fu6VKcZJv+F/QAp1h/qzy9Ow==" crossorigin="anonymous"></script>
   <script src="javascripts/slidersHandler.js"></script>
-  <script src="javascripts/sideCollapseHandler.js"></script>
+  <script type="module" src="javascripts/sideCollapseHandler.js"></script>
 
 </head>
 
@@ -37,7 +37,7 @@
 
 <div class="row">
   <div class="my-sidebar col-3" id="filter-sidebar">
-    <a href="javascript:void(0)" class="filter-toggle-btn" onclick="toggleFilterBar()"><</a>
+    <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
   <h3>Filtering</h3>
     <label for="slider-1">Slider 1</label>
     <div slider id="slider-1">
@@ -122,12 +122,12 @@
       </div>
   </div>
   <div class="my-sidebar col-3" id="two-d-sidebar">
-    <a href="javascript:void(0)" class="two-d-toggle-btn" onclick="toggle2DBar()">></a>
+    <a href="javascript:void(0)" class="two-d-toggle-btn" id="minimize-two-d">></a>
 
   </div>
 </div>
 
-<script src="javascripts/mainSceneMaker.js"></script>
+<script type="module" src="javascripts/mainSceneMaker.js"></script>
 </body>
 
 </html>

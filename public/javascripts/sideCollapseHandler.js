@@ -1,3 +1,5 @@
+import * as s from "./mainSceneMaker.js"
+
 var isFilterToggled = false;
 var is2DToggled = false;
 
@@ -10,15 +12,15 @@ function toggleFilterBar() {
         //resize main scene
         if(is2DToggled) {
             document.getElementById("scene-section").style.maxWidth = 10 * (window.innerWidth / 12) + "px";
-            camera.aspect = 10 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 10 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
-            camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         //TODO: Remove filter bar content and short hand
     } else {
@@ -29,15 +31,15 @@ function toggleFilterBar() {
         //resize main scene
         if(is2DToggled) {
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
-            camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
-            camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
 
         //TODO: Remove short hand and add filter bar content
@@ -53,15 +55,15 @@ function toggle2DBar() {
         //resize main scene
         if(isFilterToggled) {
             document.getElementById("scene-section").style.maxWidth = 10 * (window.innerWidth / 12) + "px";
-            camera.aspect = 10 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 10 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
-            camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         //TODO: Remove filter bar content and short hand
     }
@@ -72,17 +74,20 @@ function toggle2DBar() {
         //resize main scene
         if(isFilterToggled) {
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
-            camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
-            camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
-            camera.updateProjectionMatrix();
-            renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.9);
+            s.camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.9);
+            s.camera.updateProjectionMatrix();
+            s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.9);
         }
         //TODO: Remove short hand and add filter bar content
     }
 
 }
+
+document.querySelector("#minimize-filter").addEventListener('click', toggleFilterBar);
+document.querySelector("#minimize-two-d").addEventListener('click', toggle2DBar);
