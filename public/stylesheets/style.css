@@ -50,18 +50,16 @@ canvas { display: block; }
 }
 
 
-#slider-1{
+#slider-age{
   width: 90%;
 }
-#slider-2{
+#slider-height{
   width: 90%;
 }
-#slider-3{
+#slider-weight{
   width: 90%;
 }
-#slider-4{
-  width: 90%;
-}
+
 [slider] {
   position: relative;
   height: 14px;
