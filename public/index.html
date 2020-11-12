@@ -39,8 +39,13 @@
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
   <h3>Filtering</h3>
-    <label for="slider-1">Slider 1</label>
-    <div slider id="slider-1">
+    <label for="participant-list">Participant(s)</label><br>
+
+    <select name="participants" id="participant-list" multiple>
+    </select><br><br>
+
+    <label for="slider-age">Age</label>
+    <div slider id="slider-age">
       <div>
         <div inverse-left style="width:70%;"></div>
         <div inverse-right style="width:70%;"></div>
@@ -54,8 +59,8 @@
           <span class="valueUpper">60</span>
         </div>
       </div>
-      <input  type="range" tabindex="0" value="30" max="100" min="0" step="1" oninput="sliderLowerHandleController(this)"  />
-      <input  type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="sliderUpperHandleController(this)" />
+      <input  class="age-slider-input" type="range" tabindex="0" value="30" max="100" min="0" step="1" oninput="sliderLowerHandleController(this)"  />
+      <input class="age-slider-input" type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="sliderUpperHandleController(this)" />
     </div>
 
     <label for="slider-2">Slider 2</label>

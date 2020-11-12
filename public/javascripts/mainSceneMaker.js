@@ -5,7 +5,10 @@ import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitCo
 
 let markers_data = [];
 let demo_data = [];
+let participants = [];
+let participantsData = [];
 let markerByParticipant, participant1Data, participant2Data, participant, timestamp = [];
+let trial = "1", speed = "1", offsetY = 0;
 
 const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.9) , 0.1, 10000 );
@@ -43,7 +46,7 @@ const animate = function () {
     }
     else{
         scene.children.forEach(function (d,i) {
-            if (timestamp[i] >= participant1Data.length){
+            if (timestamp[i] >= participantsData[i].length){
                 timestamp[i] = 0;
             }
             else{
@@ -51,11 +54,11 @@ const animate = function () {
             }
             //Hardcoded need to be fixed
             if (i == 0)
-                move(participant1Data[timestamp[i]], d);
+                move(participantsData[i][timestamp[i]], d);
             else {
-                move(participant2Data[timestamp[i]], d);
+                move(participantsData[i][timestamp[i]], d);
                 d.rotation.z = -Math.PI;
-                d.position.x = 500;
+                d.position.x = 800;
             }
         });
     }
@@ -63,10 +66,9 @@ const animate = function () {
     renderer.render( scene, camera );
 };
 
-
 async function loadData(){
     var markers_file = "./data/markers.csv";
-    var demo_file = "./data/markers.csv";
+    var demo_file = "./data/demographics.csv";
 
     await  d3.csv(markers_file, function(d) {
         markers_data.push(d);
@@ -77,19 +79,24 @@ async function loadData(){
     markerByParticipant = d3.group(markers_data, d => d.Participant, d=>d.Speed, d=>d.Trial);
     //First participant only
     var iterator = markerByParticipant.keys();
-    var p1ID = iterator.next().value;
-    var p2ID = iterator.next().value;
+    var pID = iterator.next().value;
+
+    while (typeof pID !==  "undefined"){
+        participants.push(pID);
+        participantsData.push(
+            markerByParticipant.get(pID).get(speed).get(trial)
+        );
+        pID = iterator.next().value;
+    }
 
 
-    participant1Data = markerByParticipant.get(p1ID).get("1").get("1");
+    for (let i = 0; i<participants.length; i++){
+        //Change offset at X for rows (in front of each other)
+        drawHumanDots(participantsData[i], offsetY);
+        offsetY = offsetY + 1000;
+    }
 
-    //Change offset at X for rows (in front of each other)
-    drawHumanDots(participant1Data[0], 0);
-
-    participant2Data = markerByParticipant.get(p2ID).get("1").get("1");
-
-    //Change offset at X for rows (in front of each other)
-    drawHumanDots(participant2Data[0], 1000);
+    loadParticipantsDataToFilter(participants);
 
     camera.position.x =-3238;
     camera.position.y = 107.15;
@@ -349,6 +356,39 @@ function move(data, person){
                     ;
             }
         });
+    }
+}
+
+function loadParticipantsDataToFilter(pList){
+    let minAge = 100, maxAge = 0, filterDemo;
+
+    //Subset demographic data to current participant selection
+    filterDemo = demo_data.filter(function(d,i){
+        return participants.indexOf(d.ID) >= 0
+    });
+
+    //Get min and max age of subset
+    for (let i = 0; i<filterDemo.length; i++){
+        if(parseInt(filterDemo[i].Age) < minAge)
+            minAge = parseInt(filterDemo[i].Age);
+        if(parseInt(filterDemo[i].Age) > maxAge)
+            maxAge = parseInt(filterDemo[i].Age);
+    }
+
+    //Update the Age slider
+    document.getElementsByClassName("age-slider-input")[0].setAttribute("min", minAge);
+    document.getElementsByClassName("age-slider-input")[1].setAttribute("min", minAge);
+    document.getElementsByClassName("age-slider-input")[0].setAttribute("max", maxAge);
+    document.getElementsByClassName("age-slider-input")[1].setAttribute("max", maxAge);
+    document.getElementsByClassName("age-slider-input")[0].setAttribute("value", minAge +5);
+    document.getElementsByClassName("age-slider-input")[1].setAttribute("value", maxAge -5);
+
+    sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
+    sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
+
+    //Load participant IDs to current selectors
+    for(let i = 0; i< pList.length; i++) {
+        document.querySelector("#participant-list").innerHTML += "\n<option value=\"" + pList[i] + "\">" + pList[i] + "</option>";
     }
 }
 
