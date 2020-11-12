@@ -63,7 +63,7 @@
       <input class="age-slider-input" type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="sliderUpperHandleController(this)" />
     </div>
 
-    <label for="slider-height">Height</label>
+    <label for="slider-height">Height (cm)</label>
     <div slider id="slider-height">
       <div>
         <div inverse-left style="width:70%;"></div>
@@ -82,7 +82,7 @@
       <input  class="height-slider-input"  type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="sliderUpperHandleController(this)" />
     </div>
 
-    <label for="slider-weight">Weight</label>
+    <label for="slider-weight">Weight (Kg)</label>
     <div slider id="slider-weight">
       <div>
         <div inverse-left style="width:70%;"></div>
@@ -100,8 +100,16 @@
       <input  class="weight-slider-input"  type="range" tabindex="0" value="30" max="100" min="0" step="1" oninput="sliderLowerHandleController(this)" />
       <input  class="weight-slider-input"  type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="sliderUpperHandleController(this)" />
     </div>
-
-
+    <div id="gender-check">
+      <label for="gender-form">Gender</label>
+    <form id="gender-form">
+      <input type="checkbox" id="female-check" name="female" value="female">
+      <label for="female-check"> Female</label><br>
+      <input type="checkbox" id="male-check" name="male" value="male">
+      <label for="male-check"> Male</label><br>
+    </form>
+    </div>
+    <input type="button" id="filter-btn" class="map-btns" value="Filter">
 
   </div>
   <div class="col-6" id="scene-section">

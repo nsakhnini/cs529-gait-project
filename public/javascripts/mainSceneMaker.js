@@ -4,11 +4,12 @@ import * as THREE from 'https://unpkg.com/three@0.121.1/build/three.module.js';
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 
 let markers_data = [];
-let demo_data = [];
+let demo_data = []; //0 = woman  1 = man
 let participants = [];
 let participantsData = [];
-let markerByParticipant, participant1Data, participant2Data, participant, timestamp = [];
+let markerByParticipant, participant, timestamp = [];
 let trial = "1", speed = "1", offsetY = 0;
+let filterDemo;
 
 const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.9) , 0.1, 10000 );
@@ -66,6 +67,27 @@ const animate = function () {
     renderer.render( scene, camera );
 };
 
+function filterData() {
+    var isFemaleChk = document.getElementById("female-check").checked;
+    var isMaleChk = document.getElementById("male-check").checked;
+
+    //Needs to be removed or better way to hide
+    scene.children.forEach(function (d) {
+        if (d.userData.gender == "0.0") {
+            if(isFemaleChk)
+                d.visible = true;
+            else
+                d.visible = false;
+
+        } else {
+            if(isMaleChk)
+                d.visible = true;
+            else
+                d.visible = false;
+        }
+    });
+}
+
 async function loadData(){
     var markers_file = "./data/markers.csv";
     var demo_file = "./data/demographics.csv";
@@ -92,11 +114,13 @@ async function loadData(){
 
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
-        drawHumanDots(participantsData[i], offsetY);
+        drawHumanDots(participantsData[i][0], offsetY);
         offsetY = offsetY + 1000;
     }
 
     loadParticipantsDataToFilter(participants);
+
+    document.getElementById("filter-btn").addEventListener("click", filterData);
 
     camera.position.x =-3238;
     camera.position.y = 107.15;
@@ -126,65 +150,66 @@ function drawPoint(geometry, x,y,z,pid, joint){
     return mesh;
 }
 
-function drawHumanDots(data, offset){
+function drawHumanDots(humanData, offset){
     //dot geometry
     let geometry = new THREE.SphereBufferGeometry(0.01, 0.01, 0.01);
     participant = new THREE.Group();
 
-    participant.add(drawPoint(geometry, data.CV7_X, parseInt(data.CV7_Y) + offset, data.CV7_Z, data.Participant, "CV7"));
-    participant.add(drawPoint(geometry, data.L_FAL_X, parseInt(data.L_FAL_Y) + offset, data.L_FAL_Z, data.Participant, "L_FAL"));
-    participant.add(drawPoint(geometry, data.L_FAX_X, parseInt(data.L_FAX_Y) + offset, data.L_FAX_Z, data.Participant, "L_FAX"));
-    participant.add(drawPoint(geometry, data.L_FCC_X, parseInt(data.L_FCC_Y) + offset, data.L_FCC_Z, data.Participant, "L_FCC"));
-    participant.add(drawPoint(geometry, data.L_FLE_X, parseInt(data.L_FLE_Y) + offset, data.L_FLE_Z, data.Participant, "L_FLE"));
-    participant.add(drawPoint(geometry, data.L_FM1_X, parseInt(data.L_FM1_Y) + offset, data.L_FM1_Z, data.Participant, "L_FM1"));
-    participant.add(drawPoint(geometry, data.L_FM2_X, parseInt(data.L_FM2_Y) + offset, data.L_FM2_Z, data.Participant, "L_FM2"));
-    participant.add(drawPoint(geometry, data.L_FM5_X, parseInt(data.L_FM5_Y) + offset, data.L_FM5_Z, data.Participant, "L_FM5"));
-    participant.add(drawPoint(geometry, data.L_FME_X, parseInt(data.L_FME_Y) + offset, data.L_FME_Z, data.Participant, "L_FME"));
-    participant.add(drawPoint(geometry, data.L_FTC_X, parseInt(data.L_FTC_Y) + offset, data.L_FTC_Z, data.Participant, "L_FTC"));
-    participant.add(drawPoint(geometry, data.L_HLE_X, parseInt(data.L_HLE_Y) + offset, data.L_HLE_Z, data.Participant, "L_HLE"));
-    participant.add(drawPoint(geometry, data.L_HM2_X, parseInt(data.L_HM2_Y) + offset, data.L_HM2_Z, data.Participant, "L_HM2"));
-    participant.add(drawPoint(geometry, data.L_HM5_X, parseInt(data.L_HM5_Y) + offset, data.L_HM5_Z, data.Participant, "L_HM5"));
-    participant.add(drawPoint(geometry, data.L_HME_X, parseInt(data.L_HME_Y) + offset, data.L_HME_Z, data.Participant, "L_HME"));
-    participant.add(drawPoint(geometry, data.L_IAS_X, parseInt(data.L_IAS_Y) + offset, data.L_IAS_Z, data.Participant, "L_IAS"));
-    participant.add(drawPoint(geometry, data.L_IPS_X, parseInt(data.L_IPS_Y) + offset, data.L_IPS_Z, data.Participant, "L_IPS"));
-    participant.add(drawPoint(geometry, data.L_RSP_X, parseInt(data.L_RSP_Y) + offset, data.L_RSP_Z, data.Participant, "L_RSP"));
-    participant.add(drawPoint(geometry, data.L_SAA_X, parseInt(data.L_SAA_Y) + offset, data.L_SAA_Z, data.Participant, "L_SAA"));
-    participant.add(drawPoint(geometry, data.L_SAE_X, parseInt(data.L_SAE_Y) + offset, data.L_SAE_Z, data.Participant, "L_SAE"));
-    participant.add(drawPoint(geometry, data.L_SIA_X, parseInt(data.L_SIA_Y) + offset, data.L_SIA_Z, data.Participant, "L_SIA"));
-    participant.add(drawPoint(geometry, data.L_SRS_X, parseInt(data.L_SRS_Y) + offset, data.L_SRS_Z, data.Participant, "L_SRS"));
-    participant.add(drawPoint(geometry, data.L_TAM_X, parseInt(data.L_TAM_Y) + offset, data.L_TAM_Z, data.Participant, "L_TAM"));
-    participant.add(drawPoint(geometry, data.L_TTC_X, parseInt(data.L_TTC_Y) + offset, data.L_TTC_Z, data.Participant, "L_TTC"));
-    participant.add(drawPoint(geometry, data.L_UHE_X, parseInt(data.L_UHE_Y) + offset, data.L_UHE_Z, data.Participant, "L_UHE"));
-    participant.add(drawPoint(geometry, data.L_UOA_X, parseInt(data.L_UOA_Y) + offset, data.L_UOA_Z, data.Participant, "L_UOA"));
-    participant.add(drawPoint(geometry, data.R_FAL_X, parseInt(data.R_FAL_Y) + offset, data.R_FAL_Z, data.Participant, "R_FAL"));
-    participant.add(drawPoint(geometry, data.R_FAX_X, parseInt(data.R_FAX_Y) + offset, data.R_FAX_Z, data.Participant, "R_FAX"));
-    participant.add(drawPoint(geometry, data.R_FCC_X, parseInt(data.R_FCC_Y) + offset, data.R_FCC_Z, data.Participant, "R_FCC"));
-    participant.add(drawPoint(geometry, data.R_FLE_X, parseInt(data.R_FLE_Y) + offset, data.R_FLE_Z, data.Participant, "R_FLE"));
-    participant.add(drawPoint(geometry, data.R_FM1_X, parseInt(data.R_FM1_Y) + offset, data.R_FM1_Z, data.Participant, "R_FM1"));
-    participant.add(drawPoint(geometry, data.R_FM2_X, parseInt(data.R_FM2_Y) + offset, data.R_FM2_Z, data.Participant, "R_FM2"));
-    participant.add(drawPoint(geometry, data.R_FM5_X, parseInt(data.R_FM5_Y) + offset, data.R_FM5_Z, data.Participant, "R_FM5"));
-    participant.add(drawPoint(geometry, data.R_FME_X, parseInt(data.R_FME_Y) + offset, data.R_FME_Z, data.Participant, "R_FME"));
-    participant.add(drawPoint(geometry, data.R_FTC_X, parseInt(data.R_FTC_Y) + offset, data.R_FTC_Z, data.Participant, "R_FTC"));
-    participant.add(drawPoint(geometry, data.R_HLE_X, parseInt(data.R_HLE_Y) + offset, data.R_HLE_Z, data.Participant, "R_HLE"));
-    participant.add(drawPoint(geometry, data.R_HM2_X, parseInt(data.R_HM2_Y) + offset, data.R_HM2_Z, data.Participant, "R_HM2"));
-    participant.add(drawPoint(geometry, data.R_HM5_X, parseInt(data.R_HM5_Y) + offset, data.R_HM5_Z, data.Participant, "R_HM5"));
-    participant.add(drawPoint(geometry, data.R_HME_X, parseInt(data.R_HME_Y) + offset, data.R_HME_Z, data.Participant, "R_HME"));
-    participant.add(drawPoint(geometry, data.R_IAS_X, parseInt(data.R_IAS_Y) + offset, data.R_IAS_Z, data.Participant, "R_IAS"));
-    participant.add(drawPoint(geometry, data.R_IPS_X, parseInt(data.R_IPS_Y) + offset, data.R_IPS_Z, data.Participant, "R_IPS"));
-    participant.add(drawPoint(geometry, data.R_RSP_X, parseInt(data.R_RSP_Y) + offset, data.R_RSP_Z, data.Participant, "R_RSP"));
-    participant.add(drawPoint(geometry, data.R_SAA_X, parseInt(data.R_SAA_Y) + offset, data.R_SAA_Z, data.Participant, "R_SAA"));
-    participant.add(drawPoint(geometry, data.R_SAE_X, parseInt(data.R_SAE_Y) + offset, data.R_SAE_Z, data.Participant, "R_SAE"));
-    participant.add(drawPoint(geometry, data.R_SIA_X, parseInt(data.R_SIA_Y) + offset, data.R_SIA_Z, data.Participant, "R_SIA"));
-    participant.add(drawPoint(geometry, data.R_SRS_X, parseInt(data.R_SRS_Y) + offset, data.R_SRS_Z, data.Participant, "R_SRS"));
-    participant.add(drawPoint(geometry, data.R_TAM_X, parseInt(data.R_TAM_Y) + offset, data.R_TAM_Z, data.Participant, "R_TAM"));
-    participant.add(drawPoint(geometry, data.R_TTC_X, parseInt(data.R_TTC_Y) + offset, data.R_TTC_Z, data.Participant, "R_TTC"));
-    participant.add(drawPoint(geometry, data.R_UHE_X, parseInt(data.R_UHE_Y) + offset, data.R_UHE_Z, data.Participant, "R_UHE"));
-    participant.add(drawPoint(geometry, data.R_UOA_X, parseInt(data.R_UOA_Y) + offset, data.R_UOA_Z, data.Participant, "R_UOA"));
-    participant.add(drawPoint(geometry, data.SJN_X, parseInt(data.SJN_Y) + offset, data.SJN_Z, data.Participant, "SJN"));
-    participant.add(drawPoint(geometry, data.SXS_X, parseInt(data.SXS_Y) + offset, data.SXS_Z, data.Participant, "SXS"));
-    participant.add(drawPoint(geometry, data.TV10_X, parseInt(data.TV10_Y) + offset, data.TV10_Z, data.Participant, "TV10"));
+    participant.add(drawPoint(geometry, humanData.CV7_X, parseInt(humanData.CV7_Y) + offset, humanData.CV7_Z, humanData.Participant, "CV7"));
+    participant.add(drawPoint(geometry, humanData.L_FAL_X, parseInt(humanData.L_FAL_Y) + offset, humanData.L_FAL_Z, humanData.Participant, "L_FAL"));
+    participant.add(drawPoint(geometry, humanData.L_FAX_X, parseInt(humanData.L_FAX_Y) + offset, humanData.L_FAX_Z, humanData.Participant, "L_FAX"));
+    participant.add(drawPoint(geometry, humanData.L_FCC_X, parseInt(humanData.L_FCC_Y) + offset, humanData.L_FCC_Z, humanData.Participant, "L_FCC"));
+    participant.add(drawPoint(geometry, humanData.L_FLE_X, parseInt(humanData.L_FLE_Y) + offset, humanData.L_FLE_Z, humanData.Participant, "L_FLE"));
+    participant.add(drawPoint(geometry, humanData.L_FM1_X, parseInt(humanData.L_FM1_Y) + offset, humanData.L_FM1_Z, humanData.Participant, "L_FM1"));
+    participant.add(drawPoint(geometry, humanData.L_FM2_X, parseInt(humanData.L_FM2_Y) + offset, humanData.L_FM2_Z, humanData.Participant, "L_FM2"));
+    participant.add(drawPoint(geometry, humanData.L_FM5_X, parseInt(humanData.L_FM5_Y) + offset, humanData.L_FM5_Z, humanData.Participant, "L_FM5"));
+    participant.add(drawPoint(geometry, humanData.L_FME_X, parseInt(humanData.L_FME_Y) + offset, humanData.L_FME_Z, humanData.Participant, "L_FME"));
+    participant.add(drawPoint(geometry, humanData.L_FTC_X, parseInt(humanData.L_FTC_Y) + offset, humanData.L_FTC_Z, humanData.Participant, "L_FTC"));
+    participant.add(drawPoint(geometry, humanData.L_HLE_X, parseInt(humanData.L_HLE_Y) + offset, humanData.L_HLE_Z, humanData.Participant, "L_HLE"));
+    participant.add(drawPoint(geometry, humanData.L_HM2_X, parseInt(humanData.L_HM2_Y) + offset, humanData.L_HM2_Z, humanData.Participant, "L_HM2"));
+    participant.add(drawPoint(geometry, humanData.L_HM5_X, parseInt(humanData.L_HM5_Y) + offset, humanData.L_HM5_Z, humanData.Participant, "L_HM5"));
+    participant.add(drawPoint(geometry, humanData.L_HME_X, parseInt(humanData.L_HME_Y) + offset, humanData.L_HME_Z, humanData.Participant, "L_HME"));
+    participant.add(drawPoint(geometry, humanData.L_IAS_X, parseInt(humanData.L_IAS_Y) + offset, humanData.L_IAS_Z, humanData.Participant, "L_IAS"));
+    participant.add(drawPoint(geometry, humanData.L_IPS_X, parseInt(humanData.L_IPS_Y) + offset, humanData.L_IPS_Z, humanData.Participant, "L_IPS"));
+    participant.add(drawPoint(geometry, humanData.L_RSP_X, parseInt(humanData.L_RSP_Y) + offset, humanData.L_RSP_Z, humanData.Participant, "L_RSP"));
+    participant.add(drawPoint(geometry, humanData.L_SAA_X, parseInt(humanData.L_SAA_Y) + offset, humanData.L_SAA_Z, humanData.Participant, "L_SAA"));
+    participant.add(drawPoint(geometry, humanData.L_SAE_X, parseInt(humanData.L_SAE_Y) + offset, humanData.L_SAE_Z, humanData.Participant, "L_SAE"));
+    participant.add(drawPoint(geometry, humanData.L_SIA_X, parseInt(humanData.L_SIA_Y) + offset, humanData.L_SIA_Z, humanData.Participant, "L_SIA"));
+    participant.add(drawPoint(geometry, humanData.L_SRS_X, parseInt(humanData.L_SRS_Y) + offset, humanData.L_SRS_Z, humanData.Participant, "L_SRS"));
+    participant.add(drawPoint(geometry, humanData.L_TAM_X, parseInt(humanData.L_TAM_Y) + offset, humanData.L_TAM_Z, humanData.Participant, "L_TAM"));
+    participant.add(drawPoint(geometry, humanData.L_TTC_X, parseInt(humanData.L_TTC_Y) + offset, humanData.L_TTC_Z, humanData.Participant, "L_TTC"));
+    participant.add(drawPoint(geometry, humanData.L_UHE_X, parseInt(humanData.L_UHE_Y) + offset, humanData.L_UHE_Z, humanData.Participant, "L_UHE"));
+    participant.add(drawPoint(geometry, humanData.L_UOA_X, parseInt(humanData.L_UOA_Y) + offset, humanData.L_UOA_Z, humanData.Participant, "L_UOA"));
+    participant.add(drawPoint(geometry, humanData.R_FAL_X, parseInt(humanData.R_FAL_Y) + offset, humanData.R_FAL_Z, humanData.Participant, "R_FAL"));
+    participant.add(drawPoint(geometry, humanData.R_FAX_X, parseInt(humanData.R_FAX_Y) + offset, humanData.R_FAX_Z, humanData.Participant, "R_FAX"));
+    participant.add(drawPoint(geometry, humanData.R_FCC_X, parseInt(humanData.R_FCC_Y) + offset, humanData.R_FCC_Z, humanData.Participant, "R_FCC"));
+    participant.add(drawPoint(geometry, humanData.R_FLE_X, parseInt(humanData.R_FLE_Y) + offset, humanData.R_FLE_Z, humanData.Participant, "R_FLE"));
+    participant.add(drawPoint(geometry, humanData.R_FM1_X, parseInt(humanData.R_FM1_Y) + offset, humanData.R_FM1_Z, humanData.Participant, "R_FM1"));
+    participant.add(drawPoint(geometry, humanData.R_FM2_X, parseInt(humanData.R_FM2_Y) + offset, humanData.R_FM2_Z, humanData.Participant, "R_FM2"));
+    participant.add(drawPoint(geometry, humanData.R_FM5_X, parseInt(humanData.R_FM5_Y) + offset, humanData.R_FM5_Z, humanData.Participant, "R_FM5"));
+    participant.add(drawPoint(geometry, humanData.R_FME_X, parseInt(humanData.R_FME_Y) + offset, humanData.R_FME_Z, humanData.Participant, "R_FME"));
+    participant.add(drawPoint(geometry, humanData.R_FTC_X, parseInt(humanData.R_FTC_Y) + offset, humanData.R_FTC_Z, humanData.Participant, "R_FTC"));
+    participant.add(drawPoint(geometry, humanData.R_HLE_X, parseInt(humanData.R_HLE_Y) + offset, humanData.R_HLE_Z, humanData.Participant, "R_HLE"));
+    participant.add(drawPoint(geometry, humanData.R_HM2_X, parseInt(humanData.R_HM2_Y) + offset, humanData.R_HM2_Z, humanData.Participant, "R_HM2"));
+    participant.add(drawPoint(geometry, humanData.R_HM5_X, parseInt(humanData.R_HM5_Y) + offset, humanData.R_HM5_Z, humanData.Participant, "R_HM5"));
+    participant.add(drawPoint(geometry, humanData.R_HME_X, parseInt(humanData.R_HME_Y) + offset, humanData.R_HME_Z, humanData.Participant, "R_HME"));
+    participant.add(drawPoint(geometry, humanData.R_IAS_X, parseInt(humanData.R_IAS_Y) + offset, humanData.R_IAS_Z, humanData.Participant, "R_IAS"));
+    participant.add(drawPoint(geometry, humanData.R_IPS_X, parseInt(humanData.R_IPS_Y) + offset, humanData.R_IPS_Z, humanData.Participant, "R_IPS"));
+    participant.add(drawPoint(geometry, humanData.R_RSP_X, parseInt(humanData.R_RSP_Y) + offset, humanData.R_RSP_Z, humanData.Participant, "R_RSP"));
+    participant.add(drawPoint(geometry, humanData.R_SAA_X, parseInt(humanData.R_SAA_Y) + offset, humanData.R_SAA_Z, humanData.Participant, "R_SAA"));
+    participant.add(drawPoint(geometry, humanData.R_SAE_X, parseInt(humanData.R_SAE_Y) + offset, humanData.R_SAE_Z, humanData.Participant, "R_SAE"));
+    participant.add(drawPoint(geometry, humanData.R_SIA_X, parseInt(humanData.R_SIA_Y) + offset, humanData.R_SIA_Z, humanData.Participant, "R_SIA"));
+    participant.add(drawPoint(geometry, humanData.R_SRS_X, parseInt(humanData.R_SRS_Y) + offset, humanData.R_SRS_Z, humanData.Participant, "R_SRS"));
+    participant.add(drawPoint(geometry, humanData.R_TAM_X, parseInt(humanData.R_TAM_Y) + offset, humanData.R_TAM_Z, humanData.Participant, "R_TAM"));
+    participant.add(drawPoint(geometry, humanData.R_TTC_X, parseInt(humanData.R_TTC_Y) + offset, humanData.R_TTC_Z, humanData.Participant, "R_TTC"));
+    participant.add(drawPoint(geometry, humanData.R_UHE_X, parseInt(humanData.R_UHE_Y) + offset, humanData.R_UHE_Z, humanData.Participant, "R_UHE"));
+    participant.add(drawPoint(geometry, humanData.R_UOA_X, parseInt(humanData.R_UOA_Y) + offset, humanData.R_UOA_Z, humanData.Participant, "R_UOA"));
+    participant.add(drawPoint(geometry, humanData.SJN_X, parseInt(humanData.SJN_Y) + offset, humanData.SJN_Z, humanData.Participant, "SJN"));
+    participant.add(drawPoint(geometry, humanData.SXS_X, parseInt(humanData.SXS_Y) + offset, humanData.SXS_Z, humanData.Participant, "SXS"));
+    participant.add(drawPoint(geometry, humanData.TV10_X, parseInt(humanData.TV10_Y) + offset, humanData.TV10_Z, humanData.Participant, "TV10"));
 
-    participant.userData = {id: data.Participant, offset: offset};
+
+    participant.userData = {id: humanData.Participant, offset: offset, gender: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Gender};
     scene.add(participant);
     console.log("done adding participant");
 }
@@ -361,7 +386,6 @@ function move(data, person){
 
 function loadParticipantsDataToFilter(pList){
     let minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
-    let filterDemo;
 
     //Subset demographic data to current participant selection
     filterDemo = demo_data.filter(function(d,i){
@@ -385,13 +409,11 @@ function loadParticipantsDataToFilter(pList){
         minH = parseInt(minH);
         maxH = parseInt(maxH);
 
-
         //Weight
         if(parseFloat(filterDemo[i].Weight) < minW)
             minW = parseInt(filterDemo[i].Weight);
         if(parseFloat(filterDemo[i].Weight) > maxW)
             maxW = parseInt(filterDemo[i].Weight);
-
     }
 
     //Update the Age slider
@@ -433,7 +455,6 @@ function loadParticipantsDataToFilter(pList){
     sliderLowerHandleController(document.getElementsByClassName("weight-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("weight-slider-input")[1]);
 
-    console.log(filterDemo);
 
     //Load participant IDs to current selectors
     for(let i = 0; i< pList.length; i++) {
