@@ -8,7 +8,8 @@ let demo_data = [];
 let markerByParticipant, p1s1t1Data, participant, timestamp = 0;
 
 const scene = new THREE.Scene();
-export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.9) , 0.1, 1000 );
+export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.9) , 0.1, 10000 );
+camera.up.set(0, 0, 1);
 
 export const renderer = new THREE.WebGLRenderer();
 renderer.setSize( (window.innerWidth/2),window.innerHeight *0.9);
@@ -23,8 +24,6 @@ scene.controls.mouseButtons = {
 
 document.getElementById("main-scene").appendChild( renderer.domElement );
 
-
-camera.position.z = 5;
 
 function onWindowResize() {
     camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.9);
@@ -68,11 +67,15 @@ async function loadData(){
 
     drawHumanDots(p1s1t1Data[0])
 
-    camera.position.x = p1s1t1Data[0].CV7_X;
-    camera.position.y =  p1s1t1Data[0].CV7_Y;
-    camera.position.z =  p1s1t1Data[0].CV7_Z + 300;
+    camera.position.x =-1400;
+    camera.position.y = 0;
+    camera.position.z =0;
 
-    console.log(p1s1t1Data[0]);
+    camera.lookAt(parseInt(p1s1t1Data[0].CV7_X),parseInt(p1s1t1Data[0].CV7_Y),parseInt(p1s1t1Data[0].CV7_Z));
+
+
+
+    console.log(camera);
 
     console.log(scene)
 
@@ -86,8 +89,8 @@ function drawPoint(geometry, x,y,z,pid, joint){
     var mesh = new THREE.Mesh(geometry, meshMaterial);
 
     mesh.position.x = x;
-    mesh.position.y = y;
-    mesh.position.z =z;
+    mesh.position.y = z;
+    mesh.position.z =y;
 
     mesh.scale.x = mesh.scale.y = mesh.scale.z = 500;
 
