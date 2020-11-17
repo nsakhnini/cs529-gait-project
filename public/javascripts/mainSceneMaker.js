@@ -46,7 +46,9 @@ const animate = function () {
         }
     }
     else{
-        scene.children.forEach(function (d,i) {
+        //disregard other children (Grid,etc) from the scene
+        const groupChildren = scene.children.filter(child => child.type === "Group")
+        groupChildren.forEach(function (d,i) {
             if (timestamp[i] >= participantsData[i].length){
                 timestamp[i] = 0;
             }
@@ -131,7 +133,15 @@ async function loadData(){
     camera.rotation.z = 2.99
 
     animate();
+    drawGrid();
+}
 
+function drawGrid(){
+    let size = 5000;
+    let division = 20;
+    const gridHelper = new THREE.GridHelper( size, division );
+    gridHelper.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) )
+    scene.add( gridHelper );
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){
@@ -143,7 +153,7 @@ function drawPoint(geometry, x,y,z,pid, joint){
     mesh.position.y = z;
     mesh.position.z =y;
 
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = 500;
+    mesh.scale.x = mesh.scale.y = mesh.scale.z = 1000;
 
     //If needed to add later data to points
     mesh.userData = {id: pid, joint: joint};
