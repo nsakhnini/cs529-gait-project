@@ -65,7 +65,7 @@ canvas { display: block; }
   height: 14px;
   border-radius: 10px;
   text-align: left;
-  margin: 45px 0 10px 0;
+  margin: 30px 0 30px 0;
 }
 
 [slider] > div {
@@ -233,4 +233,24 @@ div[slider] > input[type=range]::-ms-tooltip {
 
 [slider]:hover > div > [sign] {
   opacity: 1;
+}
+
+.active{
+  background: blue;
+}
+.participanList{
+  width: 300px;
+  height: 250px;
+  overflow: scroll;
+}
+
+.list-scroll {
+  width: 110px;
+  height: 110px;
+  overflow: scroll;
+}
+
+.viewonly-text{
+  display: none;
+  height: 74px;
 }
