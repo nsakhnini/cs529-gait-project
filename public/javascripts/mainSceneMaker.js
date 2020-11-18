@@ -27,8 +27,7 @@ scene.controls.mouseButtons = {
 }
 
 document.getElementById("main-scene").appendChild( renderer.domElement );
-
-
+drawGrid();
 function onWindowResize() {
     camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.9);
     camera.updateProjectionMatrix();
@@ -74,7 +73,8 @@ function filterData() {
     var isMaleChk = document.getElementById("male-check").checked;
 
     //Needs to be removed or better way to hide
-    scene.children.forEach(function (d) {
+    const groupChildren = scene.children.filter(child => child.type === "Group")
+    groupChildren.forEach(function (d) {
         if (d.userData.gender == "0.0") {
             if(isFemaleChk)
                 d.visible = true;
@@ -133,7 +133,6 @@ async function loadData(){
     camera.rotation.z = 2.99
 
     animate();
-    drawGrid();
 }
 
 function drawGrid(){
