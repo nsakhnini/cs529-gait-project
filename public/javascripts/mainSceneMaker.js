@@ -49,21 +49,22 @@ const animate = function () {
     }
     else{
         //disregard other children (Grid,etc) from the scene
-        const groupChildren = scene.children.filter(child => child.type === "Group")
+        const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
         groupChildren.forEach(function (d,i) {
-            if (timestamp[i] >= participantsData[i].length){
-                timestamp[i] = 0;
-            }
-            else{
-                timestamp[i] += 1;
-            }
-            //Hardcoded need to be fixed
-            if (i == 0)
-                move(participantsData[i][timestamp[i]], d);
-            else {
-                move(participantsData[i][timestamp[i]], d);
-                d.rotation.z = -Math.PI;
-                d.position.x = 800;
+            if (i < participantsData.length) {
+                if (timestamp[i] >= participantsData[i].length) {
+                    timestamp[i] = 0;
+                } else {
+                    timestamp[i] += 1;
+                }
+                //Hardcoded need to be fixed
+                if (i == 0)
+                    move(participantsData[i][timestamp[i]], d);
+                else {
+                    move(participantsData[i][timestamp[i]], d);
+                    d.rotation.z = -Math.PI;
+                    d.position.x = 800;
+                }
             }
         });
     }
@@ -153,10 +154,11 @@ function drawHumanDots(humanData, offset){
 function move(data, person){
     if (typeof data !== 'undefined'){
         let offset = parseInt(person.userData.offset);
-        //console.log(person);-
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
-
+            /*if (typeof joint === 'undefined'){
+                person.remove(d);
+            }*/
             switch (joint) {
                 case "CV7":
                     d.position.set(data.CV7_X, parseInt(data.CV7_Y) + offset, data.CV7_Z);
@@ -318,6 +320,7 @@ function move(data, person){
                     ;
             }
         });
+        //person.add(humanoidMaker.drawHumanoid(data, offset));
     }
 }
 
