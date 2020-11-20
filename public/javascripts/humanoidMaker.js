@@ -1,5 +1,5 @@
 let participant , points = [];
-let back, hips, leftArm, rightArm, leftHand, rightHand, rightShoulder, leftShoulder, leftLeg, rightLeg, leftFoot, rightFoot;
+let back, hips, leftArm, rightArm, rightShoulder, leftShoulder, leftLeg, rightLeg, leftFoot, rightFoot;
 
 var createCylinder = function( pointX, pointY ) {
     var direction = new THREE.Vector3().subVectors( pointY, pointX );
@@ -52,11 +52,82 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     rightArm = new THREE.Group();
     leftArm = new THREE.Group();
 
+    //Upper R Arm
     rightArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_SAE_X), parseFloat(humanData.R_SAE_Y), parseFloat(humanData.R_SAE_Z)) ,
         new THREE.Vector3(parseFloat(humanData.R_HLE_X), parseFloat(humanData.R_HLE_Y), parseFloat(humanData.R_HLE_Z))));
 
-    /*leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_SAE_X), parseFloat(humanData.L_SAE_Y), parseFloat(humanData.L_SAE_Z)) ,
-        new THREE.Vector3(parseFloat(humanData.CV7_X), parseFloat(humanData.CV7_Y), parseFloat(humanData.CV7_Z))));*/
+    //Lower R Arm
+    rightArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_HLE_X), parseFloat(humanData.R_HLE_Y), parseFloat(humanData.R_HLE_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_RSP_X), parseFloat(humanData.R_RSP_Y), parseFloat(humanData.R_RSP_Z))));
+
+    //R hand finger 2
+    rightArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_RSP_X), parseFloat(humanData.R_RSP_Y), parseFloat(humanData.R_RSP_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_HM2_X), parseFloat(humanData.R_HM2_Y), parseFloat(humanData.R_HM2_Z))));
+
+    //R hand finger 5
+    rightArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_RSP_X), parseFloat(humanData.R_RSP_Y), parseFloat(humanData.R_RSP_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_HM5_X), parseFloat(humanData.R_HM5_Y), parseFloat(humanData.R_HM5_Z))));
+
+
+    //Upper L Arm
+    leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_SAE_X), parseFloat(humanData.L_SAE_Y), parseFloat(humanData.L_SAE_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.L_HLE_X), parseFloat(humanData.L_HLE_Y), parseFloat(humanData.L_HLE_Z))));
+
+    //Lower L Arm
+    leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_HLE_X), parseFloat(humanData.L_HLE_Y), parseFloat(humanData.L_HLE_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_RSP_X), parseFloat(humanData.L_RSP_Y), parseFloat(humanData.L_RSP_Z))));
+
+    //L hand finger 2
+    leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_RSP_X), parseFloat(humanData.L_RSP_Y), parseFloat(humanData.L_RSP_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_HM2_X), parseFloat(humanData.L_HM2_Y), parseFloat(humanData.L_HM2_Z))));
+
+    //L hand finger 5
+    leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_RSP_X), parseFloat(humanData.L_RSP_Y), parseFloat(humanData.L_RSP_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_HM5_X), parseFloat(humanData.L_HM5_Y), parseFloat(humanData.L_HM5_Z))));
+
+
+    rightLeg = new THREE.Group();
+    leftLeg = new THREE.Group();
+
+    //Upper R leg
+    rightLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_FTC_X), parseFloat(humanData.R_FTC_Y), parseFloat(humanData.R_FTC_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.R_TTC_X), parseFloat(humanData.R_TTC_Y), parseFloat(humanData.R_TTC_Z))));
+
+    //Lower R leg
+    rightLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_TTC_X), parseFloat(humanData.R_TTC_Y), parseFloat(humanData.R_TTC_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_FCC_X), parseFloat(humanData.R_FCC_Y), parseFloat(humanData.R_FCC_Z))));
+
+    //R toe 1
+    rightLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_FCC_X), parseFloat(humanData.R_FCC_Y), parseFloat(humanData.R_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_FM1_X), parseFloat(humanData.R_FM1_Y), parseFloat(humanData.R_FM1_Z))));
+    //R toe 2
+    rightLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_FCC_X), parseFloat(humanData.R_FCC_Y), parseFloat(humanData.R_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_FM2_X), parseFloat(humanData.R_FM2_Y), parseFloat(humanData.R_FM2_Z))));
+
+    //R toe 5
+    rightLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_FCC_X), parseFloat(humanData.R_FCC_Y), parseFloat(humanData.R_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.R_FM5_X), parseFloat(humanData.R_FM5_Y), parseFloat(humanData.R_FM5_Z))));
+
+
+    //Upper L leg
+    leftLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_FTC_X), parseFloat(humanData.L_FTC_Y), parseFloat(humanData.L_FTC_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.L_TTC_X), parseFloat(humanData.L_TTC_Y), parseFloat(humanData.L_TTC_Z))));
+
+    //Lower L leg
+    leftLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_TTC_X), parseFloat(humanData.L_TTC_Y), parseFloat(humanData.L_TTC_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_FCC_X), parseFloat(humanData.L_FCC_Y), parseFloat(humanData.L_FCC_Z))));
+
+    //L toe 1
+    leftLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_FCC_X), parseFloat(humanData.L_FCC_Y), parseFloat(humanData.L_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_FM1_X), parseFloat(humanData.L_FM1_Y), parseFloat(humanData.L_FM1_Z))));
+    //L toe 2
+    leftLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_FCC_X), parseFloat(humanData.L_FCC_Y), parseFloat(humanData.L_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_FM2_X), parseFloat(humanData.L_FM2_Y), parseFloat(humanData.L_FM2_Z))));
+
+    //L toe 5
+    leftLeg.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_FCC_X), parseFloat(humanData.L_FCC_Y), parseFloat(humanData.L_FCC_Z)),
+        new THREE.Vector3(parseFloat(humanData.L_FM5_X), parseFloat(humanData.L_FM5_Y), parseFloat(humanData.L_FM5_Z))));
+
 
     participant.add(hips);
     participant.add(back);
@@ -64,6 +135,8 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.add(leftShoulder);
     participant.add(rightArm);
     participant.add(leftArm);
+    participant.add(rightLeg);
+    participant.add(leftLeg);
     participant.add(drawPoint(geometry, humanData.CV7_X, parseInt(humanData.CV7_Y) + offset, humanData.CV7_Z, humanData.Participant, "CV7"));
     participant.add(drawPoint(geometry, humanData.L_FAL_X, parseInt(humanData.L_FAL_Y) + offset, humanData.L_FAL_Z, humanData.Participant, "L_FAL"));
     participant.add(drawPoint(geometry, humanData.L_FAX_X, parseInt(humanData.L_FAX_Y) + offset, humanData.L_FAX_Z, humanData.Participant, "L_FAX"));
