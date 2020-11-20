@@ -153,6 +153,7 @@ function drawHumanDots(humanData, offset){
 function move(data, person){
     if (typeof data !== 'undefined'){
         let offset = parseInt(person.userData.offset);
+        //console.log(person);-
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
 

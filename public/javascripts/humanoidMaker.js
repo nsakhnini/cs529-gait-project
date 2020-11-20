@@ -1,10 +1,69 @@
 let participant , points = [];
+let back, hips, leftArm, rightArm, leftHand, rightHand, rightShoulder, leftShoulder, leftLeg, rightLeg, leftFoot, rightFoot;
+
+var createCylinder = function( pointX, pointY ) {
+    var direction = new THREE.Vector3().subVectors( pointY, pointX );
+    var orientation = new THREE.Matrix4();
+    orientation.lookAt(pointX, pointY, new THREE.Object3D().up);
+    const factor = new THREE.Matrix4();
+
+    factor.set(1,0,0,0,
+        0,0,1,0,
+        0,-1,0,0,
+        0,0,0,1);
+    orientation.multiply(factor);
+
+    // radius top, radius bottom, height, radius segments, height segments
+    var edgeGeometry = new THREE.CylinderGeometry( 20, 20, direction.length(), 5, 2 );
+
+    var edge = new THREE.Mesh( edgeGeometry,
+        new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
+    edge.applyMatrix4(orientation);
+
+    let updatedVector = new THREE.Vector3().addVectors( pointX, direction.multiplyScalar(0.5));
+    edge.position.x = updatedVector.x;
+    edge.position.y = updatedVector.y;
+    edge.position.z = updatedVector.z;
+    return edge;
+}
 
 export function createHumanoid(humanData, offset, demo_data, scene){
     //dot geometry
     let geometry = new THREE.SphereBufferGeometry(0.01, 0.01, 0.01);
     participant = new THREE.Group();
+    points = [];
 
+    hips = createCylinder(new THREE.Vector3(parseFloat(humanData.L_FTC_X), parseFloat(humanData.L_FTC_Y), parseFloat(humanData.L_FTC_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.R_FTC_X), parseFloat(humanData.R_FTC_Y), parseFloat(humanData.R_FTC_Z)));
+
+    var midHip = new THREE.Vector3(((parseFloat(humanData.L_FTC_X) + parseFloat(humanData.R_FTC_X))/2) ,
+                                   ((parseFloat(humanData.L_FTC_Y) + parseFloat(humanData.R_FTC_Y))/2) ,
+                                   ((parseFloat(humanData.L_FTC_Z) + parseFloat(humanData.R_FTC_Z))/2));
+    back = createCylinder(new THREE.Vector3(parseFloat(humanData.CV7_X), parseFloat(humanData.CV7_Y), parseFloat(humanData.CV7_Z)) ,
+       midHip);
+       // new THREE.Vector3(parseFloat(humanData.TV10_X), parseFloat(humanData.TV10_Y), parseFloat(humanData.TV10_Z)));
+
+    rightShoulder = createCylinder(new THREE.Vector3(parseFloat(humanData.CV7_X), parseFloat(humanData.CV7_Y), parseFloat(humanData.CV7_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.R_SAE_X), parseFloat(humanData.R_SAE_Y), parseFloat(humanData.R_SAE_Z)));
+
+    leftShoulder = createCylinder(new THREE.Vector3(parseFloat(humanData.L_SAE_X), parseFloat(humanData.L_SAE_Y), parseFloat(humanData.L_SAE_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.CV7_X), parseFloat(humanData.CV7_Y), parseFloat(humanData.CV7_Z)));
+
+    rightArm = new THREE.Group();
+    leftArm = new THREE.Group();
+
+    rightArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.R_SAE_X), parseFloat(humanData.R_SAE_Y), parseFloat(humanData.R_SAE_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.R_HLE_X), parseFloat(humanData.R_HLE_Y), parseFloat(humanData.R_HLE_Z))));
+
+    /*leftArm.add(createCylinder(new THREE.Vector3(parseFloat(humanData.L_SAE_X), parseFloat(humanData.L_SAE_Y), parseFloat(humanData.L_SAE_Z)) ,
+        new THREE.Vector3(parseFloat(humanData.CV7_X), parseFloat(humanData.CV7_Y), parseFloat(humanData.CV7_Z))));*/
+
+    participant.add(hips);
+    participant.add(back);
+    participant.add(rightShoulder);
+    participant.add(leftShoulder);
+    participant.add(rightArm);
+    participant.add(leftArm);
     participant.add(drawPoint(geometry, humanData.CV7_X, parseInt(humanData.CV7_Y) + offset, humanData.CV7_Z, humanData.Participant, "CV7"));
     participant.add(drawPoint(geometry, humanData.L_FAL_X, parseInt(humanData.L_FAL_Y) + offset, humanData.L_FAL_Z, humanData.Participant, "L_FAL"));
     participant.add(drawPoint(geometry, humanData.L_FAX_X, parseInt(humanData.L_FAX_Y) + offset, humanData.L_FAX_Z, humanData.Participant, "L_FAX"));
@@ -67,13 +126,18 @@ export function createHumanoid(humanData, offset, demo_data, scene){
 
 
     //create a blue LineBasicMaterial
-    const lineMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+    const lineMaterial = new THREE.LineBasicMaterial( {
+        color: 0x0000ff,
+        linewidth: 500,
+        linecap: 'round', //ignored by WebGLRenderer
+        linejoin:  'round' //ignored by WebGLRenderer
+         } );
     const lineGeometry = new THREE.BufferGeometry().setFromPoints( points );
-    const line = new THREE.Line( lineGeometry, lineMaterial );
-    participant.add(line);
+    const line = new THREE.Line( lineGeometry, lineMaterial);
+    //participant.add(line);
     scene.add(participant);
     console.log("done adding participant");
-    console.log(points);
+    console.log(participant);
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){
