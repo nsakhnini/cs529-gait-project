@@ -150,15 +150,29 @@ function drawGrid(){
 function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, demo_data, scene);
 }
-
+var midPoint;
 function move(data, person){
     if (typeof data !== 'undefined'){
         let offset = parseInt(person.userData.offset);
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
-            /*if (typeof joint === 'undefined'){
-                person.remove(d);
-            }*/
+            if (typeof joint === 'undefined'){
+                d.children.forEach(function (v, index, array) {
+                    if (v.userData.part == "back"){
+                        midPoint = [(parseFloat(data[v.userData.point2[0]]) + parseFloat(data[v.userData.point2[3]])) / 2 ,
+                            ((parseFloat(data[v.userData.point2[1]]) + parseFloat(data[v.userData.point2[4]])) / 2) ,
+                                    (parseFloat(data[v.userData.point2[2]]) + parseFloat(data[v.userData.point2[5]])) / 2]    ;
+                        v.position.x = (parseFloat(data[v.userData.point1[0]]) + midPoint[0]) / 2;
+                        v.position.y = ((parseFloat(data[v.userData.point1[1]]) + midPoint[1]) / 2) + offset;
+                        v.position.z = (parseFloat(data[v.userData.point1[2]]) + midPoint[2]) / 2;
+                    }
+                    else{
+                        v.position.x = (parseFloat(data[v.userData.point1[0]]) + parseFloat(data[v.userData.point2[0]])) / 2;
+                        v.position.y = ((parseFloat(data[v.userData.point1[1]]) + parseFloat(data[v.userData.point2[1]])) / 2) + offset;
+                        v.position.z = (parseFloat(data[v.userData.point1[2]]) + parseFloat(data[v.userData.point2[2]])) / 2;
+                    }
+                })
+            }
             switch (joint) {
                 case "CV7":
                     d.position.set(data.CV7_X, parseInt(data.CV7_Y) + offset, data.CV7_Z);
@@ -320,7 +334,6 @@ function move(data, person){
                     ;
             }
         });
-        //person.add(humanoidMaker.drawHumanoid(data, offset));
     }
 }
 
