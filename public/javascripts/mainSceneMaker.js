@@ -14,11 +14,11 @@ let trial = "1", speed = "1", offsetY = 0;
 let filterDemo;
 
 const scene = new THREE.Scene();
-export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.9) , 0.1, 10000 );
+export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
 camera.up.set(0, 0, 1);
 
 export const renderer = new THREE.WebGLRenderer();
-renderer.setSize( (window.innerWidth/2),window.innerHeight *0.9);
+renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 
 //Adding orbit controls to rotate , zoom and pan
 scene.controls = new OrbitControls(camera, renderer.domElement);
@@ -31,9 +31,9 @@ scene.controls.mouseButtons = {
 document.getElementById("main-scene").appendChild( renderer.domElement );
 drawGrid();
 function onWindowResize() {
-    camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.9);
+    camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.5);
     camera.updateProjectionMatrix();
-    renderer.setSize((window.innerWidth/2),window.innerHeight*0.9);
+    renderer.setSize((window.innerWidth/2),window.innerHeight*0.5);
 }
 
 window.addEventListener('resize', onWindowResize)
