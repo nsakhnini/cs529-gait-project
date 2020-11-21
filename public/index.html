@@ -38,23 +38,17 @@
 <div class="row">
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
-  <h3>Filtering</h3>
-    <label for="participant-list">Participant(s)</label><br>
     
-    <div id="participant-list-readyonly" style="display: none;">
-      <ul style="list-style-type:none; padding-left: 0px;">
-        <li>2014001</li>
-        <li>2014002</li>
-      </ul>
-      <br><br>
+    <h3 id="filter-title">Filter</h3>
+    <div style="display: none;" id="filter-readonly">
+      <img src="/images/filter-icon.png" alt="" height="40">
     </div>
-    <select name="participants" id="participant-list" multiple>
-    </select><br><br>
-    
-    <label for="slider-age">Age</label>
-    <div id="age-viewonly" style="display: none;">
-        &lt;<span id="age-min">30</span> -  <span id="age-max">60</span>&gt;
-        <br><br>
+    <br>
+
+    <label for="slider-age">Age:</label>
+    <div id="age-viewonly" class='viewonly-text'>
+        <span id="age-min">30</span> -  <span id="age-max">60</span>
+
     </div>
     <div slider id="slider-age">
       <div>
@@ -75,7 +69,7 @@
     </div>
 
     <label for="slider-height">Height (cm)</label>
-    <div id="height-readonly" style="display: none;"><164 - 165><br><br></div>
+    <div id="height-readonly" class='viewonly-text'>164 - 165</div>
     <div slider id="slider-height">
       <div>
         <div inverse-left style="width:70%;"></div>
@@ -95,7 +89,7 @@
     </div>
 
     <label for="slider-weight">Weight (Kg)</label>
-    <div id="weight-readonly" style="display: none;"><66 - 67><br><br></div>
+    <div id="weight-readonly" class='viewonly-text'>66 - 67</div>
     <div slider id="slider-weight">
       <div>
         <div inverse-left style="width:70%;"></div>
@@ -115,16 +109,45 @@
     </div>
     <div id="gender-check">
       <label for="gender-form">Gender</label>
-      <div id="gender-readonly" style="display: none;">Male Female</div>
+      <div id="gender-readonly" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" height='35'>
+          <g>
+            <rect x="0" y="0" width="25" height="25" fill="pink"></rect>
+            <text x="5" y="20" font-family="Verdana" font-size="20" fill="red">F</text>
+          </g>
+            <g>
+            <rect x="25" y="0" width="25" height="25" fill="skyblue"></rect>
+            <text x="30" y="20" font-family="Verdana" font-size="20" fill="blue">M</text>
+          </g>
+        </svg>
+      
+      </div>
     <form id="gender-form">
-      <input type="checkbox" id="female-check" name="female" value="female">
-      <label for="female-check"> Female</label><br>
-      <input type="checkbox" id="male-check" name="male" value="male">
+      <input type="checkbox" id="female-check" name="female" value="female" checked>
+      <label for="female-check"> Female</label> 
+      <input type="checkbox" id="male-check" name="male" value="male" checked>
       <label for="male-check"> Male</label><br>
     </form>
     </div>
-    <input type="button" id="filter-btn" class="map-btns" value="Filter">
-
+    
+    <label for="participant-list">Participant(s)</label><br>
+    <div class="participanList" style="display: none;">
+        <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>
+        <button id="b1" class="list-group-item">2014002: 24 y / 1.78 mt / 78.6 kg</button>
+        <button id="b1" class="list-group-item">2014003: 26 y / 1.65 mt / 68.4 kg</button>
+        <button id="b1" class="list-group-item">2014004: 32 y / 1.81 mt / 75.7 kg</button>
+    </div>
+    <div id="participant-list-readyonly" style="display: none;">
+        <ul style="list-style-type:none; padding-left: 0px;">
+          <li>2014001</li>
+          <li>2014002</li>
+        </ul>
+        <br><br>
+      </div>
+      <select name="participants" id="participant-list" multiple>
+      </select><br><br>
+      <input type="button" id="filter-btn" class="map-btns" value="Filter">
+      
   </div>
   <div class="col-6" id="scene-section">
       <div id="main-scene">

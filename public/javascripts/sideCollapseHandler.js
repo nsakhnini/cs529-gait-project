@@ -94,6 +94,7 @@ function toggle2DBar() {
 }
 function renderCollapsedPanelView(){
     document.getElementById("participant-list").style.display = "none";
+    document.getElementById("filter-title").style.display = "none";
     document.getElementById("slider-age").style.display = "none";
     document.getElementById("slider-height").style.display = "none";
     document.getElementById("slider-weight").style.display = "none";
@@ -101,6 +102,8 @@ function renderCollapsedPanelView(){
     document.getElementById("filter-btn").style.visibility = "hidden";
 
     document.getElementById("participant-list-readyonly").style.display = "block";
+    
+    document.getElementById("filter-readonly").style.display = "block";
     document.getElementById("age-viewonly").style.display = "block";
     document.getElementById("height-readonly").style.display = "block";
     document.getElementById("weight-readonly").style.display = "block";
@@ -109,6 +112,7 @@ function renderCollapsedPanelView(){
 }
 function renderExpandedPanelView(){
     document.getElementById("participant-list").style.display = "block";
+    document.getElementById("filter-title").style.display = "block";
     document.getElementById("slider-age").style.display = "block";
     document.getElementById("slider-height").style.display = "block";
     document.getElementById("slider-weight").style.display = "block";
@@ -116,6 +120,7 @@ function renderExpandedPanelView(){
     document.getElementById("filter-btn").style.visibility = "visible";
 
     document.getElementById("participant-list-readyonly").style.display = "none";
+    document.getElementById("filter-readonly").style.display = "none";
     document.getElementById("age-viewonly").style.display = "none";
     document.getElementById("height-readonly").style.display = "none";
     document.getElementById("weight-readonly").style.display = "none";
@@ -124,3 +129,18 @@ function renderExpandedPanelView(){
 
 document.querySelector("#minimize-filter").addEventListener('click', toggleFilterBar);
 document.querySelector("#minimize-two-d").addEventListener('click', toggle2DBar);
+
+function renderParticipantList(){
+    //$(".list-group").each(function(){
+    $(".participanList").each(function(){
+        $(this).find("button").each(function(){
+          $(this).click(function(e){
+            e.preventDefault();
+            $(this).toggleClass("active");
+            //updateSelectedParticipants(this.id, this.className);
+          })
+        })
+      })
+}
+
+//renderParticipantList();
