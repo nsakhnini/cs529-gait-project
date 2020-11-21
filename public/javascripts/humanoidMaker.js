@@ -20,8 +20,6 @@ const orientation = new THREE.Matrix4();
 var createCylinder = function( pointX, pointY) {
     direction = new THREE.Vector3().subVectors( pointY, pointX );
     orientation.lookAt(pointX, pointY, upVector);
-
-    console.log(direction);
     orientation.multiply(factor);
 
     // radius top, radius bottom, height, radius segments, height segments
@@ -230,116 +228,159 @@ export function drawHumanoid(humanData , offset, participant){
         part: "hip",
         point1: ["L_FTC_X", "L_FTC_Y", "L_FTC_Z"],
         point2: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z"],
-        //Add current vector
-        //vector: new THREE.Vector3();
+        p1data: [humanData.L_FTC_X, humanData.L_FTC_Y, humanData.L_FTC_Z],
+        p2data: [humanData.R_FTC_X, humanData.R_FTC_Y, humanData.R_FTC_Z]
     };
     back.userData = {
         part: "back",
         point1: ["CV7_X", "CV7_Y", "CV7_Z"],
-        point2: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z", "L_FTC_X", "L_FTC_Y", "L_FTC_Z"]
+        point2: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z", "L_FTC_X", "L_FTC_Y", "L_FTC_Z"],
+        p1data:  [humanData.CV7_X, humanData.CV7_Y, humanData.CV7_Z],
+        mid1data: [humanData.R_FTC_X, humanData.R_FTC_Y, humanData.R_FTC_Z],
+        mid2data: [humanData.L_FTC_X, humanData.L_FTC_Y, humanData.L_FTC_Z ]
     };
     rightShoulder.userData = {
         part: "rShoulder",
         point1: ["CV7_X", "CV7_Y", "CV7_Z"],
-        point2: ["R_SAE_X", "R_SAE_Y", "R_SAE_Z"]
+        point2: ["R_SAE_X", "R_SAE_Y", "R_SAE_Z"],
+        p1data: [humanData.CV7_X, humanData.CV7_Y, humanData.CV7_Z],
+        p2data: [humanData.R_SAE_X, humanData.R_SAE_Y, humanData.R_SAE_Z]
     };
     rightUpperArm.userData = {
         part: "rUpperArm",
         point1: ["R_SAE_X", "R_SAE_Y", "R_SAE_Z"],
-        point2: ["R_HLE_X", "R_HLE_Y", "R_HLE_Z"]
+        point2: ["R_HLE_X", "R_HLE_Y", "R_HLE_Z"],
+        p1data: [humanData.R_SAE_X, humanData.R_SAE_Y, humanData.R_SAE_Z],
+        p2data: [humanData.R_HLE_X, humanData.R_HLE_Y, humanData.R_HLE_Z]
     };
     rightLowerArm.userData = {
         part: "rLowerArm",
         point1: ["R_HLE_X", "R_HLE_Y", "R_HLE_Z"],
-        point2: ["R_RSP_X", "R_RSP_Y", "R_RSP_Z"]
+        point2: ["R_RSP_X", "R_RSP_Y", "R_RSP_Z"],
+        p1data: [humanData.R_HLE_X, humanData.R_HLE_Y, humanData.R_HLE_Z],
+        p2data: [humanData.R_RSP_X, humanData.R_RSP_Y, humanData.R_RSP_Z]
     };
     rightFinger2.userData = {
         part: "rFinger2",
         point1: ["R_RSP_X", "R_RSP_Y", "R_RSP_Z"],
-        point2: ["R_HM2_X", "R_HM2_Y", "R_HM2_Z"]
+        point2: ["R_HM2_X", "R_HM2_Y", "R_HM2_Z"],
+        p1data: [humanData.R_RSP_X, humanData.R_RSP_Y, humanData.R_RSP_Z],
+        p2data: [humanData.R_HM2_X, humanData.R_HM2_Y, humanData.R_HM2_Z]
     };
     rightFinger5.userData = {
         part: "rFinger5",
         point1: ["R_RSP_X", "R_RSP_Y", "R_RSP_Z"],
-        point2: ["R_HM5_X", "R_HM5_Y", "R_HM5_Z"]
+        point2: ["R_HM5_X", "R_HM5_Y", "R_HM5_Z"],
+        p1data: [humanData.R_RSP_X, humanData.R_RSP_Y, humanData.R_RSP_Z],
+        p2data: [humanData.R_HM5_X, humanData.R_HM5_Y, humanData.R_HM5_Z]
     };
 
     leftUpperArm.userData = {
         part: "lUpperArm",
         point1: ["L_SAE_X", "L_SAE_Y", "L_SAE_Z"],
-        point2: ["L_HLE_X", "L_HLE_Y", "L_HLE_Z"]
+        point2: ["L_HLE_X", "L_HLE_Y", "L_HLE_Z"],
+        p1data: [humanData.L_SAE_X, humanData.L_SAE_Y, humanData.L_SAE_Z],
+        p2data: [humanData.L_HLE_X, humanData.L_HLE_Y, humanData.L_HLE_Z]
     };
     leftLowerArm.userData = {
         part: "lLowerArm",
         point1: ["L_HLE_X", "L_HLE_Y", "L_HLE_Z"],
-        point2: ["L_RSP_X", "L_RSP_Y", "L_RSP_Z"]
+        point2: ["L_RSP_X", "L_RSP_Y", "L_RSP_Z"],
+        p1data: [humanData.L_HLE_X, humanData.L_HLE_Y, humanData.L_HLE_Z],
+        p2data: [humanData.L_RSP_X, humanData.L_RSP_Y, humanData.L_RSP_Z]
     };
     leftFinger2.userData = {
         part: "lFinger2",
         point1: ["L_RSP_X", "L_RSP_Y", "L_RSP_Z"],
-        point2: ["L_HM2_X", "L_HM2_Y", "L_HM2_Z"]
+        point2: ["L_HM2_X", "L_HM2_Y", "L_HM2_Z"],
+        p1data: [humanData.L_RSP_X, humanData.L_RSP_Y, humanData.L_RSP_Z],
+        p2data: [humanData.L_HM2_X, humanData.L_HM2_Y, humanData.L_HM2_Z]
     };
     leftFinger5.userData = {
         part: "lFinger5",
         point1: ["L_RSP_X", "L_RSP_Y", "L_RSP_Z"],
-        point2: ["L_HM5_X", "L_HM5_Y", "L_HM5_Z"]
+        point2: ["L_HM5_X", "L_HM5_Y", "L_HM5_Z"],
+        p1data: [humanData.L_RSP_X, humanData.L_RSP_Y, humanData.L_RSP_Z],
+        p2data: [humanData.L_HM5_X, humanData.L_HM5_Y, humanData.L_HM5_Z]
     };
 
     rightUpperLeg.userData = {
         part: "rUpperLeg",
         point1: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z"],
-        point2: ["R_TTC_X", "R_TTC_Y", "R_TTC_Z"]
+        point2: ["R_TTC_X", "R_TTC_Y", "R_TTC_Z"],
+        p1data: [humanData.R_FTC_X, humanData.R_FTC_Y, humanData.R_FTC_Z],
+        p2data: [humanData.R_TTC_X, humanData.R_TTC_Y, humanData.R_TTC_Z]
     };
     rightLowerLeg.userData = {
         part: "rLowerLeg",
         point1: ["R_TTC_X", "R_TTC_Y", "R_TTC_Z"],
-        point2: ["R_FCC_X", "R_FCC_Y", "R_FCC_Z"]
+        point2: ["R_FCC_X", "R_FCC_Y", "R_FCC_Z"],
+        p1data: [humanData.R_TTC_X, humanData.R_TTC_Y, humanData.R_TTC_Z],
+        p2data: [humanData.R_FCC_X, humanData.R_FCC_Y, humanData.R_FCC_Z]
     };
     rightToe1.userData = {
         part: "rToe1",
         point1: ["R_FCC_X", "R_FCC_Y", "R_FCC_Z"],
-        point2: ["R_FM1_X", "R_FM1_Y", "R_FM1_Z"]
+        point2: ["R_FM1_X", "R_FM1_Y", "R_FM1_Z"],
+        p1data: [humanData.R_FCC_X, humanData.R_FCC_Y, humanData.R_FCC_Z],
+        p2data: [humanData.R_FM1_X, humanData.R_FM1_Y, humanData.R_FM1_Z]
     };
     rightToe2.userData = {
         part: "rToe2",
         point1: ["R_FCC_X", "R_FCC_Y", "R_FCC_Z"],
-        point2: ["R_FM2_X", "R_FM2_Y", "R_FM2_Z"]
+        point2: ["R_FM2_X", "R_FM2_Y", "R_FM2_Z"],
+        p1data: [humanData.R_FCC_X, humanData.R_FCC_Y, humanData.R_FCC_Z],
+        p2data: [humanData.R_FM2_X, humanData.R_FM2_Y, humanData.R_FM2_Z]
     };
     rightToe5.userData = {
         part: "rToe5",
         point1: ["R_FCC_X", "R_FCC_Y", "R_FCC_Z"],
-        point2: ["R_FM5_X", "R_FM5_Y", "R_FM5_Z"]
+        point2: ["R_FM5_X", "R_FM5_Y", "R_FM5_Z"],
+        p1data: [humanData.R_FCC_X, humanData.R_FCC_Y, humanData.R_FCC_Z],
+        p2data: [humanData.R_FM5_X, humanData.R_FM5_Y, humanData.R_FM5_Z]
     };
     leftShoulder.userData = {
         part: "lShoulder",
         point1: ["CV7_X", "CV7_Y", "CV7_Z"],
-        point2: ["L_SAE_X", "L_SAE_Y", "L_SAE_Z"]
+        point2: ["L_SAE_X", "L_SAE_Y", "L_SAE_Z"],
+        p1data: [humanData.CV7_X, humanData.CV7_Y, humanData.CV7_Z],
+        p2data: [humanData.L_SAE_X, humanData.L_SAE_Y, humanData.L_SAE_Z]
     };
 
     leftUpperLeg.userData = {
         part: "lUpperLeg",
         point1: ["L_FTC_X", "L_FTC_Y", "L_FTC_Z"],
-        point2: ["L_TTC_X", "L_TTC_Y", "L_TTC_Z"]
+        point2: ["L_TTC_X", "L_TTC_Y", "L_TTC_Z"],
+        p1data: [humanData.L_FTC_X, humanData.L_FTC_Y, humanData.L_FTC_Z],
+        p2data: [humanData.L_TTC_X, humanData.L_TTC_Y, humanData.L_TTC_Z]
     };
     leftLowerLeg.userData = {
         part: "lLowerLeg",
         point1: ["L_TTC_X", "L_TTC_Y", "L_TTC_Z"],
-        point2: ["L_FCC_X", "L_FCC_Y", "L_FCC_Z"]
+        point2: ["L_FCC_X", "L_FCC_Y", "L_FCC_Z"],
+        p1data: [humanData.L_TTC_X, humanData.L_TTC_Y, humanData.L_TTC_Z],
+        p2data: [humanData.L_FCC_X, humanData.L_FCC_Y, humanData.L_FCC_Z]
     };
     leftToe1.userData = {
         part: "lToe1",
         point1: ["L_FCC_X", "L_FCC_Y", "L_FCC_Z"],
-        point2: ["L_FM1_X", "L_FM1_Y", "L_FM1_Z"]
+        point2: ["L_FM1_X", "L_FM1_Y", "L_FM1_Z"],
+        p1data: [humanData.L_FCC_X, humanData.L_FCC_Y, humanData.L_FCC_Z],
+        p2data: [humanData.L_FM1_X, humanData.L_FM1_Y, humanData.L_FM1_Z]
     };
     leftToe2.userData = {
         part: "lToe2",
         point1: ["L_FCC_X", "L_FCC_Y", "L_FCC_Z"],
-        point2: ["L_FM2_X", "L_FM2_Y", "L_FM2_Z"]
+        point2: ["L_FM2_X", "L_FM2_Y", "L_FM2_Z"],
+        p1data: [humanData.L_FCC_X, humanData.L_FCC_Y, humanData.L_FCC_Z],
+        p2data: [humanData.L_FM2_X, humanData.L_FM2_Y, humanData.L_FM2_Z]
     };
     leftToe5.userData = {
         part: "lToe5",
         point1: ["L_FCC_X", "L_FCC_Y", "L_FCC_Z"],
-        point2: ["L_FM5_X", "L_FM5_Y", "L_FM5_Z"]
+        point2: ["L_FM5_X", "L_FM5_Y", "L_FM5_Z"],
+        p1data: [humanData.L_FCC_X, humanData.L_FCC_Y, humanData.L_FCC_Z],
+        p2data: [humanData.L_FM5_X, humanData.L_FM5_Y, humanData.L_FM5_Z]
     };
 
     humanoid.add(hips);
@@ -365,8 +406,5 @@ export function drawHumanoid(humanData , offset, participant){
     humanoid.add(leftToe2);
     humanoid.add(leftToe5);
 
-
-    //console.log(humanoid);
     participant.add(humanoid);
-    //return humanoid;
 }

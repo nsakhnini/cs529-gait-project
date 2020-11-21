@@ -150,8 +150,11 @@ function drawGrid(){
 function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, demo_data, scene);
 }
-var midPoint;
-var quaternion;
+let midPoint;
+let quaternion = new THREE.Quaternion();
+let fromVector, toVector, fromP1, fromP2, toP1, toP2;
+let rotationMatrix = new THREE.Matrix4();
+
 function move(data, person){
     if (typeof data !== 'undefined'){
         let offset = parseInt(person.userData.offset);
@@ -159,21 +162,55 @@ function move(data, person){
             let joint = d.userData.joint;
             if (typeof joint === 'undefined'){
                 d.children.forEach(function (v, index, array) {
-                    quaternion = new THREE.Quaternion(); // create one and reuse it
-                    //quaternion.setFromUnitVectors( v1, v2 );//To normalize vector to unit vector .normalize()
-                    //console.log(v);
-                    if (v.userData.part == "back"){
+                    if (v.userData.part === "back"){
                         midPoint = [(parseFloat(data[v.userData.point2[0]]) + parseFloat(data[v.userData.point2[3]])) / 2 ,
                             ((parseFloat(data[v.userData.point2[1]]) + parseFloat(data[v.userData.point2[4]])) / 2) ,
                                     (parseFloat(data[v.userData.point2[2]]) + parseFloat(data[v.userData.point2[5]])) / 2]    ;
                         v.position.x = (parseFloat(data[v.userData.point1[0]]) + midPoint[0]) / 2;
                         v.position.y = ((parseFloat(data[v.userData.point1[1]]) + midPoint[1]) / 2) + offset;
                         v.position.z = (parseFloat(data[v.userData.point1[2]]) + midPoint[2]) / 2;
+
+                        fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
+                        fromP2 = new THREE.Vector3((parseFloat(v.userData.mid1data[0]) + parseFloat(v.userData.mid2data[0]))/2,
+                                                   (parseFloat(v.userData.mid1data[1]) + parseFloat(v.userData.mid2data[1]))/2,
+                                                   (parseFloat(v.userData.mid1data[2]) + parseFloat(v.userData.mid2data[2]))/2);
+
+                        fromVector = new THREE.Vector3().subVectors(fromP2, fromP1);
+
+                        toP1 = new THREE.Vector3(parseFloat(data[v.userData.point1[0]]),parseFloat(data[v.userData.point1[1]]),parseFloat(data[v.userData.point1[2]]));
+                        toP2 = new THREE.Vector3(midPoint[0], midPoint[1], midPoint[2]);
+
+                        v.userData.p1data = [toP1.x, toP1.y, toP1.z];
+                        v.userData.mid1data = [parseFloat(data[v.userData.point2[0]]), parseFloat(data[v.userData.point2[1]]), parseFloat(data[v.userData.point2[2]])];
+                        v.userData.mid2data = [parseFloat(data[v.userData.point2[3]]), parseFloat(data[v.userData.point2[4]]), parseFloat(data[v.userData.point2[5]])];
+
+                        toVector = new THREE.Vector3().subVectors(toP2, toP1);
+
+                        quaternion.setFromUnitVectors(fromVector.normalize(), toVector.normalize());//To normalize vector to unit vector .normalize()
+
+                        v.applyQuaternion(quaternion);
                     }
                     else{
                         v.position.x = (parseFloat(data[v.userData.point1[0]]) + parseFloat(data[v.userData.point2[0]])) / 2;
                         v.position.y = ((parseFloat(data[v.userData.point1[1]]) + parseFloat(data[v.userData.point2[1]])) / 2) + offset;
                         v.position.z = (parseFloat(data[v.userData.point1[2]]) + parseFloat(data[v.userData.point2[2]])) / 2;
+
+                        fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
+                        fromP2 = new THREE.Vector3(parseFloat(v.userData.p2data[0]), parseFloat(v.userData.p2data[1]), parseFloat(v.userData.p2data[2]));
+
+                        fromVector = new THREE.Vector3().subVectors(fromP2, fromP1);
+
+                        toP1 = new THREE.Vector3(parseFloat(data[v.userData.point1[0]]),parseFloat(data[v.userData.point1[1]]),parseFloat(data[v.userData.point1[2]]));
+                        toP2 = new THREE.Vector3(parseFloat(data[v.userData.point2[0]]),parseFloat(data[v.userData.point2[1]]),parseFloat(data[v.userData.point2[2]]));
+
+                        v.userData.p1data = [toP1.x, toP1.y, toP1.z];
+                        v.userData.p2data = [toP2.x, toP2.y, toP2.z];
+
+                        toVector = new THREE.Vector3().subVectors(toP2, toP1);
+
+                        quaternion.setFromUnitVectors(fromVector.normalize(), toVector.normalize());//To normalize vector to unit vector .normalize()
+
+                        v.applyQuaternion(quaternion);
                     }
                 })
             }

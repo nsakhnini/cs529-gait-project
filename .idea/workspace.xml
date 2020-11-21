@@ -29,7 +29,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="12.18.4" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.18.3" />
     <property name="javascript.nodejs.core.library.typings.version" value="12.19.6" />
     <property name="last_opened_file_path" value="$USER_HOME$/WebstormProjects/apple-app-store-scraping" />
     <property name="nodejs_interpreter_path" value="node" />
@@ -60,6 +60,7 @@
       <workItem from="1605881673089" duration="13697000" />
       <workItem from="1605898548733" duration="1369000" />
       <workItem from="1605900856906" duration="380000" />
+      <workItem from="1605923781666" duration="3470000" />
     </task>
     <servers />
   </component>
@@ -151,10 +152,10 @@
       <screen x="1920" y="40" width="1920" height="1040" />
     </state>
     <state width="1877" height="348" key="GridCell.Tab.3.right/-1920.32.1536.832/1920.40.1920.1040/0.40.1920.1040@1920.40.1920.1040" timestamp="1605582130234" />
-    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup" timestamp="1605846841648">
+    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup" timestamp="1605925420002">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.40.1920.1040/0.40.1920.1040@0.40.1920.1040" timestamp="1605846841648" />
+    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.40.1920.1040/0.40.1920.1040@0.40.1920.1040" timestamp="1605925420002" />
     <state x="2543" y="273" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.48.1920.1040/0.40.1920.1040@1920.48.1920.1040" timestamp="1605192692623" />
   </component>
 </project>
