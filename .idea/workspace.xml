@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/humanoidMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/humanoidMaker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/style.css" afterDir="false" />
     </list>
@@ -64,7 +65,7 @@
       <workItem from="1605900856906" duration="380000" />
       <workItem from="1605923781666" duration="4979000" />
       <workItem from="1605988419073" duration="228000" />
-      <workItem from="1605988659825" duration="2399000" />
+      <workItem from="1605988659825" duration="4877000" />
     </task>
     <servers />
   </component>
@@ -156,10 +157,10 @@
       <screen x="1920" y="40" width="1920" height="1040" />
     </state>
     <state width="1877" height="348" key="GridCell.Tab.3.right/-1920.32.1536.832/1920.40.1920.1040/0.40.1920.1040@1920.40.1920.1040" timestamp="1605582130234" />
-    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup" timestamp="1605925420002">
+    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup" timestamp="1605991792279">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.40.1920.1040/0.40.1920.1040@0.40.1920.1040" timestamp="1605925420002" />
+    <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.40.1920.1040/0.40.1920.1040@0.40.1920.1040" timestamp="1605991792279" />
     <state x="2543" y="273" width="672" height="678" key="search.everywhere.popup/3840.32.1536.832/1920.48.1920.1040/0.40.1920.1040@1920.48.1920.1040" timestamp="1605192692623" />
   </component>
 </project>

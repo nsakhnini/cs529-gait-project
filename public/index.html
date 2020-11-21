@@ -18,24 +18,24 @@
 </head>
 
 <body>
-<nav class="navbar navbar-dark bg-dark" id="header-navbar">
+<nav class="navbar" id="header-navbar">
   <div class="col-5">
-  <a class="navbar-brand" href="#">Eyes on the Gait</a>
+  <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
 </div>
   <div class="col-3">
-  <button class="btn btn-primary" type="button"  aria-label="collaboration button">
+  <button class="btn my-btns" type="button"  aria-label="collaboration button">
     Collaborate
   </button>
-  <button class="btn btn-primary" type="button"  aria-label="Upload button">
+  <button class="btn my-btns" type="button"  aria-label="Upload button">
     Upload
   </button>
-  <button class="btn btn-primary" type="button"  aria-label="Save and export button">
+  <button class="btn my-btns" type="button"  aria-label="Save and export button">
     Save/Export
   </button>
   </div>
 </nav>
 
-<div class="row">
+<div class="row" style="height: 100%">
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
     
@@ -150,6 +150,7 @@
       
   </div>
   <div class="col-6" id="scene-section">
+    <div class="row">
     <div id="info-main-view-top">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -165,8 +166,19 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </p>
     </div>
-      <div id="main-scene">
+    <div id="main-scene">
       </div>
+    </div>
+    <div class="row" style="height: 50%">
+      <div class="row">
+        <div class="col" id="gender-plot"></div>
+        <div class="col" id="age-plot"></div>
+      </div>
+      <div class="row">
+        <div class="col" id="height-plot"></div>
+        <div class="col" id="weight-plot"></div>
+      </div>
+    </div>
   </div>
   <div class="my-sidebar col-3" id="two-d-sidebar">
     <a href="javascript:void(0)" class="two-d-toggle-btn" id="minimize-two-d">></a>

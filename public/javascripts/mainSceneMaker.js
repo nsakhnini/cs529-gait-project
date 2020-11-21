@@ -22,6 +22,8 @@ let quaternion = new THREE.Quaternion();
 let fromVector, toVector, fromP1, fromP2, toP1, toP2;
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color( 0x010101 );
+
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
 camera.up.set(0, 0, 1);
 
