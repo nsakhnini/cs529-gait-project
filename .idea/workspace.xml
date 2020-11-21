@@ -29,8 +29,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="12.18.3" />
-    <property name="javascript.nodejs.core.library.typings.version" value="12.12.67" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.18.4" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.19.6" />
     <property name="last_opened_file_path" value="$USER_HOME$/WebstormProjects/apple-app-store-scraping" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -58,6 +58,8 @@
       <workItem from="1605748807191" duration="3496000" />
       <workItem from="1605806620259" duration="11859000" />
       <workItem from="1605881673089" duration="13697000" />
+      <workItem from="1605898548733" duration="1369000" />
+      <workItem from="1605900856906" duration="380000" />
     </task>
     <servers />
   </component>

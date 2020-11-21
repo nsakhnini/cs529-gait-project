@@ -151,6 +151,7 @@ function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, demo_data, scene);
 }
 var midPoint;
+var quaternion;
 function move(data, person){
     if (typeof data !== 'undefined'){
         let offset = parseInt(person.userData.offset);
@@ -158,6 +159,9 @@ function move(data, person){
             let joint = d.userData.joint;
             if (typeof joint === 'undefined'){
                 d.children.forEach(function (v, index, array) {
+                    quaternion = new THREE.Quaternion(); // create one and reuse it
+                    //quaternion.setFromUnitVectors( v1, v2 );//To normalize vector to unit vector .normalize()
+                    //console.log(v);
                     if (v.userData.part == "back"){
                         midPoint = [(parseFloat(data[v.userData.point2[0]]) + parseFloat(data[v.userData.point2[3]])) / 2 ,
                             ((parseFloat(data[v.userData.point2[1]]) + parseFloat(data[v.userData.point2[4]])) / 2) ,

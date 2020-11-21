@@ -21,6 +21,7 @@ var createCylinder = function( pointX, pointY) {
     direction = new THREE.Vector3().subVectors( pointY, pointX );
     orientation.lookAt(pointX, pointY, upVector);
 
+    console.log(direction);
     orientation.multiply(factor);
 
     // radius top, radius bottom, height, radius segments, height segments
@@ -228,7 +229,9 @@ export function drawHumanoid(humanData , offset, participant){
     hips.userData = {
         part: "hip",
         point1: ["L_FTC_X", "L_FTC_Y", "L_FTC_Z"],
-        point2: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z"]
+        point2: ["R_FTC_X", "R_FTC_Y", "R_FTC_Z"],
+        //Add current vector
+        //vector: new THREE.Vector3();
     };
     back.userData = {
         part: "back",
