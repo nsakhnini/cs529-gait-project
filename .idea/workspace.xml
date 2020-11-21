@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="087f7dde-4193-4526-a6a3-4df6565bbe6c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/javascripts/humanoidMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/humanoidMaker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +58,7 @@
       <workItem from="1605881673089" duration="13697000" />
       <workItem from="1605898548733" duration="1369000" />
       <workItem from="1605900856906" duration="380000" />
-      <workItem from="1605923781666" duration="3470000" />
+      <workItem from="1605923781666" duration="3729000" />
     </task>
     <servers />
   </component>
