@@ -9,9 +9,17 @@ let markers_data = [];
 let demo_data = []; //0 = woman  1 = man
 let participants = [];
 let participantsData = [];
-let markerByParticipant, participant, timestamp = [];
+let markerByParticipant, timestamp = [];
 let trial = "1", speed = "1", offsetY = 0;
 let filterDemo;
+
+var leftAge, rightAge, minAge, maxAge;
+var leftHeight, rightHeight, minH, maxH;
+var leftWeight, rightWeight, minW, maxW;
+
+let midPoint;
+let quaternion = new THREE.Quaternion();
+let fromVector, toVector, fromP1, fromP2, toP1, toP2;
 
 const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
@@ -23,13 +31,18 @@ renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 //Adding orbit controls to rotate , zoom and pan
 scene.controls = new OrbitControls(camera, renderer.domElement);
 scene.controls.mouseButtons = {
-     LEFT: THREE.MOUSE.ROTATE,
      MIDDLE: THREE.MOUSE.DOLLY,
-     RIGHT: THREE.MOUSE.PAN
+     RIGHT: THREE.MOUSE.ROTATE
 }
-
+scene.controls.keys = {
+    LEFT: 37, //left arrow
+    UP: 38, // up arrow
+    RIGHT: 39, // right arrow
+    BOTTOM: 40 // down arrow
+}
 document.getElementById("main-scene").appendChild( renderer.domElement );
 drawGrid();
+
 function onWindowResize() {
     camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.5);
     camera.updateProjectionMatrix();
@@ -93,8 +106,6 @@ function filterData() {
     });
 }
 
-var leftAge, rightAge, minAge, maxAge;
-
 function ageSlider() {
     leftAge = document.getElementsByClassName("age-slider-input")[0];
     rightAge = document.getElementsByClassName("age-slider-input")[1];
@@ -108,8 +119,6 @@ function ageSlider() {
     });
 }
 
-var leftHeight, rightHeight, minH, maxH;
-
 function heightSlider() {
     leftHeight = document.getElementsByClassName("height-slider-input")[0];
     rightHeight = document.getElementsByClassName("height-slider-input")[1];
@@ -122,8 +131,6 @@ function heightSlider() {
         }
     });
 }
-
-var leftWeight, rightWeight, minW, maxW;
 
 function weightSlider() {
     leftWeight = document.getElementsByClassName("weight-slider-input")[0];
@@ -192,10 +199,6 @@ function drawGrid(){
 function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, demo_data, scene);
 }
-let midPoint;
-let quaternion = new THREE.Quaternion();
-let fromVector, toVector, fromP1, fromP2, toP1, toP2;
-let rotationMatrix = new THREE.Matrix4();
 
 function move(data, person){
     if (typeof data !== 'undefined'){
@@ -506,6 +509,10 @@ function loadParticipantsDataToFilter(pList){
     for(let i = 0; i< pList.length; i++) {
         document.querySelector("#participant-list").innerHTML += "\n<option value=\"" + pList[i] + "\">" + pList[i] + "</option>";
     }
+}
+
+function handleMainViewText(){
+
 }
 
 loadData();

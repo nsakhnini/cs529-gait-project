@@ -8,6 +8,57 @@ a {
 
 canvas { display: block; }
 
+#info-main-view-top {
+  position: absolute;
+  top: 0px;
+  width: 80%;
+  height: 10%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #CCCCCC;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1; /* TODO Solve this in HTML */
+}
+#info-main-view-side{
+  position: absolute;
+  top: 0px;
+  left: 80%;
+  width: 20%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #CCCCCC;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1; /* TODO Solve this in HTML */
+}
+#info-main-view-bottom{
+  position: absolute;
+  top: 90%;
+  left: 20%;
+  width: 60%;
+  height: 10%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #CCCCCC;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1; /* TODO Solve this in HTML */
+}
+
 #header-navbar{
 }
 
