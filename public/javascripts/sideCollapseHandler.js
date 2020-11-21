@@ -39,14 +39,14 @@ function toggleFilterBar() {
             s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.5);
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.5);
-            document.getElementById("info-main-view-bottom").style.top = "45%";
+            document.getElementById("info-main-view-bottom").style.top = "47%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
             s.camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.5);
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.5);
-            document.getElementById("info-main-view-bottom").style.top = "45%";
+            document.getElementById("info-main-view-bottom").style.top = "47%";
         }
 
         //TODO: Remove short hand and add filter bar content
@@ -87,14 +87,14 @@ function toggle2DBar() {
             s.camera.aspect = 8 * (window.innerWidth / 12) / (window.innerHeight * 0.5);
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.5);
-            document.getElementById("info-main-view-bottom").style.top = "45%";
+            document.getElementById("info-main-view-bottom").style.top = "47%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
             s.camera.aspect = 6 * (window.innerWidth / 12) / (window.innerHeight * 0.5);
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.5);
-            document.getElementById("info-main-view-bottom").style.top = "45%";
+            document.getElementById("info-main-view-bottom").style.top = "47%";
         }
         //TODO: Remove short hand and add filter bar content
     }
