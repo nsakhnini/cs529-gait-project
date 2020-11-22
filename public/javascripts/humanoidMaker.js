@@ -13,7 +13,7 @@ factor.set(1,0,0,0,
     0,-1,0,0,
     0,0,0,1);
 
-const edgeMaterial =  new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+const edgeMaterial =  new THREE.MeshBasicMaterial( { color: 0xD138BF } );
 const upVector = new THREE.Object3D().up;
 const orientation = new THREE.Matrix4();
 
@@ -23,7 +23,7 @@ var createCylinder = function( pointX, pointY) {
     orientation.multiply(factor);
 
     // radius top, radius bottom, height, radius segments, height segments
-    edgeGeometry = new THREE.CylinderGeometry( 5, 5, direction.length(), 4, 1 );
+    edgeGeometry = new THREE.CylinderGeometry( 10, 10, direction.length(), 4, 1 );
 
     edge = new THREE.Mesh( edgeGeometry, edgeMaterial)
     edge.applyMatrix4(orientation);
@@ -110,14 +110,14 @@ export function createHumanoid(humanData, offset, demo_data, scene){
 
 function drawPoint(geometry, x,y,z,pid, joint){
     let meshMaterial = new THREE.MeshBasicMaterial();
-    meshMaterial.color.setHex(0xeb3434);
+    meshMaterial.color.setHex(0x5CF64A);
     var mesh = new THREE.Mesh(geometry, meshMaterial);
 
     mesh.position.x = x;
     mesh.position.y = z;
     mesh.position.z =y;
 
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = 1000;
+    mesh.scale.x = mesh.scale.y = mesh.scale.z = 1500;
 
     points.push( new THREE.Vector3( x, y, z ));
     //points.push({ id: pid, name: joint, vector: new THREE.Vector3( x, y, z ) });

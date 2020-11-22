@@ -11,7 +11,7 @@ let participants = [];
 let participantsData = [];
 let markerByParticipant, timestamp = [];
 let trial = "1", speed = "1", offsetY = 0;
-let filterDemo;
+let filterDemo, filterMarkers;
 
 var leftAge, rightAge, minAge, maxAge;
 var leftHeight, rightHeight, minH, maxH;
@@ -21,7 +21,11 @@ let midPoint;
 let quaternion = new THREE.Quaternion();
 let fromVector, toVector, fromP1, fromP2, toP1, toP2;
 
+let isParticipantSelected = false;
+
 const scene = new THREE.Scene();
+scene.background = new THREE.Color( 0x010101 );
+
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
 camera.up.set(0, 0, 1);
 
@@ -185,6 +189,7 @@ async function loadData(){
     camera.rotation.y = -1.3973
     camera.rotation.z = 2.99
 
+    handleMainViewText(20,50,1.4,1.9,45,200);
     animate();
 }
 
@@ -511,7 +516,50 @@ function loadParticipantsDataToFilter(pList){
     }
 }
 
-function handleMainViewText(){
+//Call this function everytime the filter changes => filter demo changes
+function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerWeight, upperWeight){
+    var topText = document.getElementById("info-main-view-top");
+    var sideText = document.getElementById("info-main-view-side");
+    var bottomText = document.getElementById("info-main-view-bottom");
+
+    topText.innerHTML = "<p>Speed: " + speed + "/5<span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                        + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                        lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                        lowerWeight + "-" + upperWeight +" kg</p>";
+    bottomText.innerHTML = "<p>Showing " + filterDemo.length + " participants</p>"
+    //Make visible
+    topText.style.visibility = "visible";
+    sideText.style.visibility = "visible";
+    bottomText.style.visibility = "visible";
+
+    isParticipantSelected = true;
+    handleParticipantText(filterDemo[0]);
+}
+
+function handleParticipantText(participant){
+    var sideText = document.getElementById("info-main-view-side")
+if (isParticipantSelected) {
+    document.getElementById("info-main-view-top").style.width = "77%";
+    sideText.style.visibility = "visible";
+    console.log(participant);
+    var gender;
+    if (participant.Gender == "0.0")
+        gender = "Female";
+    else
+        gender = "Male";
+
+    sideText.innerHTML = "<p>P" + participant.ID +"</p>" +
+        "<p>Gender: " + gender + "</p>" +
+        "<p>Age: " + parseInt(participant.Age) + "</p>" +
+        "<p>Height: " + parseFloat(participant.Height).toFixed(2)+" cm</p>" +
+        "<p>Weight: " + parseFloat(participant.Weight).toFixed(2)+" kg</p>" +
+        "<p>Left leg: " + parseFloat(participant.Left_leg_length).toFixed(3)+" cm</p>" +
+        "<p>Right leg: " + parseFloat(participant.Right_leg_length).toFixed(3)+" cm</p>" ;
+
+} else {
+    document.getElementById("info-main-view-top").style.width = "100%";
+    document.getElementById("info-main-view-side").style.visibility = "hidden";
+}
 
 }
 
