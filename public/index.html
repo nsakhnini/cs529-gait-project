@@ -26,13 +26,39 @@
   <button class="btn my-btns" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
     Collaborate
   </button>
-  <button class="btn my-btns" type="button"  aria-label="Upload button">
+  <button id="upload-button" class="btn my-btns" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
     Upload
   </button>
   <button class="btn my-btns" type="button"  aria-label="Save and export button">
     Save/Export
   </button>
   </div>
+
+  <!-- Modal -->
+  <div id="upload-modal" class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload Work</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form name="uploadForm">
+            <div class="modal-body">
+              <input id="uploadInput" class="btn" type="file" name="myFiles" multiple>
+              selected files: <span id="fileNum">0</span>;
+              total size: <span id="fileSize">0</span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <input type="submit" class="btn" value="Upload" id="uploadSubmit">
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+
 </nav>
 
 <div class="row" style="height: 100%">
