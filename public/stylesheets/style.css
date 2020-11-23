@@ -65,7 +65,17 @@ canvas { display: block; }
   z-index: 1; /* TODO Solve this in HTML */
   visibility: hidden;
 }
-
+#axes-helper{
+  width: 0;
+  height: 0;
+  background-color: #010101ff;
+  padding: 0px;
+  margin: 12px;
+  position: absolute;
+  left: 0px;
+  top: 38%;
+  z-index: 2;
+}
 .tab {
   display: inline-block;
   margin-left: 40px;

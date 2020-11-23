@@ -16,6 +16,7 @@ function toggleFilterBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.925);
             document.getElementById("info-main-view-bottom").style.top = "90%";
+            document.getElementById("axes-helper").style.top = "81%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
@@ -23,6 +24,7 @@ function toggleFilterBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.925);
             document.getElementById("info-main-view-bottom").style.top = "90%";
+            document.getElementById("axes-helper").style.top = "81%";
         }
         //TODO: Remove filter bar content and short hand
         renderCollapsedPanelView();
@@ -40,6 +42,7 @@ function toggleFilterBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.5);
             document.getElementById("info-main-view-bottom").style.top = "47%";
+            document.getElementById("axes-helper").style.top = "38%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
@@ -47,6 +50,7 @@ function toggleFilterBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.5);
             document.getElementById("info-main-view-bottom").style.top = "47%";
+            document.getElementById("axes-helper").style.top = "38%";
         }
 
         //TODO: Remove short hand and add filter bar content
@@ -67,6 +71,7 @@ function toggle2DBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(10 * (window.innerWidth / 12), window.innerHeight * 0.925);
             document.getElementById("info-main-view-bottom").style.top = "90%";
+            document.getElementById("axes-helper").style.top = "81%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 8 * (window.innerWidth / 12) + "px";
@@ -74,6 +79,7 @@ function toggle2DBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.925);
             document.getElementById("info-main-view-bottom").style.top = "90%";
+            document.getElementById("axes-helper").style.top = "81%";
         }
         //TODO: Remove filter bar content and short hand
     }
@@ -88,6 +94,7 @@ function toggle2DBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(8 * (window.innerWidth / 12), window.innerHeight * 0.5);
             document.getElementById("info-main-view-bottom").style.top = "47%";
+            document.getElementById("axes-helper").style.top = "38%";
         }
         else{
             document.getElementById("scene-section").style.maxWidth = 6 * (window.innerWidth / 12) + "px";
@@ -95,6 +102,7 @@ function toggle2DBar() {
             s.camera.updateProjectionMatrix();
             s.renderer.setSize(6 * (window.innerWidth / 12), window.innerHeight * 0.5);
             document.getElementById("info-main-view-bottom").style.top = "47%";
+            document.getElementById("axes-helper").style.top = "38%";
         }
         //TODO: Remove short hand and add filter bar content
     }
