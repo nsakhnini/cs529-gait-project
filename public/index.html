@@ -23,7 +23,7 @@
   <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
 </div>
   <div class="col-3">
-  <button class="btn my-btns" type="button"  aria-label="collaboration button">
+  <button class="btn my-btns" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
     Collaborate
   </button>
   <button class="btn my-btns" type="button"  aria-label="Upload button">
@@ -181,6 +181,30 @@
 </div>
 
 <script type="module" src="javascripts/mainSceneMaker.js"></script>
+<script>
+  // TogetherJS configuration
+  TogetherJSConfig_siteName = "Eyes on the Gait"
+  TogetherJSConfig_toolName = "visualization" //change to hide the tool
+  TogetherJSConfig_suppressJoinConfirmation = true
+  TogetherJSConfig_suppressInvite = true
+  TogetherJSConfig_disableWebRTC = true
+  TogetherJSConfig_ignoreMessages = true
+  TogetherJSConfig_cloneClicks = true
+  TogetherJSConfig_dontShowClicks = true
+  TogetherJSConfig_enableShortcut = true
+  TogetherJSConfig_hubBase = "https://gait-collaboration-ws.glitch.me/";
+
+  //Disabling/enabling collaboration button.
+  const queryString = window.location.href
+  const isInitializer = (queryString.indexOf("/#&togetherjs=") === -1 )
+  if(isInitializer){
+    $("#collaboration-button").prop('disabled',false)    
+  }else{
+    $("#collaboration-button").prop('disabled',true)
+    $("#collaboration-button").css('color', 'lightgray');
+  }
+</script>
+<script src="https://togetherjs.com/togetherjs-min.js"></script>
 </body>
 
 </html>
