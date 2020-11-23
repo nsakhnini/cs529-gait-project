@@ -22,16 +22,24 @@
   <div class="col-5">
   <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
 </div>
-  <div class="col-3">
-  <button class="btn my-btns" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
+  <div class="row col-5">
+  <button class="btn my-btns col-2" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
     Collaborate
   </button>
-  <button id="upload-button" class="btn my-btns" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
+  <button id="upload-button" class="btn my-btns col-2" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
     Upload
   </button>
-  <button class="btn my-btns" type="button"  aria-label="Save and export button">
-    Save/Export
-  </button>
+    <div class="input-group col-3" id="save-dropdown">
+      <div class="input-group-prepend" id="save-btn-div">
+        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="save-dropdown-btn">Save/Export</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" id="save-png-button" href="#">PNG</a>
+          <a class="dropdown-item" id="save-csv-btn" href="#">CSV</a>
+          <div role="separator" class="dropdown-divider"></div>
+          <a class="dropdown-item" id="save-work-btn" href="#">Save Current Work</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Upload Modal -->

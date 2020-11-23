@@ -87,7 +87,31 @@ canvas { display: block; }
 .my-btns{
   background-color: #00adb5;
   color: #eeeeee;
+  margin-right: 0 ;
+  margin-left: 15px;
 }
+#save-dropdown-btn{
+  width: 12rem;
+  background-color: #00adb5;
+  color: #eeeeee;
+}
+
+#save-btn-div{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#save-dropdown{
+  width: 100%;
+  margin: 0;
+}
+
+.dropdown-menu a:hover{
+  background-color: #393e46;
+  color: #eeeeee;
+}
+
 #filter-sidebar{
   background-color: #393e46;
   transition: 0.5s;
@@ -435,3 +459,4 @@ div[slider] > input[type=range]::-ms-tooltip {
   background-color: #00adb5;
   color: #eeeeee;
 }
+
