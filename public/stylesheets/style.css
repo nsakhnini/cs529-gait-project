@@ -427,11 +427,11 @@ div[slider] > input[type=range]::-ms-tooltip {
   background-color: #eeeeee ;
   color: #222831 ;
 }
-#uploadInput{
+#upload-input{
   width: 100%;
   color: #010101;
 }
-#uploadSubmit{
+#upload-submit{
   background-color: #00adb5;
   color: #eeeeee;
 }

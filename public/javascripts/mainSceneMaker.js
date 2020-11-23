@@ -101,7 +101,7 @@ const animate = function () {
     }
 
     //Update Axes Helper
-    axesHelperCamera.position.sub(camera.position, scene.controls.target);
+    axesHelperCamera.position.subVectors(camera.position, scene.controls.target);
     axesHelperCamera.position.setLength(100);
     axesHelperCamera.lookAt(axesHelperScene.position);
 
