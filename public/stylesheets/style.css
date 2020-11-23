@@ -331,3 +331,95 @@ div[slider] > input[type=range]::-ms-tooltip {
   display: none;
   height: 74px;
 }
+
+#togetherjs-dock.togetherjs-dock-right {
+  background-color: #00adb5;
+}
+#togetherjs-dock {
+  background-color: #00adb5;
+}
+
+#togetherjs-share {
+  background-color: #222831;
+  color: #eeeeee;
+}
+
+#togetherjs-share header{
+  background-color: #00adb5;
+  color: #010101;
+}
+#togetherjs-share div input{
+  background-color: #393e46;
+  color: #eeeeee;
+}
+
+#togetherjs-share-button .togetherjs-active {
+  background-color: #393e46;
+}
+
+#togetherjs-chat{
+  background-color: #393e46;
+  color: #eeeeee;
+}
+
+#togetherjs-chat header{
+  background-color: #00adb5;
+}
+
+#togetherjs-chat-messages {
+  background-color: #393e46 !important;
+  color: #eeeeee !important;
+}
+
+#togetherjs-chat-input-box {
+  background-color: #393e46 !important;
+  color: #eeeeee !important;
+}
+
+#togetherjs-chat-input {
+  background-color: #393e46 !important;
+  color: #eeeeee !important;
+}
+
+#togetherjs-chat-notifier{
+  background-color: #222831;
+  border: 0;
+}
+
+.togetherjs-window header{
+  background-color: #00adb5 !important;
+}
+
+.togetherjs-chat-content{
+  color: #eeeeee !important;
+}
+.togetherjs-person-name-abbrev{
+  color: #eeeeee !important;
+}
+
+.togetherjs .togetherjs-subtitle {
+  background: #00adb5 !important;
+  border-bottom: 1px solid #00adb5;
+  color: #eeeeee !important;
+}
+
+.togetherjs-button.togetherjs-active{
+  background-color: #393e46;
+  color: #eeeeee;
+}
+#togetherjs-menu {
+  background-color: #222831 !important;
+  color: #eeeeee !important;
+}
+
+#togetherjs-confirm-end header{
+  background-color: #00adb5;
+}
+
+#togetherjs-walkthrough header{
+  background-color: #00adb5;
+}
+
+#togetherjs-walkthrough button{
+  background-color: #00adb5 !important;
+}
