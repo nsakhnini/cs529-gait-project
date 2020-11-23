@@ -47,6 +47,21 @@ scene.controls.keys = {
 document.getElementById("main-scene").appendChild( renderer.domElement );
 drawGrid();
 
+//Adding Custom Axes Helper
+let axesHelperRenderer = new THREE.WebGLRenderer({alpha: true});
+axesHelperRenderer.setSize( window.innerHeight *0.1, window.innerHeight *0.1 );
+document.getElementById('axes-helper').appendChild( axesHelperRenderer.domElement );
+
+let axesHelperScene = new THREE.Scene();
+axesHelperScene.background = null;
+
+let axesHelperCamera = new THREE.PerspectiveCamera( 50,  (window.innerHeight *0.1) /  (window.innerHeight *0.1), 1, 1000 );
+axesHelperCamera.up = camera.up;
+axesHelperScene.add( axesHelperCamera );
+
+const axesHelper = new THREE.AxesHelper(50);
+axesHelperScene.add(axesHelper);
+
 function onWindowResize() {
     camera.aspect = (window.innerWidth/2) /(window.innerHeight*0.5);
     camera.updateProjectionMatrix();
@@ -85,7 +100,13 @@ const animate = function () {
         });
     }
 
+    //Update Axes Helper
+    axesHelperCamera.position.sub(camera.position, scene.controls.target);
+    axesHelperCamera.position.setLength(100);
+    axesHelperCamera.lookAt(axesHelperScene.position);
+
     renderer.render( scene, camera );
+    axesHelperRenderer.render(axesHelperScene, axesHelperCamera);
 };
 
 function filterData() {
@@ -536,6 +557,7 @@ function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerW
     handleParticipantText(filterDemo[0]);
 }
 
+//Call this function whenever a participant is selected, pass demo row for participant
 function handleParticipantText(participant){
     var sideText = document.getElementById("info-main-view-side")
 if (isParticipantSelected) {
