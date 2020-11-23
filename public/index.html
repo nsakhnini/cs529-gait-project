@@ -34,10 +34,10 @@
   </button>
   </div>
 
-  <!-- Modal -->
-  <div id="upload-modal" class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <!-- Upload Modal -->
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true" >
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content" id="upload-modal">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Upload Work</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -46,9 +46,7 @@
         </div>
         <form name="uploadForm">
             <div class="modal-body">
-              <input id="uploadInput" class="btn" type="file" name="myFiles" multiple>
-              selected files: <span id="fileNum">0</span>;
-              total size: <span id="fileSize">0</span>
+              <input id="uploadInput" class="btn" type="file" name="myFiles" ></br>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

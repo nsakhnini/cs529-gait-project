@@ -423,3 +423,15 @@ div[slider] > input[type=range]::-ms-tooltip {
 #togetherjs-walkthrough button{
   background-color: #00adb5 !important;
 }
+#upload-modal{
+  background-color: #eeeeee ;
+  color: #222831 ;
+}
+#uploadInput{
+  width: 100%;
+  color: #010101;
+}
+#uploadSubmit{
+  background-color: #00adb5;
+  color: #eeeeee;
+}
