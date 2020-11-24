@@ -16,6 +16,7 @@
   <script type="module" src="javascripts/sideCollapseHandler.js"></script>
   <script src="javascripts/sideViewMaker.js"></script>
   <script src="javascripts/bottomViewMaker.js"></script>
+
 </head>
 
 <body>
@@ -23,17 +24,47 @@
   <div class="col-5">
   <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
 </div>
-  <div class="col-3">
-  <button class="btn my-btns" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
+  <div class="row col-5">
+  <button class="btn my-btns col-3" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
     Collaborate
   </button>
-  <button class="btn my-btns" type="button"  aria-label="Upload button">
+  <button id="upload-button" class="btn my-btns col-2" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
     Upload
   </button>
-  <button class="btn my-btns" type="button"  aria-label="Save and export button">
-    Save/Export
-  </button>
+    <div class="input-group col-3" id="save-dropdown">
+      <div class="input-group-prepend" id="save-btn-div">
+        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="save-dropdown-btn">Save/Export</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" id="save-png-button" href="#">PNG</a>
+          <a class="dropdown-item" id="save-csv-btn" href="#">CSV</a>
+          <div role="separator" class="dropdown-divider"></div>
+          <a class="dropdown-item" id="save-work-btn" href="#">Save Current Work</a>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Upload Modal -->
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="upload-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload Work</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <div class="modal-body">
+              <input id="upload-input" class="btn" type="file" name="savedWork" ></br>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="dismiss-btn">Close</button>
+              <button class="btn"  id="upload-submit">Upload</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
 </nav>
 
 <div class="row" style="height: 100%">
@@ -206,7 +237,10 @@
   }
 </script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js" integrity="sha512-OqcrADJLG261FZjar4Z6c4CfLqd861A3yPNMb+vRQ2JwzFT49WT4lozrh3bcKxHxtDTgNiqgYbEUStzvZQRfgQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/merge-images@2.0.0/dist/index.umd.min.js"></script>
+<script type="module" src="javascripts/filesHandler.js"></script>
 </body>
 
 </html>
