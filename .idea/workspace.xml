@@ -4,6 +4,7 @@
     <list default="true" id="087f7dde-4193-4526-a6a3-4df6565bbe6c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/javascripts/filesHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/filesHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +27,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.18.3" />
@@ -64,7 +66,7 @@
       <workItem from="1605988659825" duration="15978000" />
       <workItem from="1606018782962" duration="24000" />
       <workItem from="1606147782088" duration="3085000" />
-      <workItem from="1606152350603" duration="16058000" />
+      <workItem from="1606152350603" duration="18626000" />
     </task>
     <servers />
   </component>

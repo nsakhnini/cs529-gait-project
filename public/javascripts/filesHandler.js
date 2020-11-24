@@ -4,12 +4,11 @@ import * as sceneMaker from './mainSceneMaker.js';
 document.getElementById("save-png-button").addEventListener("click", function () {
     html2canvas(document.querySelector("body")).then(canvas => {
         canvas.toBlob(function(blob) {
-            saveAs(blob, "gaits.png");
+            saveAs(blob, "gaits_" + getCurrentDateString() + ".png");
         });
     });
-    sceneMaker.save3DSceneView();
+    sceneMaker.save3DSceneView(getCurrentDateString());
 });
-
 
 //Save csv files
 document.getElementById("save-csv-btn").addEventListener("click", function () {
@@ -38,7 +37,7 @@ document.getElementById("save-csv-btn").addEventListener("click", function () {
 
     var csvFile = document.createElement("a");
     csvFile.setAttribute("href", encodedUri);
-    csvFile.setAttribute("download", "selected_gait_data.csv");
+    csvFile.setAttribute("download", "selected_gait_data_" + getCurrentDateString() + ".csv");
     document.body.appendChild(csvFile);
     csvFile.click();
 
@@ -68,9 +67,76 @@ document.getElementById("save-csv-btn").addEventListener("click", function () {
     encodedUri = encodeURI(csvContent);
 
     csvFile.setAttribute("href", encodedUri);
-    csvFile.setAttribute("download", "selected_demographic_data.csv");
+    csvFile.setAttribute("download", "selected_demographic_data_" + getCurrentDateString() + ".csv");
     document.body.appendChild(csvFile);
     csvFile.click();
 });
 
+//Save custom settings
+//Add camera settings and participant selected
+document.getElementById("save-work-btn").addEventListener("click", function () {
+    let valuesUpper = document.getElementsByClassName("valueUpper");
+    let valuesLower = document.getElementsByClassName("valueLower");
+    let results = {filters: {
+            age: {
+                lowerValue: "",
+                upperValue: ""
+            },
+            height: {
+                lowerValue: "",
+                upperValue: ""
+            },
+            weight: {
+                lowerValue: "",
+                upperValue: ""
+            },
+            gender: {
+                isFemale: "",
+                isMale: ""
+            },
+            selectedParticipant: {
+                id: ""
+            },
+            speed: "",
+            trial: ""
+        }, cameraSettings: {
+        //TBD later
+        }};
+    for (let i=0; i<valuesUpper.length; i++ ){
+        switch (valuesUpper[i].parentElement.parentElement.parentElement.id) {
+            case "slider-age":
+                results.filters.age.lowerValue = valuesLower[i].innerText;
+                results.filters.age.upperValue = valuesUpper[i].innerText;
+                break;
+            case "slider-height":
+                results.filters.height.lowerValue = valuesLower[i].innerText;
+                results.filters.height.upperValue = valuesUpper[i].innerText;
+                break;
+            case "slider-weight":
+                results.filters.weight.lowerValue = valuesLower[i].innerText;
+                results.filters.weight.upperValue = valuesUpper[i].innerText;
+                break;
+            default: ;
+        }
+        results.filters.speed = sceneMaker.speed;
+        results.filters.trial = sceneMaker.trial;
+        results.filters.gender.isFemale =  document.getElementById("female-check").checked;
+        results.filters.gender.isMale =  document.getElementById("male-check").checked;
+    }
 
+    let jsonContent = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results));
+    var jsonFile = document.createElement("a");
+    jsonFile.setAttribute("href", jsonContent);
+    jsonFile.setAttribute("download", "gait_exploration_"+getCurrentDateString() + ".json");
+    jsonFile.click();
+});
+
+function getCurrentDateString(){
+    let today = new Date();
+    let day = String(today.getDate()).padStart(2, '0');
+    let month = String(today.getMonth() + 1).padStart(2, '0');
+    let year = today.getFullYear();
+
+    let strDate = month + "_" + day + "_" + year;
+    return strDate;
+}

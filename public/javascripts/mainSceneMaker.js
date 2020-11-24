@@ -10,7 +10,7 @@ let demo_data = []; //0 = woman  1 = man
 let participants = [];
 let participantsData = [];
 let markerByParticipant, timestamp = [];
-let trial = "1", speed = "1", offsetY = 0;
+export let trial = "1", speed = "1", offsetY = 0;
 export let filterDemo, filterMarkers;
 
 var leftAge, rightAge, minAge, maxAge;
@@ -567,7 +567,6 @@ function handleParticipantText(participant){
 if (isParticipantSelected) {
     document.getElementById("info-main-view-top").style.width = "77%";
     sideText.style.visibility = "visible";
-    console.log(participant);
     var gender;
     if (participant.Gender == "0.0")
         gender = "Female";
@@ -593,12 +592,12 @@ loadData();
 
 //================================================================================
 //Screenshot handlers
-export function save3DSceneView() {
+export function save3DSceneView(dateString) {
     var screenshotData;
 
     try {
         screenshotData = renderer.domElement.toDataURL("image/png");
-        downloadFile(screenshotData.replace("image/png",  "image/octet-stream"), "3DView.png");
+        downloadFile(screenshotData.replace("image/png",  "image/octet-stream"), "3DView_"+dateString+ ".png");
 
     } catch (err) {
         console.log(err);
