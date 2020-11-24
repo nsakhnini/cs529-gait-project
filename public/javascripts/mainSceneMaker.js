@@ -4,6 +4,7 @@ import * as THREE from 'https://unpkg.com/three@0.121.1/build/three.module.js';
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 
 import * as humanoidMaker from './humanoidMaker.js';
+import * as topViewMaker from './topViewHandler.js';
 
 let markers_data = [];
 let demo_data = []; //0 = woman  1 = man
@@ -517,6 +518,8 @@ function loadParticipantsDataToFilter(pList){
     selectedParticipantFootsteps = filterFootsteps.filter(function (d) {
         return (selectedParticipantDemo.ID == d.participantID) && (parseFloat(d.speed) == speed) && (parseFloat(d.trial)==trial);
     })[0];
+
+    topViewMaker.createTopView(selectedParticipantFootsteps, selectedParticipant);
 
     //Get min and max of subset variables
     for (let i = 0; i<filterDemo.length; i++){

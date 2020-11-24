@@ -131,7 +131,9 @@ canvas { display: block; }
   align-content: center;
   align-items: center;
 }
-
+#top-view{
+  background-color: #eeeeee;
+}
 #scene-section{
   background-color: #393e46;
   height: 100%;
