@@ -172,6 +172,44 @@ function weightSlider() {
     });
 }
 
+function updateData(){
+    participants = [];
+    participantsData = [];
+    var iterator = markerByParticipant.keys();
+    var pID = iterator.next().value;
+
+    while (typeof pID !==  "undefined"){
+        participants.push(pID);
+        participantsData.push(
+            markerByParticipant.get(pID).get(speed).get(trial)
+        );
+        pID = iterator.next().value;
+    }
+
+
+    //To be removed, just for testing, should be filtered
+    filterMarkers = participantsData;
+
+    for (let i = 0; i<participants.length; i++){
+        //Change offset at X for rows (in front of each other)
+        drawHumanDots(participantsData[i][0], offsetY);
+        offsetY = offsetY - 1000;
+    }
+
+    loadParticipantsDataToFilter(participants);
+
+    camera.position.x =-3238;
+    camera.position.y = 107.15;
+    camera.position.z =231.33;
+
+    camera.rotation.x = -1.72353
+    camera.rotation.y = -1.3973
+    camera.rotation.z = 2.99
+
+    handleMainViewText(20,50,1.4,1.9,45,200);
+    animate();
+}
+
 async function loadData(){
     var markers_file = "./data/markers.csv";
     var demo_file = "./data/demographics.csv";
@@ -194,6 +232,9 @@ async function loadData(){
         );
         pID = iterator.next().value;
     }
+    console.log(participants);
+    console.log(participantsData);
+
 
     //To be removed, just for testing, should be filtered
     filterMarkers = participantsData;
@@ -617,4 +658,26 @@ var downloadFile = function (strData, filename) {
     } else {
         location.replace(uri);
     }
+}
+
+//================================================================================
+//Upload file updating
+export function updateSpeed(newSpeed){
+    speed = newSpeed;
+}
+
+export function updateTrial(newTrial){
+    trial = newTrial;
+}
+
+export function updateScene(){
+    scene.children.forEach(function (d){
+        if(typeof d.userData.id !== 'undefined')
+            scene.remove(d);
+    });
+
+    updateData();
+
+    //Hard-coded, need to be fixed
+    scene.remove(scene.children[1]);
 }

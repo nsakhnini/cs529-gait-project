@@ -1,4 +1,15 @@
 import * as sceneMaker from './mainSceneMaker.js';
+import {updateScene} from "./mainSceneMaker.js";
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    console.log("test");
+    if (this.readyState == 4) {
+        if (this.responseText != "error") {
+            console.log(this.responseText);
+        }
+    }
+}
 
 //Save png files
 document.getElementById("save-png-button").addEventListener("click", function () {
@@ -140,3 +151,51 @@ function getCurrentDateString(){
     let strDate = month + "_" + day + "_" + year;
     return strDate;
 }
+
+document.getElementById("upload-submit").addEventListener("click", function () {
+    var xhttp = new XMLHttpRequest();
+    let valuesUpper = document.getElementsByClassName("valueUpper");
+    let valuesLower = document.getElementsByClassName("valueLower");
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.responseText != "error") {
+                var results = JSON.parse(this.responseText);
+                console.log(results);
+                for (let i=0; i<valuesUpper.length; i++ ){
+                    switch (valuesUpper[i].parentElement.parentElement.parentElement.id) {
+                        case "slider-age":
+                            valuesLower[i].innerText = results.filters.age.lowerValue ;
+                            valuesUpper[i].innerText = results.filters.age.upperValue ;
+                            sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
+                            sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
+                            break;
+                        case "slider-height":
+                            valuesLower[i].innerText = results.filters.height.lowerValue ;
+                            valuesUpper[i].innerText = results.filters.height.upperValue ;
+                            sliderLowerHandleController(document.getElementsByClassName("height-slider-input")[0]);
+                            sliderUpperHandleController(document.getElementsByClassName("height-slider-input")[1]);
+                            break;
+                        case "slider-weight":
+                            valuesLower[i].innerText = results.filters.weight.lowerValue ;
+                            valuesUpper[i].innerText = results.filters.weight.upperValue ;
+                            sliderLowerHandleController(document.getElementsByClassName("weight-slider-input")[0]);
+                            sliderUpperHandleController(document.getElementsByClassName("weight-slider-input")[1]);
+                            break;
+                        default: ;
+                    }
+                    sceneMaker.updateSpeed(results.filters.speed) ;
+                    sceneMaker.updateTrial(results.filters.trial) ;
+                    document.getElementById("female-check").checked = results.filters.gender.isFemale;
+                    document.getElementById("male-check").checked = results.filters.gender.isMale;
+
+                    updateScene();
+                }
+            }
+        }
+    }
+    xhttp.open("POST", "/uploadfile", true);
+    let formData = new FormData();
+    formData.append("savedWork",document.getElementById("upload-input").files[0]);
+    xhttp.send(formData);
+    document.getElementById("dismiss-btn").click();
+});

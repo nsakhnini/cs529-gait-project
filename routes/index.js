@@ -5,6 +5,7 @@ var http = require('http');
 var formidable = require('formidable');
 var multer = require("multer");
 var upload = multer({dest:"./public/images/uploads/"});
+var fileName;
 
 var router = express.Router();
 
@@ -13,18 +14,18 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.post("/fileupload", function(req, res, next){
+router.post("/uploadfile", function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
-    console.log(files);
-    var oldpath = files.savedWork.path;
-    var newpath = './file_processing/' + files.savedWork.name;
-    fs.rename(oldpath, newpath, function (err) {
-      if (err) throw err;
-      res.end();
+    fs.readFile(files.savedWork.path, function (err,data) {
+      if(err){
+        res.status(404).send("error");
+      }
+      else{//Do more processing in the future
+        res.send(data);
+      }
     });
   });
-  res.redirect("/");
 });
 
 module.exports = router;
