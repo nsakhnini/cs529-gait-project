@@ -151,7 +151,7 @@ function heightSlider() {
     rightHeight = document.getElementsByClassName("height-slider-input")[1];
     const groupChildren = scene.children.filter(child => child.type === "Group")
     groupChildren.forEach(function (d) {
-        if (Math.floor(d.userData.height) >= parseInt(leftHeight.value) && Math.floor(d.userData.height) <= parseInt(rightHeight.value))
+        if (Math.floor(d.userData.height * 100) >= parseInt(leftHeight.value) && Math.floor(d.userData.height * 100) <= parseInt(rightHeight.value))
             d.visible = true;
         else {
             d.visible = false;
@@ -605,28 +605,29 @@ function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerW
 //Call this function whenever a participant is selected, pass demo row for participant
 function handleParticipantText(participant){
     var sideText = document.getElementById("info-main-view-side")
-if (isParticipantSelected) {
-    document.getElementById("info-main-view-top").style.width = "77%";
-    sideText.style.visibility = "visible";
-    var gender;
-    if (participant.Gender == "0.0")
-        gender = "Female";
-    else
-        gender = "Male";
 
-    sideText.innerHTML = "<p>P" + participant.ID +"</p>" +
-        "<p>Gender: " + gender + "</p>" +
-        "<p>Age: " + parseInt(participant.Age) + "</p>" +
-        "<p>Height: " + parseFloat(participant.Height).toFixed(2)+" cm</p>" +
-        "<p>Weight: " + parseFloat(participant.Weight).toFixed(2)+" kg</p>" +
-        "<p>Left leg: " + parseFloat(participant.Left_leg_length).toFixed(3)+" cm</p>" +
-        "<p>Right leg: " + parseFloat(participant.Right_leg_length).toFixed(3)+" cm</p>" ;
+    if (isParticipantSelected) {
+        document.getElementById("info-main-view-top").style.width = "77%";
+        sideText.style.visibility = "visible";
+        //console.log(participant);
+        var gender;
+        if (participant.Gender == "0.0")
+            gender = "Female";
+        else
+            gender = "Male";
 
-} else {
-    document.getElementById("info-main-view-top").style.width = "100%";
-    document.getElementById("info-main-view-side").style.visibility = "hidden";
-}
+        sideText.innerHTML = "<p>P" + participant.ID +"</p>" +
+            "<p>Gender: " + gender + "</p>" +
+            "<p>Age: " + parseInt(participant.Age) + "</p>" +
+            "<p>Height: " + parseFloat(participant.Height).toFixed(2)+" cm</p>" +
+            "<p>Weight: " + parseFloat(participant.Weight).toFixed(2)+" kg</p>" +
+            "<p>Left leg: " + parseFloat(participant.Left_leg_length).toFixed(3)+" cm</p>" +
+            "<p>Right leg: " + parseFloat(participant.Right_leg_length).toFixed(3)+" cm</p>" ;
 
+    } else {
+        document.getElementById("info-main-view-top").style.width = "100%";
+        document.getElementById("info-main-view-side").style.visibility = "hidden";
+    }
 }
 
 loadData();
