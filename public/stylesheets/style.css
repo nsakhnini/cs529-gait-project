@@ -124,6 +124,14 @@ canvas { display: block; }
   padding: 10px;
 }
 
+#participant-id{
+  margin-left: 15px;
+
+  text-align: center;
+  align-content: center;
+  align-items: center;
+}
+
 #scene-section{
   background-color: #393e46;
   height: 100%;

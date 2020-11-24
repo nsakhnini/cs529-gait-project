@@ -7,11 +7,12 @@ import * as humanoidMaker from './humanoidMaker.js';
 
 let markers_data = [];
 let demo_data = []; //0 = woman  1 = man
+let footsteps_data = [];
 let participants = [];
 let participantsData = [];
 let markerByParticipant, timestamp = [];
 export let trial = "1", speed = "1", offsetY = 0;
-export let filterDemo, filterMarkers;
+export let filterDemo, filterMarkers, filterFootsteps;
 
 var leftAge, rightAge, minAge, maxAge;
 var leftHeight, rightHeight, minH, maxH;
@@ -22,6 +23,7 @@ let quaternion = new THREE.Quaternion();
 let fromVector, toVector, fromP1, fromP2, toP1, toP2;
 
 let isParticipantSelected = false;
+export let selectedParticipant, selectedParticipantDemo, selectedParticipantFootsteps; //To be connected for direct manipulation participant selection
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x010101 );
@@ -213,6 +215,8 @@ function updateData(){
 async function loadData(){
     var markers_file = "./data/markers.csv";
     var demo_file = "./data/demographics.csv";
+    var footsteps_file = "./data/footsteps.csv";
+
 
     await  d3.csv(markers_file, function(d) {
         markers_data.push(d);
@@ -220,6 +224,10 @@ async function loadData(){
     await  d3.csv(demo_file, function(d) {
         demo_data.push(d);
     });
+    await  d3.csv(footsteps_file, function(d) {
+        footsteps_data.push(d);
+    });
+
     markerByParticipant = d3.group(markers_data, d => d.Participant, d=>d.Speed, d=>d.Trial);
     //First participant only
     var iterator = markerByParticipant.keys();
@@ -232,9 +240,6 @@ async function loadData(){
         );
         pID = iterator.next().value;
     }
-    console.log(participants);
-    console.log(participantsData);
-
 
     //To be removed, just for testing, should be filtered
     filterMarkers = participantsData;
@@ -502,6 +507,17 @@ function loadParticipantsDataToFilter(pList){
         return participants.indexOf(d.ID) >= 0
     });
 
+    //Subset footsteps data to current participant selection
+    filterFootsteps = footsteps_data.filter(function(d,i){
+        return participants.indexOf(d.participantID) >= 0
+    });
+
+    selectedParticipant = filterMarkers[0];
+    selectedParticipantDemo = filterDemo[0];
+    selectedParticipantFootsteps = filterFootsteps.filter(function (d) {
+        return (selectedParticipantDemo.ID == d.participantID) && (parseFloat(d.speed) == speed) && (parseFloat(d.trial)==trial);
+    })[0];
+
     //Get min and max of subset variables
     for (let i = 0; i<filterDemo.length; i++){
         //Age
@@ -609,7 +625,6 @@ function handleParticipantText(participant){
     if (isParticipantSelected) {
         document.getElementById("info-main-view-top").style.width = "77%";
         sideText.style.visibility = "visible";
-        //console.log(participant);
         var gender;
         if (participant.Gender == "0.0")
             gender = "Female";
