@@ -11,7 +11,7 @@ let participants = [];
 let participantsData = [];
 let markerByParticipant, timestamp = [];
 let trial = "1", speed = "1", offsetY = 0;
-let filterDemo, filterMarkers;
+export let filterDemo, filterMarkers;
 
 var leftAge, rightAge, minAge, maxAge;
 var leftHeight, rightHeight, minH, maxH;
@@ -29,7 +29,9 @@ scene.background = new THREE.Color( 0x010101 );
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
 camera.up.set(0, 0, 1);
 
-export const renderer = new THREE.WebGLRenderer();
+export const renderer = new THREE.WebGLRenderer({
+    preserveDrawingBuffer: true
+});
 renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 
 //Adding orbit controls to rotate , zoom and pan
@@ -193,6 +195,8 @@ async function loadData(){
         pID = iterator.next().value;
     }
 
+    //To be removed, just for testing, should be filtered
+    filterMarkers = participantsData;
 
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
@@ -586,3 +590,32 @@ if (isParticipantSelected) {
 }
 
 loadData();
+
+//================================================================================
+//Screenshot handlers
+export function save3DSceneView() {
+    var screenshotData;
+
+    try {
+        screenshotData = renderer.domElement.toDataURL("image/png");
+        downloadFile(screenshotData.replace("image/png",  "image/octet-stream"), "3DView.png");
+
+    } catch (err) {
+        console.log(err);
+        return;
+    }
+
+}
+
+var downloadFile = function (strData, filename) {
+    var link = document.createElement('a');
+    if (typeof link.download === 'string') {
+        document.body.appendChild(link); //Firefox requires the link to be in the body
+        link.download = filename;
+        link.href = strData;
+        link.click();
+        document.body.removeChild(link); //remove the link when done
+    } else {
+        location.replace(uri);
+    }
+}

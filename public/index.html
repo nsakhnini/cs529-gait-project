@@ -14,7 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js" integrity="sha512-yNJzAsg5JyP91u+sLHlUDULMBd3hmEiVkYeeN1cQBKaLZ7EyT6oH2u5THNIRM2Fu6VKcZJv+F/QAp1h/qzy9Ow==" crossorigin="anonymous"></script>
   <script src="javascripts/slidersHandler.js"></script>
   <script type="module" src="javascripts/sideCollapseHandler.js"></script>
-
 </head>
 
 <body>
@@ -23,7 +22,7 @@
   <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
 </div>
   <div class="row col-5">
-  <button class="btn my-btns col-2" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
+  <button class="btn my-btns col-3" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
     Collaborate
   </button>
   <button id="upload-button" class="btn my-btns col-2" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
@@ -237,7 +236,10 @@
   }
 </script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js" integrity="sha512-OqcrADJLG261FZjar4Z6c4CfLqd861A3yPNMb+vRQ2JwzFT49WT4lozrh3bcKxHxtDTgNiqgYbEUStzvZQRfgQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/merge-images@2.0.0/dist/index.umd.min.js"></script>
+<script type="module" src="javascripts/filesHandler.js"></script>
 </body>
 
 </html>

@@ -10,3 +10,5 @@ https://eyesongait.herokuapp.com
 ## Sources
 1. Theme Color palette: https://colorhunt.co/palette/2763
 2. 3D main view color palette: https://coolors.co/000000-5cf64a-d138bf
+3. Html2canvas https://html2canvas.hertzen.com/
+4. Filesaver.js https://github.com/eligrey/FileSaver.js/
