@@ -15,7 +15,7 @@ https://gait-visualizer.s3.amazonaws.com/markers/markers_2014001_1_1.csv
 import {filterDemo, clearFilterDemo, filterMarkers, clearFilterMarkers, updateSpeed, updateTrial, updateScene, load3DView} from "./mainSceneMaker.js";
 
 //var markers_file = "https://cs529.s3.us-east-2.amazonaws.com/Markers_full.csv";
-var demo_file = "https://cs529.s3.us-east-2.amazonaws.com/Demographics.csv";
+var demo_file = "https://gait-visualizer.s3.amazonaws.com/Demographics.csv";
 var footsteps_file = "./data/footsteps.csv";
 
 let link, baseLink = "https://gait-visualizer.s3.amazonaws.com/markers/markers_";
@@ -24,9 +24,9 @@ var demoData = [];
 
 let minAge = 100, maxAge = 0, minHeight = 100, maxHeight = 0, minWeight = 100, maxWeight = 0;
 async function loadDemoData() {
-    await d3.csv(demo_file, function (d) {
-        demoData.push(d);
-    });
+   await d3.csv(demo_file, function (d){
+       demoData.push(d);
+   })
 
     demoData.forEach(function (d){
         d.Age = parseFloat(d.Age);
