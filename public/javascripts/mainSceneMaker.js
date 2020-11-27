@@ -121,7 +121,8 @@ function filterData() {
     //Needs to be removed or better way to hide
     const groupChildren = scene.children.filter(child => child.type === "Group")
     groupChildren.forEach(function (d) {
-        if (d.userData.gender == "0.0") {
+        console.log(d.userData.gender);
+        if (d.userData.gender == 0) {
             if(isFemaleChk)
                 d.visible = true;
             else
@@ -175,61 +176,8 @@ function weightSlider() {
     });
 }
 
-function updateData(){
-    participants = [];
-    participantsData = [];
-    var iterator = markerByParticipant.keys();
-    var pID = iterator.next().value;
-
-    while (typeof pID !==  "undefined"){
-        participants.push(pID);
-        participantsData.push(
-            markerByParticipant.get(pID).get(speed).get(trial)
-        );
-        pID = iterator.next().value;
-    }
-
-
-    //To be removed, just for testing, should be filtered
-    filterMarkers = participantsData;
-
-    for (let i = 0; i<participants.length; i++){
-        //Change offset at X for rows (in front of each other)
-        drawHumanDots(participantsData[i][0], offsetY);
-        offsetY = offsetY - 1000;
-    }
-
-    loadParticipantsDataToFilter(participants);
-
-    camera.position.x =-3238;
-    camera.position.y = 107.15;
-    camera.position.z =231.33;
-
-    camera.rotation.x = -1.72353
-    camera.rotation.y = -1.3973
-    camera.rotation.z = 2.99
-
-    handleMainViewText(20,50,1.4,1.9,45,200);
-    animate();
-}
-
-async function loadData(){
-    var markers_file = "./data/markers.csv";
-    var demo_file = "./data/demographics.csv";
-    var footsteps_file = "./data/footsteps.csv";
-
-
-    await  d3.csv(markers_file, function(d) {
-        markers_data.push(d);
-    });
-    await  d3.csv(demo_file, function(d) {
-        demo_data.push(d);
-    });
-    await  d3.csv(footsteps_file, function(d) {
-        footsteps_data.push(d);
-    });
-
-    markerByParticipant = d3.group(markers_data, d => d.Participant, d=>d.Speed, d=>d.Trial);
+export async function load3DView(){
+    markerByParticipant = d3.group(filterMarkers, d => d.Participant, d=>d.Speed, d=>d.Trial);
     //First participant only
     var iterator = markerByParticipant.keys();
     var pID = iterator.next().value;
@@ -237,13 +185,10 @@ async function loadData(){
     while (typeof pID !==  "undefined"){
         participants.push(pID);
         participantsData.push(
-            markerByParticipant.get(pID).get(speed).get(trial)
+            markerByParticipant.get(pID).get(String(speed)).get(String(trial))
         );
         pID = iterator.next().value;
     }
-
-    //To be removed, just for testing, should be filtered
-    filterMarkers = participantsData;
 
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
@@ -274,7 +219,7 @@ function drawGrid(){
 }
 
 function drawHumanDots(humanData, offset){
-    humanoidMaker.createHumanoid(humanData, offset, demo_data, scene);
+    humanoidMaker.createHumanoid(humanData, offset, filterDemo, scene);
 }
 
 function move(data, person){
@@ -504,9 +449,9 @@ function loadParticipantsDataToFilter(pList){
     minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
     
     //Subset demographic data to current participant selection
-    filterDemo = demo_data.filter(function(d,i){
+    /*filterDemo = demo_data.filter(function(d,i){
         return participants.indexOf(d.ID) >= 0
-    });
+    });*/
 
     //Subset footsteps data to current participant selection
     filterFootsteps = footsteps_data.filter(function(d,i){
@@ -629,7 +574,7 @@ function handleParticipantText(participant){
         document.getElementById("info-main-view-top").style.width = "77%";
         sideText.style.visibility = "visible";
         var gender;
-        if (participant.Gender == "0.0")
+        if (participant.Gender == 0)
             gender = "Female";
         else
             gender = "Male";
@@ -647,8 +592,6 @@ function handleParticipantText(participant){
         document.getElementById("info-main-view-side").style.visibility = "hidden";
     }
 }
-
-loadData();
 
 //================================================================================
 //Screenshot handlers
@@ -680,7 +623,7 @@ var downloadFile = function (strData, filename) {
 }
 
 //================================================================================
-//Upload file updating
+//Updating
 export function updateSpeed(newSpeed){
     speed = newSpeed;
 }
@@ -695,8 +638,16 @@ export function updateScene(){
             scene.remove(d);
     });
 
-    updateData();
+    load3DView();
 
     //Hard-coded, need to be fixed
     scene.remove(scene.children[1]);
+}
+
+export function clearFilterDemo(){
+    filterDemo = [];
+}
+
+export function clearFilterMarkers() {
+    filterMarkers = [];
 }
