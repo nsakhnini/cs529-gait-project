@@ -1,10 +1,12 @@
+import {participantsDirection} from "./mainSceneMaker.js";
+
 let participant, points = [];
 let humanoid, back, hips,
     leftUpperArm, leftLowerArm, leftFinger2, leftFinger5, leftShoulder,
     rightUpperArm, rightLowerArm, rightFinger5, rightFinger2, rightShoulder,
     leftUpperLeg, leftLowerLeg, leftToe1, leftToe2, leftToe5,
     rightUpperLeg, rightLowerLeg, rightToe1, rightToe2, rightToe5, midHip;
-let edgeGeometry, edge, updatedVector, direction;
+let edgeGeometry, edge, updatedVector, direction, pDirection;
 
 const factor = new THREE.Matrix4();
 
@@ -41,6 +43,8 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     let geometry = new THREE.SphereBufferGeometry(0.01, 0.01, 0.01);
     participant = new THREE.Group();
     points = [];
+    let myOffest = offset;
+    offset = 0;
 
     if(humanData.L_FCC_Z > humanData.R_FCC_Z){
         humanoidOffsetX = parseFloat(humanData.R_FCC_X);
@@ -51,6 +55,15 @@ export function createHumanoid(humanData, offset, demo_data, scene){
         humanoidOffsetX = parseFloat(humanData.L_FCC_X);
         humanoidOffsetY = parseFloat(humanData.L_FCC_Y);
         humanoidOffsetZ = parseFloat(humanData.L_FCC_Z);
+    }
+
+    pDirection = participantsDirection.filter(function (w) {
+        return w.id == humanData.Participant;
+    });
+    if (pDirection[0].dir == 853) {
+        humanoidOffsetX = -1 * humanoidOffsetX;
+        humanoidOffsetY = -1 * humanoidOffsetY;
+        humanoidOffsetZ = -1 * humanoidOffsetZ;
     }
 
 
@@ -108,7 +121,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.add(drawPoint(geometry, parseFloat(humanData.TV10_X) - humanoidOffsetX, parseInt(humanData.TV10_Y) + offset - humanoidOffsetY, parseFloat(humanData.TV10_Z) - humanoidOffsetZ,humanData.Participant, "TV10"));
 
     participant.userData = {id: humanData.Participant,
-        offset: offset,
+        offset: myOffest,
         gender: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Gender,
         age: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Age,
         weight: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Weight,
@@ -116,6 +129,10 @@ export function createHumanoid(humanData, offset, demo_data, scene){
 
 
     drawHumanoid(humanData,offset, participant);
+    participant.position.x = 0;
+    participant.position.y = myOffest;
+    participant.position.z = 0;
+
     scene.add(participant);
     console.log("done adding participant");
 }

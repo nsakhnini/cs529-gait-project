@@ -70,7 +70,7 @@ async function loadDemoData() {
     //     "2014053", "2014030", "2014008", "2014001", "2014006", "2014052"]
 
 
-    filterData(18, 85, -1,-1,-1,60,-1,2,3,["2015026", "2014051", "2015015"]);
+    filterData(18, 85, -1,-1,-1,60,-1,2,3,[]);
 }
 
 async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,

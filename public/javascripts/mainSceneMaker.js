@@ -12,7 +12,7 @@ let footsteps_data = [];
 let participants = [];
 let participantsData = [];
 let participantsTS = [];
-let participantsDirection = [];
+export let participantsDirection = [];
 let markerByParticipant, timestamp = [];
 export let trial = "1", speed = "1", offsetY = -200;
 export let filterDemo, filterMarkers, filterFootsteps;
@@ -98,19 +98,22 @@ const animate = function () {
                 } else {
                     timestamp[i] += 1;
                 }
-                //Hardcoded need to be fixed
+
                 direction = participantsDirection.filter(function (w) {
                     return w.id == d.userData.id;
                 });
                 if (direction[0].dir == 0) {
                     move(participantsData[i][timestamp[i]], d);
+                    // d.position.x = 0;
+                    // d.position.y = 0;
+                    // d.position.z = 1;
                 }
                 else {
                     move(participantsData[i][timestamp[i]], d);
                     d.rotation.z = Math.PI;
-                    //d.position.x = 0;
-                    //d.position.y = 0;
-                    //d.position.z = 1;
+                    // d.position.x = 0;
+                    // d.position.y = 0;
+                    // d.position.z = 1;
 
                 }
             }
@@ -225,7 +228,7 @@ export async function load3DView(){
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
         drawHumanDots(participantsData[i][0], offsetY);
-        offsetY = offsetY + 1000;
+        offsetY = offsetY +1000;
     }
 
     loadParticipantsDataToFilter(participants);
@@ -256,9 +259,26 @@ function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, filterDemo, scene);
 }
 
+let humanoidOffsetX, humanoidOffsetY, humanoidOffsetZ;
+
 function move(data, person){
     if (typeof data !== 'undefined'){
-        let offset = parseInt(person.userData.offset);
+        let offset =parseInt(person.userData.offset);
+
+        let myOffest = offset;
+        offset = 0;
+
+        if(data.L_FCC_Z > data.R_FCC_Z){
+            humanoidOffsetX = parseFloat(data.R_FCC_X);
+            humanoidOffsetY = parseFloat(data.R_FCC_Y);
+            humanoidOffsetZ = parseFloat(data.R_FCC_Z);
+        }
+        else{
+            humanoidOffsetX = parseFloat(data.L_FCC_X);
+            humanoidOffsetY = parseFloat(data.L_FCC_Y);
+            humanoidOffsetZ = parseFloat(data.L_FCC_Z);
+        }
+
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
             if (typeof joint === 'undefined'){
