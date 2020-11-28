@@ -11,8 +11,10 @@ let demo_data = []; //0 = woman  1 = man
 let footsteps_data = [];
 let participants = [];
 let participantsData = [];
+let participantsTS = [];
+let participantsDirection = [];
 let markerByParticipant, timestamp = [];
-export let trial = "1", speed = "1", offsetY = 0;
+export let trial = "1", speed = "1", offsetY = -200;
 export let filterDemo, filterMarkers, filterFootsteps;
 
 var leftAge, rightAge, minAge, maxAge;
@@ -75,6 +77,9 @@ function onWindowResize() {
 
 window.addEventListener('resize', onWindowResize)
 
+var maxTimestamp = 0, isMaxTimestamp = false;
+let direction;
+
 const animate = function () {
     requestAnimationFrame( animate );
 
@@ -94,12 +99,19 @@ const animate = function () {
                     timestamp[i] += 1;
                 }
                 //Hardcoded need to be fixed
-                if (i == 0)
+                direction = participantsDirection.filter(function (w) {
+                    return w.id == d.userData.id;
+                });
+                if (direction[0].dir == 0) {
                     move(participantsData[i][timestamp[i]], d);
+                }
                 else {
                     move(participantsData[i][timestamp[i]], d);
-                    d.rotation.z = -Math.PI;
-                    d.position.x = 800;
+                    d.rotation.z = Math.PI;
+                    //d.position.x = 0;
+                    //d.position.y = 0;
+                    //d.position.z = 1;
+
                 }
             }
         });
@@ -121,7 +133,6 @@ function filterData() {
     //Needs to be removed or better way to hide
     const groupChildren = scene.children.filter(child => child.type === "Group")
     groupChildren.forEach(function (d) {
-        console.log(d.userData.gender);
         if (d.userData.gender == 0) {
             if(isFemaleChk)
                 d.visible = true;
@@ -184,9 +195,30 @@ export async function load3DView(){
 
     while (typeof pID !==  "undefined"){
         participants.push(pID);
-        participantsData.push(
-            markerByParticipant.get(pID).get(String(speed)).get(String(trial))
-        );
+        try{
+            participantsData.push(
+                markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0")
+            );
+            participantsTS.push(markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0").length)
+
+            if (parseFloat(markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0")[0].L_FCC_X) > parseFloat(markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0")[0].L_FM2_X)) {
+                participantsDirection.push({id: pID, dir: 1});
+            } else if (parseFloat(markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0")[0].L_FCC_X) < parseFloat(markerByParticipant.get(pID).get(String(speed) + ".0").get(String(trial) + ".0")[0].L_FM2_X)) {
+                participantsDirection.push({id: pID, dir: 0});
+            }
+        } catch (e){
+            console.log(e);
+            participantsData.push(
+                markerByParticipant.get(pID).get(String(speed)).get(String(trial))
+            );
+            participantsTS.push(markerByParticipant.get(pID).get(String(speed) ).get(String(trial) ).length)
+
+            if (parseFloat(markerByParticipant.get(pID).get(String(speed) ).get(String(trial))[0].L_FCC_X) > parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
+                participantsDirection.push({id: pID, dir: 1});
+            } else if (parseFloat(markerByParticipant.get(pID).get(String(speed) ).get(String(trial))[0].L_FCC_X) < parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
+                participantsDirection.push({id: pID, dir: 0});
+            }
+        }
         pID = iterator.next().value;
     }
 
@@ -207,12 +239,14 @@ export async function load3DView(){
     camera.rotation.z = 2.99
 
     handleMainViewText(20,50,1.4,1.9,45,200);
+    console.log(scene);
     animate();
+    //console.log(scene);
 }
 
 function drawGrid(){
-    let size = 5000;
-    let division = 20;
+    let size = 500000;
+    let division = 2000;
     const gridHelper = new THREE.GridHelper( size, division );
     gridHelper.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) )
     scene.add( gridHelper );

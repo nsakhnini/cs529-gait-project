@@ -34,7 +34,9 @@ async function loadDemoData() {
         d.Weight = parseFloat(d.Weight);
         d["Right leg length"] = parseFloat(d["Right leg length"])
         d["Left leg length"] = parseFloat(d["Left leg length"])
-        d.Gender = parseFloat(d["Gender(0-woman 1-man)"])
+        d.Gender = parseFloat(d["Gender(0-woman 1-man)"]);
+        d.Left_leg_length = parseFloat(d["Left leg length"]).toFixed(2);
+        d.Right_leg_length = parseFloat(d["Right leg length"]).toFixed(2);
     });
 
     demoData.forEach(function (d) {
@@ -54,7 +56,21 @@ async function loadDemoData() {
         if(d.Weight > maxWeight)
             maxWeight = d.Weight;
     });
-    filterData(18, 62, -1,-1,-1,75,-1,1,2,[]);
+    //Error: 2015026  2014051
+    //Cute: 2015015
+
+    // ["2014011", "2014029", "2014016", "2014019", "2015017", "2015026",
+    //     "2015021", "2015043", "2015020", "2015027", "2015042", "2015005",
+    //     "2015002", "2015003", "2015004", "2015032", "2015035", "2014050",
+    //     "2014003", "2014004", "2014051", "2014034", "2014033", "2014005",
+    //     "2014002", "2014046", "2014048", "2014024", "2014015", "2014049",
+    //     "2014040", "2014013", "2014014", "2014022", "2014025", "2015013",
+    //     "2015041", "2015015", "2015030", "2015037", "2015007", "2014007",
+    //     "2014009", "2014031",
+    //     "2014053", "2014030", "2014008", "2014001", "2014006", "2014052"]
+
+
+    filterData(18, 85, -1,-1,-1,60,-1,2,3,["2015026", "2014051", "2015015"]);
 }
 
 async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
