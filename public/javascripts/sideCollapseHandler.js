@@ -118,13 +118,13 @@ function renderCollapsedPanelView(){
     document.getElementById("filter-btn").style.visibility = "hidden";
 
     document.getElementById("participant-list-readyonly").style.display = "block";
-    
+
     document.getElementById("filter-readonly").style.display = "block";
     document.getElementById("age-viewonly").style.display = "block";
     document.getElementById("height-readonly").style.display = "block";
     document.getElementById("weight-readonly").style.display = "block";
     document.getElementById("gender-readonly").style.display = "block";
-    
+
 }
 function renderExpandedPanelView(){
     document.getElementById("participant-list").style.display = "block";
@@ -150,13 +150,13 @@ function renderParticipantList(){
     //$(".list-group").each(function(){
     $(".participanList").each(function(){
         $(this).find("button").each(function(){
-          $(this).click(function(e){
-            e.preventDefault();
-            $(this).toggleClass("active");
-            //updateSelectedParticipants(this.id, this.className);
-          })
+            $(this).click(function(e){
+                e.preventDefault();
+                $(this).toggleClass("active");
+                //updateSelectedParticipants(this.id, this.className);
+            })
         })
-      })
+    })
 }
 
 //renderParticipantList();

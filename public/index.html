@@ -22,15 +22,15 @@
 <body>
 <nav class="navbar" id="header-navbar">
   <div class="col-5">
-  <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
-</div>
+    <a class="navbar-brand" href="#" style="font-size: x-large;">Eyes on the Gait</a>
+  </div>
   <div class="row col-5">
-  <button class="btn my-btns col-3" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
-    Collaborate
-  </button>
-  <button id="upload-button" class="btn my-btns col-2" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
-    Upload
-  </button>
+    <button class="btn my-btns col-3" type="button"  aria-label="collaboration button" id="collaboration-button" onclick="TogetherJS(this); return false;">
+      Collaborate
+    </button>
+    <button id="upload-button" class="btn my-btns col-2" type="button"  aria-label="Upload button" data-toggle="modal" data-target="#uploadModal">
+      Upload
+    </button>
     <div class="input-group col-3" id="save-dropdown">
       <div class="input-group-prepend" id="save-btn-div">
         <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="save-dropdown-btn">Save/Export</button>
@@ -54,14 +54,14 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-            <div class="modal-body">
-              <input id="upload-input" class="btn" type="file" name="savedWork" ></br>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="dismiss-btn">Close</button>
-              <button class="btn"  id="upload-submit">Upload</button>
-            </div>
+        <div class="modal-body">
+          <input id="upload-input" class="btn" type="file" name="savedWork" ></br>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="dismiss-btn">Close</button>
+          <button class="btn"  id="upload-submit">Upload</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -70,7 +70,7 @@
 <div class="row" style="height: 100%">
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
-    
+
     <h3 id="filter-title">Filter</h3>
     <div style="display: none;" id="filter-readonly">
       <img src="/images/filter-icon.png" alt="" height="40">
@@ -79,7 +79,7 @@
 
     <label for="slider-age">Age:</label>
     <div id="age-viewonly" class='viewonly-text'>
-        <span id="age-min">30</span> -  <span id="age-max">60</span>
+      <span id="age-min">30</span> -  <span id="age-max">60</span>
 
     </div>
     <div slider id="slider-age">
@@ -147,52 +147,52 @@
             <rect x="0" y="0" width="25" height="25" fill="pink"></rect>
             <text x="5" y="20" font-family="Verdana" font-size="20" fill="red">F</text>
           </g>
-            <g>
+          <g>
             <rect x="25" y="0" width="25" height="25" fill="skyblue"></rect>
             <text x="30" y="20" font-family="Verdana" font-size="20" fill="blue">M</text>
           </g>
         </svg>
-      
+
       </div>
-    <form id="gender-form">
-      <input type="checkbox" id="female-check" name="female" value="female" checked>
-      <label for="female-check"> Female</label> 
-      <input type="checkbox" id="male-check" name="male" value="male" checked>
-      <label for="male-check"> Male</label><br>
-    </form>
+      <form id="gender-form">
+        <input type="checkbox" id="female-check" name="female" value="female" checked>
+        <label for="female-check"> Female</label>
+        <input type="checkbox" id="male-check" name="male" value="male" checked>
+        <label for="male-check"> Male</label><br>
+      </form>
     </div>
-    
+
     <label for="participant-list">Participant(s)</label><br>
     <div class="participanList" style="display: none;">
-        <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>
-        <button id="b1" class="list-group-item">2014002: 24 y / 1.78 mt / 78.6 kg</button>
-        <button id="b1" class="list-group-item">2014003: 26 y / 1.65 mt / 68.4 kg</button>
-        <button id="b1" class="list-group-item">2014004: 32 y / 1.81 mt / 75.7 kg</button>
+      <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>
+      <button id="b1" class="list-group-item">2014002: 24 y / 1.78 mt / 78.6 kg</button>
+      <button id="b1" class="list-group-item">2014003: 26 y / 1.65 mt / 68.4 kg</button>
+      <button id="b1" class="list-group-item">2014004: 32 y / 1.81 mt / 75.7 kg</button>
     </div>
     <div id="participant-list-readyonly" style="display: none;">
-        <ul style="list-style-type:none; padding-left: 0px;">
-          <li>2014001</li>
-          <li>2014002</li>
-        </ul>
-        <br><br>
-      </div>
-      <select name="participants" id="participant-list" multiple>
-      </select><br><br>
-      <input type="button" id="filter-btn" class="map-btns" value="Filter">
-      
+      <ul style="list-style-type:none; padding-left: 0px;">
+        <li>2014001</li>
+        <li>2014002</li>
+      </ul>
+      <br><br>
+    </div>
+    <select name="participants" id="participant-list" multiple>
+    </select><br><br>
+    <input type="button" id="filter-btn" class="map-btns" value="Filter">
+
   </div>
   <div class="col-6" id="scene-section">
     <div class="row">
-    <div id="info-main-view-top">
+      <div id="info-main-view-top">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </div>
-    <div id="info-main-view-side">
+      </div>
+      <div id="info-main-view-side">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </div>
-    <div id="info-main-view-bottom">
+      </div>
+      <div id="info-main-view-bottom">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </div>
-    <div id="main-scene">
+      </div>
+      <div id="main-scene">
       </div>
       <div id="axes-helper"></div>
     </div>
@@ -243,7 +243,7 @@
   const queryString = window.location.href
   const isInitializer = (queryString.indexOf("/#&togetherjs=") === -1 )
   if(isInitializer){
-    $("#collaboration-button").prop('disabled',false)    
+    $("#collaboration-button").prop('disabled',false)
   }else{
     $("#collaboration-button").prop('disabled',true)
     $("#collaboration-button").css('color', 'lightgray');

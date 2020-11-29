@@ -134,7 +134,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.position.z = 0;
 
     scene.add(participant);
-    console.log("done adding participant");
+    //console.log("done adding participant");
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){
@@ -154,6 +154,7 @@ function drawPoint(geometry, x,y,z,pid, joint){
     mesh.userData = {id: pid, joint: joint};
     return mesh;
 }
+let partsArray;
 
 export function drawHumanoid(humanData , offset, participant){
 
@@ -161,12 +162,20 @@ export function drawHumanoid(humanData , offset, participant){
 
     humanoid = new THREE.Group();
 
+    //Handling 1 participant with no CV7 point data
+    if(isNaN(parseFloat(humanData.CV7_X))){
+        humanData.CV7_X = (parseFloat(humanData.R_SAE_X) + parseFloat(humanData.L_SAE_X))/2;
+        humanData.CV7_Y = (parseFloat(humanData.R_SAE_Y) + parseFloat(humanData.L_SAE_Y))/2;
+        humanData.CV7_Z = (parseFloat(humanData.R_SAE_Z) + parseFloat(humanData.L_SAE_Z))/2;
+    }
+
     hips = createCylinder(new THREE.Vector3(parseFloat(humanData.L_FTC_X) - humanoidOffsetX , parseFloat(humanData.L_FTC_Y) - humanoidOffsetY  + offset, parseFloat(humanData.L_FTC_Z) - humanoidOffsetZ ) ,
         new THREE.Vector3(parseFloat(humanData.R_FTC_X) - humanoidOffsetX , parseFloat(humanData.R_FTC_Y) - humanoidOffsetY  + offset, parseFloat(humanData.R_FTC_Z) - humanoidOffsetZ ));
 
     midHip = new THREE.Vector3(((parseFloat(humanData.L_FTC_X) - humanoidOffsetX  + parseFloat(humanData.R_FTC_X) - humanoidOffsetX )/2) ,
         ((parseFloat(humanData.L_FTC_Y) - humanoidOffsetY  + parseFloat(humanData.R_FTC_Y) - humanoidOffsetY )/2) + offset ,
         ((parseFloat(humanData.L_FTC_Z) - humanoidOffsetZ  + parseFloat(humanData.R_FTC_Z) - humanoidOffsetZ )/2));
+
     back = createCylinder(new THREE.Vector3(parseFloat(humanData.CV7_X) - humanoidOffsetX , parseFloat(humanData.CV7_Y) - humanoidOffsetY  + offset, parseFloat(humanData.CV7_Z) - humanoidOffsetZ ) ,
         midHip);
 
@@ -412,28 +421,17 @@ export function drawHumanoid(humanData , offset, participant){
         p2data: [parseFloat(humanData.L_FM5_X) - humanoidOffsetX, parseFloat(humanData.L_FM5_Y) - humanoidOffsetY, parseFloat(humanData.L_FM5_Z) - humanoidOffsetZ]
     };
 
-    humanoid.add(hips);
-    humanoid.add(back);
-    humanoid.add(rightShoulder);
-    humanoid.add(leftShoulder);
-    humanoid.add(rightUpperArm);
-    humanoid.add(rightLowerArm);
-    humanoid.add(rightFinger2);
-    humanoid.add(rightFinger5);
-    humanoid.add(rightUpperLeg);
-    humanoid.add(rightLowerLeg);
-    humanoid.add(rightToe1);
-    humanoid.add(rightToe2);
-    humanoid.add(rightToe5);
-    humanoid.add(leftUpperArm);
-    humanoid.add(leftLowerArm);
-    humanoid.add(leftFinger2);
-    humanoid.add(leftFinger5);
-    humanoid.add(leftUpperLeg);
-    humanoid.add(leftLowerLeg);
-    humanoid.add(leftToe1);
-    humanoid.add(leftToe2);
-    humanoid.add(leftToe5);
+    partsArray = [back, hips,
+        leftUpperArm, leftLowerArm, leftFinger2, leftFinger5, leftShoulder,
+        rightUpperArm, rightLowerArm, rightFinger5, rightFinger2, rightShoulder,
+        leftUpperLeg, leftLowerLeg, leftToe1, leftToe2, leftToe5,
+        rightUpperLeg, rightLowerLeg, rightToe1, rightToe2, rightToe5];
+
+    partsArray.forEach(function (d,i) {
+        if(!isNaN(d.position.x) && !isNaN(d.quaternion.x) && !isNaN(d.rotation.x)){
+            humanoid.add(d);
+        }
+    });
 
     participant.add(humanoid);
 }
