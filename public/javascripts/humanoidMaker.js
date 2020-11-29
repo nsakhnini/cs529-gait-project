@@ -46,7 +46,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     let myOffest = offset;
     offset = 0;
 
-    if(humanData.L_FCC_Z > humanData.R_FCC_Z){
+    if(parseFloat(humanData.L_FCC_Z) >= parseFloat(humanData.R_FCC_Z)){
         humanoidOffsetX = parseFloat(humanData.R_FCC_X);
         humanoidOffsetY = parseFloat(humanData.R_FCC_Y);
         humanoidOffsetZ = parseFloat(humanData.R_FCC_Z);
@@ -60,12 +60,6 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     pDirection = participantsDirection.filter(function (w) {
         return w.id == humanData.Participant;
     });
-    if (pDirection[0].dir == 853) {
-        humanoidOffsetX = -1 * humanoidOffsetX;
-        humanoidOffsetY = -1 * humanoidOffsetY;
-        humanoidOffsetZ = -1 * humanoidOffsetZ;
-    }
-
 
     participant.add(drawPoint(geometry, parseFloat(humanData.CV7_X) - humanoidOffsetX, parseInt(humanData.CV7_Y) + offset - humanoidOffsetY, parseFloat(humanData.CV7_Z) - humanoidOffsetZ,humanData.Participant, "CV7"));
     participant.add(drawPoint(geometry, parseFloat(humanData.L_FAL_X) - humanoidOffsetX, parseInt(humanData.L_FAL_Y) + offset - humanoidOffsetY, parseFloat(humanData.L_FAL_Z) - humanoidOffsetZ,humanData.Participant, "L_FAL"));
@@ -134,7 +128,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.position.z = 0;
 
     scene.add(participant);
-    //console.log("done adding participant");
+    console.log("done adding participant");
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){

@@ -7,8 +7,6 @@ import * as humanoidMaker from './humanoidMaker.js';
 import * as topViewMaker from './topViewHandler.js';
 import {filterData} from './dataHandler.js';
 
-let markers_data = [];
-let demo_data = []; //0 = woman  1 = man
 let footsteps_data = [];
 let participants = [];
 let participantsData = [];
@@ -16,7 +14,7 @@ let participantsState = [];
 let participantsTS = [];
 export let participantsDirection = [];
 let markerByParticipant, timestamp = [];
-export let trial = "1", speed = "1", offsetY = -200;
+export let trial = "1", speed = "1", offsetY = -250;
 export let filterDemo, filterMarkers, filterFootsteps;
 
 var leftAge, rightAge, minAge, maxAge;
@@ -27,7 +25,13 @@ let midPoint;
 let quaternion = new THREE.Quaternion();
 let fromVector, toVector, fromP1, fromP2, toP1, toP2;
 
+let direction;
+let frameDelayCounter = 0;
+
 let isParticipantSelected = false;
+let backX, backY, backZ;
+let printedDataPerson = false;
+
 export let selectedParticipant, selectedParticipantDemo, selectedParticipantFootsteps; //To be connected for direct manipulation participant selection
 
 const scene = new THREE.Scene();
@@ -79,10 +83,7 @@ function onWindowResize() {
 
 window.addEventListener('resize', onWindowResize)
 
-var maxTimestamp = 0, isMaxTimestamp = false;
-let direction;
-let frameCounter = 0;
-let frameDelayCounter = 0;
+
 const animate = function () {
 
     // limit frames number untill the animation is done (one loop)
@@ -101,41 +102,31 @@ const animate = function () {
         else{
             //disregard other children (Grid,etc) from the scene
             const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
-            // let stillRunning = false;
+
             groupChildren.forEach(function (d,i) {
                 if (i < participantsData.length) {
                     if (timestamp[i] >= participantsData[i].length) {
-                        // timestamp[i] = 0;
-                        participantsState[i] = "end";
+                        participantsState[i] = 0; //zero means ended
                     } else {
                         timestamp[i] += 1;
-                        // stillRunning = true;
                     }
 
                     direction = participantsDirection.filter(function (w) {
                         return w.id == d.userData.id;
                     });
-                    if(participantsState[i] !== "end"){
+                    if(participantsState[i] !== 0){
                         if ( direction[0].dir == 0) {
-
                             move(participantsData[i][timestamp[i]], d, i);
-                            // d.position.x = 0;
-                            // d.position.y = 0;
-                            // d.position.z = 1;
                         }
                         else {
-
                             move(participantsData[i][timestamp[i]], d, i);
                             d.rotation.z = Math.PI;
-                            // d.position.x = 0;
-                            // d.position.y = 0;
-                            // d.position.z = 1;
                         }
                     }
                 }
             });
-            if(!participantsState.includes('ready')){
-                participantsState = participantsState.map(value=>{return "ready"});
+            if(!participantsState.includes(1)){
+                participantsState = participantsState.map(value=>{return 1});
                 timestamp = timestamp.map(value=>{return 0});
                 frameDelayCounter = 0;
             }
@@ -222,7 +213,7 @@ export async function load3DView(){
         participantsData.push(
             markerByParticipant.get(pID).get(String(speed)).get(String(trial))
         );
-        participantsState.push('ready');
+        participantsState.push(1); //1 is ready to move
         participantsTS.push(markerByParticipant.get(pID).get(String(speed)).get(String(trial)).length)
         if (parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FCC_X) > parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
             participantsDirection.push({id: pID, dir: 1});
@@ -269,19 +260,17 @@ function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, filterDemo, scene);
 }
 
-let humanoidOffsetX, humanoidOffsetY, humanoidOffsetZ;
-let backX, backY, backZ;
-let printedDataPerson = false;
 function move(data, person, personIndex){
     if(!printedDataPerson){
         printedDataPerson = true;
     }
     if (typeof data !== 'undefined'){
-        // let offsetY =parseInt(person.userData.offset);
+        let offsetX,offsetY,offsetZ, frameZ;
+        frameZ = participantsData[personIndex][0];
 
-        let offsetY = participantsData[personIndex][0].L_FCC_Y;
-        let frameZ = participantsData[personIndex][0];
-        let offsetX = (frameZ.L_FCC_Z < frameZ.R_FCC_Z)?frameZ.L_FCC_X:frameZ.R_FCC_X;
+        offsetX = (parseFloat(frameZ.L_FCC_Z) <= parseFloat(frameZ.R_FCC_Z))? parseFloat(frameZ.L_FCC_X): parseFloat(frameZ.R_FCC_X);
+        offsetY = (parseFloat(frameZ.L_FCC_Z) <= parseFloat(frameZ.R_FCC_Z))? parseFloat(frameZ.L_FCC_Y): parseFloat(frameZ.R_FCC_Y);
+        offsetZ = (parseFloat(frameZ.L_FCC_Z) <= parseFloat(frameZ.R_FCC_Z))? parseFloat(frameZ.L_FCC_Z): parseFloat(frameZ.R_FCC_Z);
 
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
@@ -303,7 +292,7 @@ function move(data, person, personIndex){
                         }
                         v.position.x = ((backX + midPoint[0]) / 2) - offsetX;
                         v.position.y = ((backY + midPoint[1]) / 2) - offsetY;
-                        v.position.z = (backZ+ midPoint[2]) / 2;
+                        v.position.z = (backZ+ midPoint[2]) / 2 - offsetZ;
 
                         fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
                         fromP2 = new THREE.Vector3((parseFloat(v.userData.mid1data[0]) + parseFloat(v.userData.mid2data[0]))/2,
@@ -340,15 +329,15 @@ function move(data, person, personIndex){
 
                         v.position.x = ((parseFloat(data[v.userData.point1[0]]) + parseFloat(data[v.userData.point2[0]])) / 2) - offsetX;
                         v.position.y = ((parseFloat(data[v.userData.point1[1]]) + parseFloat(data[v.userData.point2[1]])) / 2) - offsetY;
-                        v.position.z = (parseFloat(data[v.userData.point1[2]]) + parseFloat(data[v.userData.point2[2]])) / 2;
+                        v.position.z = (parseFloat(data[v.userData.point1[2]]) + parseFloat(data[v.userData.point2[2]])) / 2 - offsetZ;
 
                         fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
                         fromP2 = new THREE.Vector3(parseFloat(v.userData.p2data[0]), parseFloat(v.userData.p2data[1]), parseFloat(v.userData.p2data[2]));
 
                         fromVector = new THREE.Vector3().subVectors(fromP2, fromP1);
 
-                        toP1 = new THREE.Vector3(parseFloat(data[v.userData.point1[0]]),parseFloat(data[v.userData.point1[1]]),parseFloat(data[v.userData.point1[2]]));
-                        toP2 = new THREE.Vector3(parseFloat(data[v.userData.point2[0]]),parseFloat(data[v.userData.point2[1]]),parseFloat(data[v.userData.point2[2]]));
+                        toP1 = new THREE.Vector3(parseFloat(data[v.userData.point1[0]]) - offsetX,parseFloat(data[v.userData.point1[1]]) - offsetY ,parseFloat(data[v.userData.point1[2]]) - offsetZ);
+                        toP2 = new THREE.Vector3(parseFloat(data[v.userData.point2[0]])-offsetX,parseFloat(data[v.userData.point2[1]])-offsetY,parseFloat(data[v.userData.point2[2]])-offsetZ);
 
                         v.userData.p1data = [toP1.x, toP1.y, toP1.z];
                         v.userData.p2data = [toP2.x, toP2.y, toP2.z];
@@ -530,11 +519,6 @@ function move(data, person, personIndex){
 
 function loadParticipantsDataToFilter(pList){
     minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
-
-    //Subset demographic data to current participant selection
-    /*filterDemo = demo_data.filter(function(d,i){
-        return participants.indexOf(d.ID) >= 0
-    });*/
 
     //Subset footsteps data to current participant selection
     filterFootsteps = footsteps_data.filter(function(d,i){
