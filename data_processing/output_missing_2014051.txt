@@ -1,0 +1,396 @@
+*** C:/Users/sakhn/Downloads/gait_data/data/2014051/2014051_C1_01.c3d ***
+Header information:
+  parameter_block: 2
+      point_count: 44
+     analog_count: 300
+      first_frame: 1
+       last_frame: 517
+          max_gap: 10
+     scale_factor: -0.10000000149011612
+       data_block: 11
+ analog_per_frame: 15
+       frame_rate: 100.0
+long_event_labels: 0
+      label_block: 0
+
+ANALOG.BITS: 2B []
+ANALOG.BITS = 12
+ANALOG.DESCRIPTIONS: 1180B [59, 20]
+ANALOG.DESCRIPTIONS[0] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[1] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[2] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[3] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[4] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[5] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[6] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[7] = b'EMG signal (V)                                             '
+ANALOG.DESCRIPTIONS[8] = b'Fake analog channel for virtual force platform component Fx'
+ANALOG.DESCRIPTIONS[9] = b'Fake analog channel for virtual force platform component Fy'
+ANALOG.DESCRIPTIONS[10] = b'Fake analog channel for virtual force platform component Fz'
+ANALOG.DESCRIPTIONS[11] = b'Fake analog channel for virtual force platform component Mx'
+ANALOG.DESCRIPTIONS[12] = b'Fake analog channel for virtual force platform component My'
+ANALOG.DESCRIPTIONS[13] = b'Fake analog channel for virtual force platform component Mz'
+ANALOG.DESCRIPTIONS[14] = b'Fake analog channel for virtual force platform component Fx'
+ANALOG.DESCRIPTIONS[15] = b'Fake analog channel for virtual force platform component Fy'
+ANALOG.DESCRIPTIONS[16] = b'Fake analog channel for virtual force platform component Fz'
+ANALOG.DESCRIPTIONS[17] = b'Fake analog channel for virtual force platform component Mx'
+ANALOG.DESCRIPTIONS[18] = b'Fake analog channel for virtual force platform component My'
+ANALOG.DESCRIPTIONS[19] = b'Fake analog channel for virtual force platform component Mz'
+ANALOG.FORMAT: 6B [6]
+ANALOG.FORMAT[0] = 83
+ANALOG.FORMAT[1] = 73
+ANALOG.FORMAT[2] = 71
+ANALOG.FORMAT[3] = 78
+ANALOG.FORMAT[4] = 69
+ANALOG.FORMAT[5] = 68
+ANALOG.GAIN: 40B [20]
+ANALOG.GAIN[0] = 0
+ANALOG.GAIN[1] = 0
+ANALOG.GAIN[2] = 0
+ANALOG.GAIN[3] = 0
+ANALOG.GAIN[4] = 0
+ANALOG.GAIN[5] = 0
+ANALOG.GAIN[6] = 0
+ANALOG.GAIN[7] = 0
+ANALOG.GAIN[8] = 1
+ANALOG.GAIN[9] = 1
+ANALOG.GAIN[10] = 1
+ANALOG.GAIN[11] = 1
+ANALOG.GAIN[12] = 1
+ANALOG.GAIN[13] = 1
+ANALOG.GAIN[14] = 1
+ANALOG.GAIN[15] = 1
+ANALOG.GAIN[16] = 1
+ANALOG.GAIN[17] = 1
+ANALOG.GAIN[18] = 1
+ANALOG.GAIN[19] = 1
+ANALOG.GEN_SCALE: 4B []
+ANALOG.GEN_SCALE = 1.0
+ANALOG.LABELS: 480B [24, 20]
+ANALOG.LABELS[0] = b'R_tibialis_anterior     '
+ANALOG.LABELS[1] = b'R_soleus                '
+ANALOG.LABELS[2] = b'R_gastrocnemius_medialis'
+ANALOG.LABELS[3] = b'R_vastus_medialis       '
+ANALOG.LABELS[4] = b'R_rectus_femoris        '
+ANALOG.LABELS[5] = b'R_semitendinosus        '
+ANALOG.LABELS[6] = b'R_gluteus_maximus       '
+ANALOG.LABELS[7] = b'R_gluteus_medius        '
+ANALOG.LABELS[8] = b'Fx1                     '
+ANALOG.LABELS[9] = b'Fy1                     '
+ANALOG.LABELS[10] = b'Fz1                     '
+ANALOG.LABELS[11] = b'Mx1                     '
+ANALOG.LABELS[12] = b'My1                     '
+ANALOG.LABELS[13] = b'Mz1                     '
+ANALOG.LABELS[14] = b'Fx2                     '
+ANALOG.LABELS[15] = b'Fy2                     '
+ANALOG.LABELS[16] = b'Fz2                     '
+ANALOG.LABELS[17] = b'Mx2                     '
+ANALOG.LABELS[18] = b'My2                     '
+ANALOG.LABELS[19] = b'Mz2                     '
+ANALOG.OFFSET: 40B [20]
+ANALOG.OFFSET[0] = 0
+ANALOG.OFFSET[1] = 0
+ANALOG.OFFSET[2] = 0
+ANALOG.OFFSET[3] = 0
+ANALOG.OFFSET[4] = 0
+ANALOG.OFFSET[5] = 0
+ANALOG.OFFSET[6] = 0
+ANALOG.OFFSET[7] = 0
+ANALOG.OFFSET[8] = 0
+ANALOG.OFFSET[9] = 0
+ANALOG.OFFSET[10] = 0
+ANALOG.OFFSET[11] = 0
+ANALOG.OFFSET[12] = 0
+ANALOG.OFFSET[13] = 0
+ANALOG.OFFSET[14] = 0
+ANALOG.OFFSET[15] = 0
+ANALOG.OFFSET[16] = 0
+ANALOG.OFFSET[17] = 0
+ANALOG.OFFSET[18] = 0
+ANALOG.OFFSET[19] = 0
+ANALOG.RATE: 4B []
+ANALOG.RATE = 1500.0
+ANALOG.SCALE: 80B [20]
+ANALOG.SCALE[0] = 1.0
+ANALOG.SCALE[1] = 1.0
+ANALOG.SCALE[2] = 1.0
+ANALOG.SCALE[3] = 1.0
+ANALOG.SCALE[4] = 1.0
+ANALOG.SCALE[5] = 1.0
+ANALOG.SCALE[6] = 1.0
+ANALOG.SCALE[7] = 1.0
+ANALOG.SCALE[8] = -0.0244140625
+ANALOG.SCALE[9] = -0.048828125
+ANALOG.SCALE[10] = -0.48828125
+ANALOG.SCALE[11] = -48.828125
+ANALOG.SCALE[12] = 24.4140625
+ANALOG.SCALE[13] = -5.4931640625
+ANALOG.SCALE[14] = -0.01220703125
+ANALOG.SCALE[15] = -0.042724609375
+ANALOG.SCALE[16] = -0.54931640625
+ANALOG.SCALE[17] = -122.0703125
+ANALOG.SCALE[18] = -48.828125
+ANALOG.SCALE[19] = -4.2724609375
+ANALOG.UNITS: 60B [3, 20]
+ANALOG.UNITS[0] = b'V  '
+ANALOG.UNITS[1] = b'V  '
+ANALOG.UNITS[2] = b'V  '
+ANALOG.UNITS[3] = b'V  '
+ANALOG.UNITS[4] = b'V  '
+ANALOG.UNITS[5] = b'V  '
+ANALOG.UNITS[6] = b'V  '
+ANALOG.UNITS[7] = b'V  '
+ANALOG.UNITS[8] = b'N  '
+ANALOG.UNITS[9] = b'N  '
+ANALOG.UNITS[10] = b'N  '
+ANALOG.UNITS[11] = b'Nmm'
+ANALOG.UNITS[12] = b'Nmm'
+ANALOG.UNITS[13] = b'Nmm'
+ANALOG.UNITS[14] = b'N  '
+ANALOG.UNITS[15] = b'N  '
+ANALOG.UNITS[16] = b'N  '
+ANALOG.UNITS[17] = b'Nmm'
+ANALOG.UNITS[18] = b'Nmm'
+ANALOG.UNITS[19] = b'Nmm'
+ANALOG.USED: 2B []
+ANALOG.USED = 20
+
+COPYRIGHT.LABELS: 44B [11, 4]
+COPYRIGHT.LABELS[0] = b'Authors    '
+COPYRIGHT.LABELS[1] = b'Institution'
+COPYRIGHT.LABELS[2] = b'Date       '
+COPYRIGHT.LABELS[3] = b'Licence    '
+COPYRIGHT.USED: 2B []
+COPYRIGHT.USED = 4
+COPYRIGHT.VALUES: 552B [138, 4]
+COPYRIGHT.VALUES[0] = b'Florent Moissenet and Celine Schreiber                                                                                                    '
+COPYRIGHT.VALUES[1] = b'Centre National de Reeducation Fonctionnelle et de Readaptation - Rehazenter (Luxembourg)                                                 '
+COPYRIGHT.VALUES[2] = b'2019                                                                                                                                      '
+COPYRIGHT.VALUES[3] = b'Copyright (C) 2019 Florent Moissenet and Celine Schreiber This program is free software: you can redistribute it and/or modify it under th'
+
+EVENT.CONTEXTS: 35B [5, 7]
+EVENT.CONTEXTS[0] = b'Right'
+EVENT.CONTEXTS[1] = b'Right'
+EVENT.CONTEXTS[2] = b'Left '
+EVENT.CONTEXTS[3] = b'Left '
+EVENT.CONTEXTS[4] = b'Left '
+EVENT.CONTEXTS[5] = b'Left '
+EVENT.CONTEXTS[6] = b'Right'
+EVENT.DESCRIPTIONS: 0B [0, 7]
+EVENT.DESCRIPTIONS[0] = ''
+EVENT.DESCRIPTIONS[1] = ''
+EVENT.DESCRIPTIONS[2] = ''
+EVENT.DESCRIPTIONS[3] = ''
+EVENT.DESCRIPTIONS[4] = ''
+EVENT.DESCRIPTIONS[5] = ''
+EVENT.DESCRIPTIONS[6] = ''
+EVENT.GENERIC_FLAGS: 7B [7]
+EVENT.GENERIC_FLAGS[0] = 0
+EVENT.GENERIC_FLAGS[1] = 0
+EVENT.GENERIC_FLAGS[2] = 0
+EVENT.GENERIC_FLAGS[3] = 0
+EVENT.GENERIC_FLAGS[4] = 0
+EVENT.GENERIC_FLAGS[5] = 0
+EVENT.GENERIC_FLAGS[6] = 0
+EVENT.ICON_IDS: 14B [7]
+EVENT.ICON_IDS[0] = 0
+EVENT.ICON_IDS[1] = 0
+EVENT.ICON_IDS[2] = 0
+EVENT.ICON_IDS[3] = 0
+EVENT.ICON_IDS[4] = 0
+EVENT.ICON_IDS[5] = 0
+EVENT.ICON_IDS[6] = 0
+EVENT.LABELS: 84B [12, 7]
+EVENT.LABELS[0] = b'Foot Strike1'
+EVENT.LABELS[1] = b'Foot Strike2'
+EVENT.LABELS[2] = b'Foot Off    '
+EVENT.LABELS[3] = b'Foot Off    '
+EVENT.LABELS[4] = b'Foot Strike1'
+EVENT.LABELS[5] = b'Foot Strike2'
+EVENT.LABELS[6] = b'Foot Off    '
+EVENT.SUBJECTS: 0B [0, 7]
+EVENT.SUBJECTS[0] = ''
+EVENT.SUBJECTS[1] = ''
+EVENT.SUBJECTS[2] = ''
+EVENT.SUBJECTS[3] = ''
+EVENT.SUBJECTS[4] = ''
+EVENT.SUBJECTS[5] = ''
+EVENT.SUBJECTS[6] = ''
+EVENT.TIMES: 56B [2, 7]
+EVENT.TIMES[0] = b'\x00\x00'
+EVENT.TIMES[1] = b'\x00\x00'
+EVENT.TIMES[2] = b'H\xcd'
+EVENT.TIMES[3] = b'L='
+EVENT.TIMES[4] = b'\x00\x00'
+EVENT.TIMES[5] = b'\x00\x00'
+EVENT.TIMES[6] = b'\xcd\xcc'
+EVENT.USED: 2B []
+EVENT.USED = 7
+
+EVENT_CONTEXT.COLOURS: 12B [6]
+EVENT_CONTEXT.COLOURS[0] = 0
+EVENT_CONTEXT.COLOURS[1] = 0
+EVENT_CONTEXT.COLOURS[2] = 0
+EVENT_CONTEXT.COLOURS[3] = 0
+EVENT_CONTEXT.COLOURS[4] = 0
+EVENT_CONTEXT.COLOURS[5] = 0
+EVENT_CONTEXT.DESCRIPTIONS: 0B [0, 2]
+EVENT_CONTEXT.DESCRIPTIONS[0] = ''
+EVENT_CONTEXT.DESCRIPTIONS[1] = ''
+EVENT_CONTEXT.ICON_IDS: 4B [2]
+EVENT_CONTEXT.ICON_IDS[0] = 0
+EVENT_CONTEXT.ICON_IDS[1] = 0
+EVENT_CONTEXT.LABELS: 10B [5, 2]
+EVENT_CONTEXT.LABELS[0] = b'Right'
+EVENT_CONTEXT.LABELS[1] = b'Left '
+EVENT_CONTEXT.USED: 2B []
+EVENT_CONTEXT.USED = 2
+
+FORCE_PLATFORM.CHANNEL: 24B [6, 2]
+FORCE_PLATFORM.CHANNEL[0] = b'\t\x00\n\x00\x0b\x00'
+FORCE_PLATFORM.CHANNEL[1] = b'\x0c\x00\r\x00\x0e\x00'
+FORCE_PLATFORM.CORNERS: 96B [3, 4, 2]
+FORCE_PLATFORM.ORIGIN: 24B [3, 2]
+FORCE_PLATFORM.ORIGIN[0] = b'\x00\x00\x00'
+FORCE_PLATFORM.ORIGIN[1] = b'\x00\x00\x00'
+FORCE_PLATFORM.TYPE: 4B [2, 1]
+FORCE_PLATFORM.TYPE[0] = b'\x02\x00'
+FORCE_PLATFORM.USED: 2B [1, 1]
+FORCE_PLATFORM.USED[0] = b'\x02'
+FORCE_PLATFORM.ZERO: 4B [2, 1]
+FORCE_PLATFORM.ZERO[0] = b'\x00\x00'
+
+POINT.DATA_START: 2B []
+POINT.DATA_START = 11
+POINT.DESCRIPTIONS: 176B [4, 44]
+POINT.DESCRIPTIONS[0] = b'    '
+POINT.DESCRIPTIONS[1] = b'    '
+POINT.DESCRIPTIONS[2] = b'    '
+POINT.DESCRIPTIONS[3] = b'    '
+POINT.DESCRIPTIONS[4] = b'    '
+POINT.DESCRIPTIONS[5] = b'    '
+POINT.DESCRIPTIONS[6] = b'    '
+POINT.DESCRIPTIONS[7] = b'    '
+POINT.DESCRIPTIONS[8] = b'    '
+POINT.DESCRIPTIONS[9] = b'    '
+POINT.DESCRIPTIONS[10] = b'    '
+POINT.DESCRIPTIONS[11] = b'    '
+POINT.DESCRIPTIONS[12] = b'    '
+POINT.DESCRIPTIONS[13] = b'    '
+POINT.DESCRIPTIONS[14] = b'    '
+POINT.DESCRIPTIONS[15] = b'    '
+POINT.DESCRIPTIONS[16] = b'    '
+POINT.DESCRIPTIONS[17] = b'    '
+POINT.DESCRIPTIONS[18] = b'    '
+POINT.DESCRIPTIONS[19] = b'    '
+POINT.DESCRIPTIONS[20] = b'    '
+POINT.DESCRIPTIONS[21] = b'    '
+POINT.DESCRIPTIONS[22] = b'    '
+POINT.DESCRIPTIONS[23] = b'    '
+POINT.DESCRIPTIONS[24] = b'    '
+POINT.DESCRIPTIONS[25] = b'    '
+POINT.DESCRIPTIONS[26] = b'    '
+POINT.DESCRIPTIONS[27] = b'    '
+POINT.DESCRIPTIONS[28] = b'    '
+POINT.DESCRIPTIONS[29] = b'    '
+POINT.DESCRIPTIONS[30] = b'    '
+POINT.DESCRIPTIONS[31] = b'    '
+POINT.DESCRIPTIONS[32] = b'    '
+POINT.DESCRIPTIONS[33] = b'    '
+POINT.DESCRIPTIONS[34] = b'    '
+POINT.DESCRIPTIONS[35] = b'    '
+POINT.DESCRIPTIONS[36] = b'    '
+POINT.DESCRIPTIONS[37] = b'    '
+POINT.DESCRIPTIONS[38] = b'    '
+POINT.DESCRIPTIONS[39] = b'    '
+POINT.DESCRIPTIONS[40] = b'    '
+POINT.DESCRIPTIONS[41] = b'    '
+POINT.DESCRIPTIONS[42] = b'    '
+POINT.DESCRIPTIONS[43] = b'    '
+POINT.FRAMES: 2B []
+POINT.FRAMES = 517
+POINT.LABELS: 220B [5, 44]
+POINT.LABELS[0] = b'L_IAS'
+POINT.LABELS[1] = b'L_IPS'
+POINT.LABELS[2] = b'R_IPS'
+POINT.LABELS[3] = b'R_IAS'
+POINT.LABELS[4] = b'L_FTC'
+POINT.LABELS[5] = b'L_FLE'
+POINT.LABELS[6] = b'L_FME'
+POINT.LABELS[7] = b'L_FAX'
+POINT.LABELS[8] = b'L_TTC'
+POINT.LABELS[9] = b'L_FAL'
+POINT.LABELS[10] = b'L_TAM'
+POINT.LABELS[11] = b'L_FCC'
+POINT.LABELS[12] = b'L_FM1'
+POINT.LABELS[13] = b'L_FM2'
+POINT.LABELS[14] = b'L_FM5'
+POINT.LABELS[15] = b'R_FTC'
+POINT.LABELS[16] = b'R_FLE'
+POINT.LABELS[17] = b'R_FME'
+POINT.LABELS[18] = b'R_FAX'
+POINT.LABELS[19] = b'R_TTC'
+POINT.LABELS[20] = b'R_FAL'
+POINT.LABELS[21] = b'R_TAM'
+POINT.LABELS[22] = b'R_FCC'
+POINT.LABELS[23] = b'R_FM1'
+POINT.LABELS[24] = b'R_FM2'
+POINT.LABELS[25] = b'R_FM5'
+POINT.LABELS[26] = b'CV7  '
+POINT.LABELS[27] = b'TV10 '
+POINT.LABELS[28] = b'SXS  '
+POINT.LABELS[29] = b'SJN  '
+POINT.LABELS[30] = b'L_SAE'
+POINT.LABELS[31] = b'L_HLE'
+POINT.LABELS[32] = b'L_HME'
+POINT.LABELS[33] = b'L_RSP'
+POINT.LABELS[34] = b'L_UHE'
+POINT.LABELS[35] = b'L_HM2'
+POINT.LABELS[36] = b'L_HM5'
+POINT.LABELS[37] = b'R_SAE'
+POINT.LABELS[38] = b'R_HLE'
+POINT.LABELS[39] = b'R_HME'
+POINT.LABELS[40] = b'R_RSP'
+POINT.LABELS[41] = b'R_UHE'
+POINT.LABELS[42] = b'R_HM2'
+POINT.LABELS[43] = b'R_HM5'
+POINT.RATE: 4B []
+POINT.RATE = 100.0
+POINT.SCALE: 4B []
+POINT.SCALE = -0.10000000149011612
+POINT.UNITS: 2B [2]
+POINT.UNITS[0] = 109
+POINT.UNITS[1] = 109
+POINT.USED: 2B []
+POINT.USED = 44
+
+SUBJECT.LABELS: 66B [11, 6]
+SUBJECT.LABELS[0] = b'age        '
+SUBJECT.LABELS[1] = b'gender     '
+SUBJECT.LABELS[2] = b'weight     '
+SUBJECT.LABELS[3] = b'height     '
+SUBJECT.LABELS[4] = b'R_legLength'
+SUBJECT.LABELS[5] = b'L_legLength'
+SUBJECT.UNITS: 186B [31, 6]
+SUBJECT.UNITS[0] = b'years                          '
+SUBJECT.UNITS[1] = b'adimensioned (0: woman, 1: man)'
+SUBJECT.UNITS[2] = b'kg                             '
+SUBJECT.UNITS[3] = b'm                              '
+SUBJECT.UNITS[4] = b'm                              '
+SUBJECT.UNITS[5] = b'm                              '
+SUBJECT.USED: 2B []
+SUBJECT.USED = 6
+SUBJECT.VALUES: 24B [6]
+SUBJECT.VALUES[0] = 25.0
+SUBJECT.VALUES[1] = 1.0
+SUBJECT.VALUES[2] = 88.0
+SUBJECT.VALUES[3] = 1.909999966621399
+SUBJECT.VALUES[4] = 0.9196800589561462
+SUBJECT.VALUES[5] = 0.9152016639709473
+
+TRIAL.ACTUAL_END_FIELD: 4B [2]
+TRIAL.ACTUAL_END_FIELD[0] = 517
+TRIAL.ACTUAL_END_FIELD[1] = 0
+TRIAL.ACTUAL_START_FIELD: 4B [2]
+TRIAL.ACTUAL_START_FIELD[0] = 1
+TRIAL.ACTUAL_START_FIELD[1] = 0

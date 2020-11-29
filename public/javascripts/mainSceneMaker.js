@@ -5,14 +5,18 @@ import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitCo
 
 import * as humanoidMaker from './humanoidMaker.js';
 import * as topViewMaker from './topViewHandler.js';
+import {filterData} from './dataHandler.js';
 
 let markers_data = [];
 let demo_data = []; //0 = woman  1 = man
 let footsteps_data = [];
 let participants = [];
 let participantsData = [];
+let participantsState = [];
+let participantsTS = [];
+export let participantsDirection = [];
 let markerByParticipant, timestamp = [];
-export let trial = "1", speed = "1", offsetY = 0;
+export let trial = "1", speed = "1", offsetY = -200;
 export let filterDemo, filterMarkers, filterFootsteps;
 
 var leftAge, rightAge, minAge, maxAge;
@@ -29,7 +33,7 @@ export let selectedParticipant, selectedParticipantDemo, selectedParticipantFoot
 const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x010101 );
 
-export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 10000 );
+export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 100000 );
 camera.up.set(0, 0, 1);
 
 export const renderer = new THREE.WebGLRenderer({
@@ -40,8 +44,8 @@ renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 //Adding orbit controls to rotate , zoom and pan
 scene.controls = new OrbitControls(camera, renderer.domElement);
 scene.controls.mouseButtons = {
-     MIDDLE: THREE.MOUSE.DOLLY,
-     RIGHT: THREE.MOUSE.ROTATE
+    MIDDLE: THREE.MOUSE.DOLLY,
+    RIGHT: THREE.MOUSE.ROTATE
 }
 scene.controls.keys = {
     LEFT: 37, //left arrow
@@ -75,34 +79,67 @@ function onWindowResize() {
 
 window.addEventListener('resize', onWindowResize)
 
+var maxTimestamp = 0, isMaxTimestamp = false;
+let direction;
+let frameCounter = 0;
+let frameDelayCounter = 0;
 const animate = function () {
-    requestAnimationFrame( animate );
 
-    if (timestamp.length == 0){
-        for (var i = 0; i<scene.children.length; i++){
-            timestamp.push(0);
-        }
-    }
-    else{
-        //disregard other children (Grid,etc) from the scene
-        const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
-        groupChildren.forEach(function (d,i) {
-            if (i < participantsData.length) {
-                if (timestamp[i] >= participantsData[i].length) {
-                    timestamp[i] = 0;
-                } else {
-                    timestamp[i] += 1;
-                }
-                //Hardcoded need to be fixed
-                if (i == 0)
-                    move(participantsData[i][timestamp[i]], d);
-                else {
-                    move(participantsData[i][timestamp[i]], d);
-                    d.rotation.z = -Math.PI;
-                    d.position.x = 800;
-                }
+    // limit frames number untill the animation is done (one loop)
+    // if(frameCounter > 275) return;
+    // wait for the number of frames to starty the animation (add delay after every loop)
+
+    requestAnimationFrame( animate );
+    if(frameDelayCounter < 10){
+        frameDelayCounter++;
+    } else {
+        if (timestamp.length == 0){
+            for (var i = 0; i<scene.children.length; i++){
+                timestamp.push(0);
             }
-        });
+        }
+        else{
+            //disregard other children (Grid,etc) from the scene
+            const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
+            // let stillRunning = false;
+            groupChildren.forEach(function (d,i) {
+                if (i < participantsData.length) {
+                    if (timestamp[i] >= participantsData[i].length) {
+                        // timestamp[i] = 0;
+                        participantsState[i] = "end";
+                    } else {
+                        timestamp[i] += 1;
+                        // stillRunning = true;
+                    }
+
+                    direction = participantsDirection.filter(function (w) {
+                        return w.id == d.userData.id;
+                    });
+                    if(participantsState[i] !== "end"){
+                        if ( direction[0].dir == 0) {
+
+                            move(participantsData[i][timestamp[i]], d, i);
+                            // d.position.x = 0;
+                            // d.position.y = 0;
+                            // d.position.z = 1;
+                        }
+                        else {
+
+                            move(participantsData[i][timestamp[i]], d, i);
+                            d.rotation.z = Math.PI;
+                            // d.position.x = 0;
+                            // d.position.y = 0;
+                            // d.position.z = 1;
+                        }
+                    }
+                }
+            });
+            if(!participantsState.includes('ready')){
+                participantsState = participantsState.map(value=>{return "ready"});
+                timestamp = timestamp.map(value=>{return 0});
+                frameDelayCounter = 0;
+            }
+        }
     }
 
     //Update Axes Helper
@@ -114,14 +151,13 @@ const animate = function () {
     axesHelperRenderer.render(axesHelperScene, axesHelperCamera);
 };
 
-function filterData() {
+function localFilterData() {
     var isFemaleChk = document.getElementById("female-check").checked;
     var isMaleChk = document.getElementById("male-check").checked;
 
     //Needs to be removed or better way to hide
     const groupChildren = scene.children.filter(child => child.type === "Group")
     groupChildren.forEach(function (d) {
-        console.log(d.userData.gender);
         if (d.userData.gender == 0) {
             if(isFemaleChk)
                 d.visible = true;
@@ -178,22 +214,29 @@ function weightSlider() {
 
 export async function load3DView(){
     markerByParticipant = d3.group(filterMarkers, d => d.Participant, d=>d.Speed, d=>d.Trial);
-    //First participant only
     var iterator = markerByParticipant.keys();
     var pID = iterator.next().value;
 
-    while (typeof pID !==  "undefined"){
+    while (typeof pID !==  "undefined") {
         participants.push(pID);
         participantsData.push(
             markerByParticipant.get(pID).get(String(speed)).get(String(trial))
         );
+        participantsState.push('ready');
+        participantsTS.push(markerByParticipant.get(pID).get(String(speed)).get(String(trial)).length)
+        if (parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FCC_X) > parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
+            participantsDirection.push({id: pID, dir: 1});
+        } else if (parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FCC_X) < parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
+            participantsDirection.push({id: pID, dir: 0});
+        }
+
         pID = iterator.next().value;
     }
 
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
         drawHumanDots(participantsData[i][0], offsetY);
-        offsetY = offsetY + 1000;
+        offsetY = offsetY +1000;
     }
 
     loadParticipantsDataToFilter(participants);
@@ -207,11 +250,15 @@ export async function load3DView(){
     camera.rotation.z = 2.99
 
     handleMainViewText(20,50,1.4,1.9,45,200);
+    console.log(scene);
     animate();
+    scene.scale.x = 1;
+    scene.scale.y = 1;
+    scene.scale.z = 1;
 }
 
 function drawGrid(){
-    let size = 5000;
+    let size = 50000;
     let division = 20;
     const gridHelper = new THREE.GridHelper( size, division );
     gridHelper.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI / 180 ) )
@@ -222,9 +269,20 @@ function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, filterDemo, scene);
 }
 
-function move(data, person){
+let humanoidOffsetX, humanoidOffsetY, humanoidOffsetZ;
+let backX, backY, backZ;
+let printedDataPerson = false;
+function move(data, person, personIndex){
+    if(!printedDataPerson){
+        printedDataPerson = true;
+    }
     if (typeof data !== 'undefined'){
-        let offset = parseInt(person.userData.offset);
+        // let offsetY =parseInt(person.userData.offset);
+
+        let offsetY = participantsData[personIndex][0].L_FCC_Y;
+        let frameZ = participantsData[personIndex][0];
+        let offsetX = (frameZ.L_FCC_Z < frameZ.R_FCC_Z)?frameZ.L_FCC_X:frameZ.R_FCC_X;
+
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
             if (typeof joint === 'undefined'){
@@ -232,19 +290,29 @@ function move(data, person){
                     if (v.userData.part === "back"){
                         midPoint = [(parseFloat(data[v.userData.point2[0]]) + parseFloat(data[v.userData.point2[3]])) / 2 ,
                             ((parseFloat(data[v.userData.point2[1]]) + parseFloat(data[v.userData.point2[4]])) / 2) ,
-                                    (parseFloat(data[v.userData.point2[2]]) + parseFloat(data[v.userData.point2[5]])) / 2]    ;
-                        v.position.x = (parseFloat(data[v.userData.point1[0]]) + midPoint[0]) / 2;
-                        v.position.y = ((parseFloat(data[v.userData.point1[1]]) + midPoint[1]) / 2) + offset;
-                        v.position.z = (parseFloat(data[v.userData.point1[2]]) + midPoint[2]) / 2;
+                            (parseFloat(data[v.userData.point2[2]]) + parseFloat(data[v.userData.point2[5]])) / 2]    ;
+
+                        if(isNaN(parseFloat(data[v.userData.point1[0]]))){
+                            backX = (parseFloat(data.R_SAE_X) + parseFloat(data.L_SAE_X))/2;
+                            backY = (parseFloat(data.R_SAE_Y) + parseFloat(data.L_SAE_Y))/2;
+                            backZ = (parseFloat(data.R_SAE_Z) + parseFloat(data.L_SAE_Z))/2;
+                        }else{
+                            backX = parseFloat(data[v.userData.point1[0]]);
+                            backY = parseFloat(data[v.userData.point1[1]]);
+                            backZ = parseFloat(data[v.userData.point1[2]]);
+                        }
+                        v.position.x = ((backX + midPoint[0]) / 2) - offsetX;
+                        v.position.y = ((backY + midPoint[1]) / 2) - offsetY;
+                        v.position.z = (backZ+ midPoint[2]) / 2;
 
                         fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
                         fromP2 = new THREE.Vector3((parseFloat(v.userData.mid1data[0]) + parseFloat(v.userData.mid2data[0]))/2,
-                                                   (parseFloat(v.userData.mid1data[1]) + parseFloat(v.userData.mid2data[1]))/2,
-                                                   (parseFloat(v.userData.mid1data[2]) + parseFloat(v.userData.mid2data[2]))/2);
+                            (parseFloat(v.userData.mid1data[1]) + parseFloat(v.userData.mid2data[1]))/2,
+                            (parseFloat(v.userData.mid1data[2]) + parseFloat(v.userData.mid2data[2]))/2);
 
                         fromVector = new THREE.Vector3().subVectors(fromP2, fromP1);
 
-                        toP1 = new THREE.Vector3(parseFloat(data[v.userData.point1[0]]),parseFloat(data[v.userData.point1[1]]),parseFloat(data[v.userData.point1[2]]));
+                        toP1 = new THREE.Vector3(backX,backY,backZ);
                         toP2 = new THREE.Vector3(midPoint[0], midPoint[1], midPoint[2]);
 
                         v.userData.p1data = [toP1.x, toP1.y, toP1.z];
@@ -258,8 +326,20 @@ function move(data, person){
                         v.applyQuaternion(quaternion);
                     }
                     else{
-                        v.position.x = (parseFloat(data[v.userData.point1[0]]) + parseFloat(data[v.userData.point2[0]])) / 2;
-                        v.position.y = ((parseFloat(data[v.userData.point1[1]]) + parseFloat(data[v.userData.point2[1]])) / 2) + offset;
+                        //Handle shoulders for missing backpoints
+                        if(isNaN(parseFloat(data[v.userData.point1[0]]))){
+                            data[v.userData.point1[0]] = (parseFloat(data.R_SAE_X) + parseFloat(data.L_SAE_X))/2;
+                            data[v.userData.point1[1]] = (parseFloat(data.R_SAE_Y) + parseFloat(data.L_SAE_Y))/2;
+                            data[v.userData.point1[2]] = (parseFloat(data.R_SAE_Z) + parseFloat(data.L_SAE_Z))/2;
+                        }
+                        if(isNaN(parseFloat(data[v.userData.point2[0]]))){
+                            data[v.userData.point2[0]] = (parseFloat(data.R_SAE_X) + parseFloat(data.L_SAE_X))/2;
+                            data[v.userData.point2[1]] = (parseFloat(data.R_SAE_Y) + parseFloat(data.L_SAE_Y))/2;
+                            data[v.userData.point2[2]] = (parseFloat(data.R_SAE_Z) + parseFloat(data.L_SAE_Z))/2;
+                        }
+
+                        v.position.x = ((parseFloat(data[v.userData.point1[0]]) + parseFloat(data[v.userData.point2[0]])) / 2) - offsetX;
+                        v.position.y = ((parseFloat(data[v.userData.point1[1]]) + parseFloat(data[v.userData.point2[1]])) / 2) - offsetY;
                         v.position.z = (parseFloat(data[v.userData.point1[2]]) + parseFloat(data[v.userData.point2[2]])) / 2;
 
                         fromP1 = new THREE.Vector3(parseFloat(v.userData.p1data[0]), parseFloat(v.userData.p1data[1]), parseFloat(v.userData.p1data[2]));
@@ -281,162 +361,165 @@ function move(data, person){
                     }
                 })
             }
+            function setPointPosition(d,x,offsetX,y,offsetY,z,offsetZ){
+
+            }
             switch (joint) {
                 case "CV7":
-                    d.position.set(data.CV7_X, parseInt(data.CV7_Y) + offset, data.CV7_Z);
+                    d.position.set(parseFloat(data.CV7_X) - offsetX, parseInt(data.CV7_Y) - offsetY, data.CV7_Z);
                     break;
                 case "L_FAL":
-                    d.position.set(data.L_FAL_X, parseInt(data.L_FAL_Y) + offset, data.L_FAL_Z);
+                    d.position.set(parseFloat(data.L_FAL_X) - offsetX, parseInt(data.L_FAL_Y) - offsetY, data.L_FAL_Z);
                     break;
                 case "L_FAX":
-                    d.position.set(data.L_FAX_X, parseInt(data.L_FAX_Y) + offset, data.L_FAX_Z);
+                    d.position.set(parseFloat(data.L_FAX_X) - offsetX, parseInt(data.L_FAX_Y) - offsetY, data.L_FAX_Z);
                     break;
                 case "L_FCC":
-                    d.position.set(data.L_FCC_X, parseInt(data.L_FCC_Y) + offset, data.L_FCC_Z);
+                    d.position.set(parseFloat(data.L_FCC_X) - offsetX, parseInt(data.L_FCC_Y) - offsetY, data.L_FCC_Z);
                     break;
                 case "L_FLE":
-                    d.position.set(data.L_FLE_X, parseInt(data.L_FLE_Y) + offset, data.L_FLE_Z);
+                    d.position.set(parseFloat(data.L_FLE_X) - offsetX, parseInt(data.L_FLE_Y) - offsetY, data.L_FLE_Z);
                     break;
                 case "L_FM1":
-                    d.position.set(data.L_FM1_X, parseInt(data.L_FM1_Y) + offset, data.L_FM1_Z);
+                    d.position.set(parseFloat(data.L_FM1_X) - offsetX, parseInt(data.L_FM1_Y) - offsetY, data.L_FM1_Z);
                     break;
                 case "L_FM2":
-                    d.position.set(data.L_FM2_X, parseInt(data.L_FM2_Y) + offset, data.L_FM2_Z);
+                    d.position.set(parseFloat(data.L_FM2_X) - offsetX, parseInt(data.L_FM2_Y) - offsetY, data.L_FM2_Z);
                     break;
                 case "L_FM5":
-                    d.position.set(data.L_FM5_X, parseInt(data.L_FM5_Y) + offset, data.L_FM5_Z);
+                    d.position.set(parseFloat(data.L_FM5_X) - offsetX, parseInt(data.L_FM5_Y) - offsetY, data.L_FM5_Z);
                     break;
                 case "L_FME":
-                    d.position.set(data.L_FME_X, parseInt(data.L_FME_Y) + offset, data.L_FME_Z);
+                    d.position.set(parseFloat(data.L_FME_X) - offsetX, parseInt(data.L_FME_Y) - offsetY, data.L_FME_Z);
                     break;
                 case "L_FTC":
-                    d.position.set(data.L_FTC_X, parseInt(data.L_FTC_Y) + offset, data.L_FTC_Z);
+                    d.position.set(parseFloat(data.L_FTC_X) - offsetX, parseInt(data.L_FTC_Y) - offsetY, data.L_FTC_Z);
                     break;
                 case "L_HLE":
-                    d.position.set(data.L_HLE_X, parseInt(data.L_HLE_Y) + offset, data.L_HLE_Z);
+                    d.position.set(parseFloat(data.L_HLE_X) - offsetX, parseInt(data.L_HLE_Y) - offsetY, data.L_HLE_Z);
                     break;
                 case "L_HM2":
-                    d.position.set(data.L_HM2_X, parseInt(data.L_HM2_Y) + offset, data.L_HM2_Z);
+                    d.position.set(parseFloat(data.L_HM2_X) - offsetX, parseInt(data.L_HM2_Y) - offsetY, data.L_HM2_Z);
                     break;
                 case "L_HM5":
-                    d.position.set(data.L_HM5_X, parseInt(data.L_HM5_Y) + offset, data.L_HM5_Z);
+                    d.position.set(parseFloat(data.L_HM5_X) - offsetX, parseInt(data.L_HM5_Y) - offsetY, data.L_HM5_Z);
                     break;
                 case "L_HME":
-                    d.position.set(data.L_HME_X, parseInt(data.L_HME_Y) + offset, data.L_HME_Z);
+                    d.position.set(parseFloat(data.L_HME_X) - offsetX, parseInt(data.L_HME_Y) - offsetY, data.L_HME_Z);
                     break;
                 case "L_IAS":
-                    d.position.set(data.L_IAS_X, parseInt(data.L_IAS_Y) + offset, data.L_IAS_Z);
+                    d.position.set(parseFloat(data.L_IAS_X) - offsetX, parseInt(data.L_IAS_Y) - offsetY, data.L_IAS_Z);
                     break;
                 case "L_IPS":
-                    d.position.set(data.L_IPS_X, parseInt(data.L_IPS_Y) + offset, data.L_IPS_Z);
+                    d.position.set(parseFloat(data.L_IPS_X) - offsetX, parseInt(data.L_IPS_Y) - offsetY, data.L_IPS_Z);
                     break;
                 case "L_RSP":
-                    d.position.set(data.L_RSP_X, parseInt(data.L_RSP_Y) + offset, data.L_RSP_Z);
+                    d.position.set(parseFloat(data.L_RSP_X) - offsetX, parseInt(data.L_RSP_Y) - offsetY, data.L_RSP_Z);
                     break;
                 case "L_SAA":
-                    d.position.set(data.L_SAA_X, parseInt(data.L_SAA_Y) + offset, data.L_SAA_Z);
+                    d.position.set(parseFloat(data.L_SAA_X) - offsetX, parseInt(data.L_SAA_Y) - offsetY, data.L_SAA_Z);
                     break;
                 case "L_SAE":
-                    d.position.set(data.L_SAE_X, parseInt(data.L_SAE_Y) + offset, data.L_SAE_Z);
+                    d.position.set(parseFloat(data.L_SAE_X) - offsetX, parseInt(data.L_SAE_Y) - offsetY, data.L_SAE_Z);
                     break;
                 case "L_SIA":
-                    d.position.set(data.L_SIA_X, parseInt(data.L_SIA_Y) + offset, data.L_SIA_Z);
+                    d.position.set(parseFloat(data.L_SIA_X) - offsetX, parseInt(data.L_SIA_Y) - offsetY, data.L_SIA_Z);
                     break;
                 case "L_SRS":
-                    d.position.set(data.L_SRS_X, parseInt(data.L_SRS_Y) + offset, data.L_SRS_Z);
+                    d.position.set(parseFloat(data.L_SRS_X) - offsetX, parseInt(data.L_SRS_Y) - offsetY, data.L_SRS_Z);
                     break;
                 case "L_TAM":
-                    d.position.set(data.L_TAM_X, parseInt(data.L_TAM_Y) + offset, data.L_TAM_Z);
+                    d.position.set(parseFloat(data.L_TAM_X) - offsetX, parseInt(data.L_TAM_Y) - offsetY, data.L_TAM_Z);
                     break;
                 case "L_TTC":
-                    d.position.set(data.L_TTC_X, parseInt(data.L_TTC_Y) + offset, data.L_TTC_Z);
+                    d.position.set(parseFloat(data.L_TTC_X) - offsetX, parseInt(data.L_TTC_Y) - offsetY, data.L_TTC_Z);
                     break;
                 case "L_UHE":
-                    d.position.set(data.L_UHE_X, parseInt(data.L_UHE_Y) + offset, data.L_UHE_Z);
+                    d.position.set(parseFloat(data.L_UHE_X) - offsetX, parseInt(data.L_UHE_Y) - offsetY, data.L_UHE_Z);
                     break;
                 case "L_UOA":
-                    d.position.set(data.L_UOA_X, parseInt(data.L_UOA_Y) + offset, data.L_UOA_Z);
+                    d.position.set(parseFloat(data.L_UOA_X) - offsetX, parseInt(data.L_UOA_Y) - offsetY, data.L_UOA_Z);
                     break;
                 case "R_FAL":
-                    d.position.set(data.R_FAL_X, parseInt(data.R_FAL_Y) + offset, data.R_FAL_Z);
+                    d.position.set(parseFloat(data.R_FAL_X) - offsetX, parseInt(data.R_FAL_Y) - offsetY, data.R_FAL_Z);
                     break;
                 case "R_FAX":
-                    d.position.set(data.R_FAX_X, parseInt(data.R_FAX_Y) + offset, data.R_FAX_Z);
+                    d.position.set(parseFloat(data.R_FAX_X) - offsetX, parseInt(data.R_FAX_Y) - offsetY, data.R_FAX_Z);
                     break;
                 case "R_FCC":
-                    d.position.set(data.R_FCC_X, parseInt(data.R_FCC_Y) + offset, data.R_FCC_Z);
+                    d.position.set(parseFloat(data.R_FCC_X) - offsetX, parseInt(data.R_FCC_Y) - offsetY, data.R_FCC_Z);
                     break;
                 case "R_FLE":
-                    d.position.set(data.R_FLE_X, parseInt(data.R_FLE_Y) + offset, data.R_FLE_Z);
+                    d.position.set(parseFloat(data.R_FLE_X) - offsetX, parseInt(data.R_FLE_Y) - offsetY, data.R_FLE_Z);
                     break;
                 case "R_FM1":
-                    d.position.set(data.R_FM1_X, parseInt(data.R_FM1_Y) + offset, data.R_FM1_Z);
+                    d.position.set(parseFloat(data.R_FM1_X) - offsetX, parseInt(data.R_FM1_Y) - offsetY, data.R_FM1_Z);
                     break;
                 case "R_FM2":
-                    d.position.set(data.R_FM2_X, parseInt(data.R_FM2_Y) + offset, data.R_FM2_Z);
+                    d.position.set(parseFloat(data.R_FM2_X) - offsetX, parseInt(data.R_FM2_Y) - offsetY, data.R_FM2_Z);
                     break;
                 case "R_FM5":
-                    d.position.set(data.R_FM5_X, parseInt(data.R_FM5_Y) + offset, data.R_FM5_Z);
+                    d.position.set(parseFloat(data.R_FM5_X) - offsetX, parseInt(data.R_FM5_Y) - offsetY, data.R_FM5_Z);
                     break;
                 case "R_FME":
-                    d.position.set(data.R_FME_X, parseInt(data.R_FME_Y) + offset, data.R_FME_Z);
+                    d.position.set(parseFloat(data.R_FME_X) - offsetX, parseInt(data.R_FME_Y) - offsetY, data.R_FME_Z);
                     break;
                 case "R_FTC":
-                    d.position.set(data.R_FTC_X, parseInt(data.R_FTC_Y) + offset, data.R_FTC_Z);
+                    d.position.set(parseFloat(data.R_FTC_X) - offsetX, parseInt(data.R_FTC_Y) - offsetY, data.R_FTC_Z);
                     break;
                 case "R_HLE":
-                    d.position.set(data.R_HLE_X, parseInt(data.R_HLE_Y) + offset, data.R_HLE_Z);
+                    d.position.set(parseFloat(data.R_HLE_X) - offsetX, parseInt(data.R_HLE_Y) - offsetY, data.R_HLE_Z);
                     break;
                 case "R_HM2":
-                    d.position.set(data.R_HM2_X, parseInt(data.R_HM2_Y) + offset, data.R_HM2_Z);
+                    d.position.set(parseFloat(data.R_HM2_X) - offsetX, parseInt(data.R_HM2_Y) - offsetY, data.R_HM2_Z);
                     break;
                 case "R_HM5":
-                    d.position.set(data.R_HM5_X, parseInt(data.R_HM5_Y) + offset, data.R_HM5_Z);
+                    d.position.set(parseFloat(data.R_HM5_X) - offsetX, parseInt(data.R_HM5_Y) - offsetY, data.R_HM5_Z);
                     break;
                 case "R_HME":
-                    d.position.set(data.R_HME_X, parseInt(data.R_HME_Y) + offset, data.R_HME_Z);
+                    d.position.set(parseFloat(data.R_HME_X) - offsetX, parseInt(data.R_HME_Y) - offsetY, data.R_HME_Z);
                     break;
                 case "R_IAS":
-                    d.position.set(data.R_IAS_X, parseInt(data.R_IAS_Y) + offset, data.R_IAS_Z);
+                    d.position.set(parseFloat(data.R_IAS_X) - offsetX, parseInt(data.R_IAS_Y) - offsetY, data.R_IAS_Z);
                     break;
                 case "R_IPS":
-                    d.position.set(data.R_IPS_X, parseInt(data.R_IPS_Y) + offset, data.R_IPS_Z);
+                    d.position.set(parseFloat(data.R_IPS_X) - offsetX, parseInt(data.R_IPS_Y) - offsetY, data.R_IPS_Z);
                     break;
                 case "R_RSP":
-                    d.position.set(data.R_RSP_X, parseInt(data.R_RSP_Y) + offset, data.R_RSP_Z);
+                    d.position.set(parseFloat(data.R_RSP_X) - offsetX, parseInt(data.R_RSP_Y) - offsetY, data.R_RSP_Z);
                     break;
                 case "R_SAA":
-                    d.position.set(data.R_SAA_X, parseInt(data.R_SAA_Y) + offset, data.R_SAA_Z);
+                    d.position.set(parseFloat(data.R_SAA_X) - offsetX, parseInt(data.R_SAA_Y) - offsetY, data.R_SAA_Z);
                     break;
                 case "R_SAE":
-                    d.position.set(data.R_SAE_X, parseInt(data.R_SAE_Y) + offset, data.R_SAE_Z);
+                    d.position.set(parseFloat(data.R_SAE_X) - offsetX, parseInt(data.R_SAE_Y) - offsetY, data.R_SAE_Z);
                     break;
                 case "R_SIA":
-                    d.position.set(data.R_SIA_X, parseInt(data.R_SIA_Y) + offset, data.R_SIA_Z);
+                    d.position.set(parseFloat(data.R_SIA_X) - offsetX, parseInt(data.R_SIA_Y) - offsetY, data.R_SIA_Z);
                     break;
                 case "R_SRS":
-                    d.position.set(data.R_SRS_X, parseInt(data.R_SRS_Y) + offset, data.R_SRS_Z);
+                    d.position.set(parseFloat(data.R_SRS_X) - offsetX, parseInt(data.R_SRS_Y) - offsetY, data.R_SRS_Z);
                     break;
                 case "R_TAM":
-                    d.position.set(data.R_TAM_X, parseInt(data.R_TAM_Y) + offset, data.R_TAM_Z);
+                    d.position.set(parseFloat(data.R_TAM_X) - offsetX, parseInt(data.R_TAM_Y) - offsetY, data.R_TAM_Z);
                     break;
                 case "R_TTC":
-                    d.position.set(data.R_TTC_X, parseInt(data.R_TTC_Y) + offset, data.R_TTC_Z);
+                    d.position.set(parseFloat(data.R_TTC_X) - offsetX, parseInt(data.R_TTC_Y) - offsetY, data.R_TTC_Z);
                     break;
                 case "R_UHE":
-                    d.position.set(data.R_UHE_X, parseInt(data.R_UHE_Y) + offset, data.R_UHE_Z);
+                    d.position.set(parseFloat(data.R_UHE_X) - offsetX, parseInt(data.R_UHE_Y) - offsetY, data.R_UHE_Z);
                     break;
                 case "R_UOA":
-                    d.position.set(data.R_UOA_X, parseInt(data.R_UOA_Y) + offset, data.R_UOA_Z);
+                    d.position.set(parseFloat(data.R_UOA_X) - offsetX, parseInt(data.R_UOA_Y) - offsetY, data.R_UOA_Z);
                     break;
                 case "SJN":
-                    d.position.set(data.SJN_X, parseInt(data.SJN_Y) + offset, data.SJN_Z);
+                    d.position.set(parseFloat(data.SJN_X) - offsetX, parseInt(data.SJN_Y) - offsetY, data.SJN_Z);
                     break;
                 case "SXS":
-                    d.position.set(data.SXS_X, parseInt(data.SXS_Y) + offset, data.SXS_Z);
+                    d.position.set(parseFloat(data.SXS_X) - offsetX, parseInt(data.SXS_Y) - offsetY, data.SXS_Z);
                     break;
                 case "TV10":
-                    d.position.set(data.TV10_X, parseInt(data.TV10_Y) + offset, data.TV10_Z);
+                    d.position.set(parseFloat(data.TV10_X) - offsetX, parseInt(data.TV10_Y) - offsetY, data.TV10_Z);
                     break;
                 default:
                     ;
@@ -447,7 +530,7 @@ function move(data, person){
 
 function loadParticipantsDataToFilter(pList){
     minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
-    
+
     //Subset demographic data to current participant selection
     /*filterDemo = demo_data.filter(function(d,i){
         return participants.indexOf(d.ID) >= 0
@@ -538,7 +621,56 @@ function loadParticipantsDataToFilter(pList){
     document.getElementsByClassName("weight-slider-input")[1].addEventListener("click", weightSlider);
 
     //Update data when Filter button is clicked
-    document.getElementById("filter-btn").addEventListener("click", filterData);
+    document.getElementById("filter-btn").addEventListener("click", localFilterData);
+    document.getElementById("filter-btn").addEventListener("click", (ev)=>{
+        let gender = -1;
+        if(document.getElementById("female-check").checked){
+            gender = 0;
+        }
+        if(document.getElementById("male-check").checked){
+            gender = 1;
+            if(document.getElementById("female-check").checked){
+                gender = -1;
+            }
+        }
+        filterData(-1,-1,-1,-1,-1,-1,gender,-1,-1,[])
+            .then(()=>{
+                minAge = 100;
+                maxAge = 0
+                for (let i = 0; i<filterDemo.length; i++){
+                    //Age
+                    if(parseInt(filterDemo[i].Age) < minAge)
+                        minAge = parseInt(filterDemo[i].Age);
+                    if(parseInt(filterDemo[i].Age) > maxAge)
+                        maxAge = parseInt(filterDemo[i].Age);
+
+                    // //Height
+                    // if((parseFloat(filterDemo[i].Height).toFixed(2))*100 < minH)
+                    //     minH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2)) *100;
+                    // if((parseFloat(filterDemo[i].Height).toFixed(2))*100 > maxH)
+                    //     maxH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2))*100;
+
+                    // minH = parseInt(minH);
+                    // maxH = parseInt(maxH);
+
+                    // //Weight
+                    // if(parseFloat(filterDemo[i].Weight) < minW)
+                    //     minW = parseInt(filterDemo[i].Weight);
+                    // if(parseFloat(filterDemo[i].Weight) > maxW)
+                    //     maxW = parseInt(filterDemo[i].Weight);
+                }
+                leftAge = minAge, rightAge = maxAge;
+                document.getElementsByClassName("age-slider-input")[0].setAttribute("min", 10);
+                document.getElementsByClassName("age-slider-input")[1].setAttribute("min", 10);
+                document.getElementsByClassName("age-slider-input")[0].setAttribute("max", 80);
+                document.getElementsByClassName("age-slider-input")[1].setAttribute("max", 80);
+                document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge); // minAge +5
+                document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge); // maxAge -5
+
+                sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
+                sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
+            })
+    });
 
     //Load participant IDs to current selectors
     for(let i = 0; i< pList.length; i++) {
@@ -553,9 +685,9 @@ function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerW
     var bottomText = document.getElementById("info-main-view-bottom");
 
     topText.innerHTML = "<p>Speed: " + speed + "/5<span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
-                        + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
-                        lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
-                        lowerWeight + "-" + upperWeight +" kg</p>";
+        + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+        lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+        lowerWeight + "-" + upperWeight +" kg</p>";
     bottomText.innerHTML = "<p>Showing " + filterDemo.length + " participants</p>"
     //Make visible
     topText.style.visibility = "visible";
