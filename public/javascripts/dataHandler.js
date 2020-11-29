@@ -1,20 +1,12 @@
 /*
 Links:
-https://cs529.s3.us-east-2.amazonaws.com/EMG_full.csv
-https://cs529.s3.us-east-2.amazonaws.com/ForcePlate_full.csv
-https://cs529.s3.us-east-2.amazonaws.com/Markers_full.csv
-https://cs529.s3.us-east-2.amazonaws.com/Demographics.csv
-
 Updated Markers: note that markers_id_speed_trial
-empty files:
-https://gait-visualizer.s3.amazonaws.com/empty/markers_2014006_2_5.csv
 data files:
 https://gait-visualizer.s3.amazonaws.com/markers/markers_2014001_1_1.csv
  */
 
 import {filterDemo, clearFilterDemo, filterMarkers, clearFilterMarkers, updateSpeed, updateTrial, updateScene, load3DView} from "./mainSceneMaker.js";
 
-//var markers_file = "https://cs529.s3.us-east-2.amazonaws.com/Markers_full.csv";
 var demo_file = "https://gait-visualizer.s3.amazonaws.com/Demographics.csv";
 var footsteps_file = "./data/footsteps.csv";
 
@@ -56,8 +48,7 @@ async function loadDemoData() {
         if(d.Weight > maxWeight)
             maxWeight = d.Weight;
     });
-    //Error: 2015026  2014051
-    //Cute: 2015015
+    //Error: 2015026  2014051 2014030
 
     let dataList1 = ["2014011", "2014029", "2014016", "2014019", "2015017", "2015026",
         "2015021", "2015043", "2015020", "2015027", "2015042", "2015005",
@@ -69,9 +60,10 @@ async function loadDemoData() {
         "2014009", "2014031",
         "2014053", "2014030", "2014008", "2014001", "2014006", "2014052"]
 
-    var dataList = ["2015026", "2014030","2014051"]
+    var dataList = ["2015002", "2015027", "2015042", "2015005"
+        , "2015003", "2015004"]
 
-    filterData(18, 85, -1,-1,-1,60,-1,2,3,dataList1);
+    filterData(18, 85, -1,-1,-1,60,-1,5,1,dataList);
 }
 
 export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
