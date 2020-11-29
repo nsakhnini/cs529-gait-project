@@ -47,7 +47,9 @@ renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 
 //Adding orbit controls to rotate , zoom and pan
 scene.controls = new OrbitControls(camera, renderer.domElement);
+scene.controls.enableKeys = true;
 scene.controls.mouseButtons = {
+    LEFT:THREE.MOUSE.PAN,
     MIDDLE: THREE.MOUSE.DOLLY,
     RIGHT: THREE.MOUSE.ROTATE
 }
@@ -57,7 +59,47 @@ scene.controls.keys = {
     RIGHT: 39, // right arrow
     BOTTOM: 40 // down arrow
 }
-document.getElementById("main-scene").appendChild( renderer.domElement );
+let mainScene = document.getElementById("main-scene")
+    mainScene.appendChild( renderer.domElement );
+    mainScene.tabIndex = -1;
+let sceneKeyEvents = document.body;
+let movementVector = new THREE.Vector3();
+sceneKeyEvents.addEventListener("keydown",(ev)=>{
+    switch (ev.key) {
+        case 'ArrowUp':{
+            camera.getWorldDirection(movementVector);
+            movementVector.z = 0;
+            movementVector.multiplyScalar(50);
+            camera.position.add(movementVector );
+            break;
+        }
+        case 'ArrowDown':{
+            camera.getWorldDirection(movementVector);
+            movementVector.z = 0;
+            movementVector.multiplyScalar(-50);
+            camera.position.add(movementVector );
+            break;
+        }
+        case 'ArrowLeft':{
+            camera.getWorldDirection(movementVector);
+            let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
+            movementVector.z = 0;
+            movementVector.applyEuler(eulerRot);
+            movementVector.multiplyScalar(50);
+            camera.position.add( movementVector);
+            break;
+        }
+        case 'ArrowRight':{
+            camera.getWorldDirection(movementVector);
+            let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
+            movementVector.z = 0;
+            movementVector.applyEuler(eulerRot);
+            movementVector.multiplyScalar(-50);
+            camera.position.add(movementVector );
+            break;
+        }
+    }
+})
 drawGrid();
 
 //Adding Custom Axes Helper
@@ -559,12 +601,8 @@ function loadParticipantsDataToFilter(pList){
 
     //Update the Age slider
     leftAge = minAge, rightAge = maxAge;
-    document.getElementsByClassName("age-slider-input")[0].setAttribute("min", minAge);
-    document.getElementsByClassName("age-slider-input")[1].setAttribute("min", minAge);
-    document.getElementsByClassName("age-slider-input")[0].setAttribute("max", maxAge);
-    document.getElementsByClassName("age-slider-input")[1].setAttribute("max", maxAge);
-    document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge); // minAge +5
-    document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge); // maxAge -5
+    document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge);
+    document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge);
 
     sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
@@ -575,12 +613,8 @@ function loadParticipantsDataToFilter(pList){
     //Update the Height slider
     document.getElementsByClassName("height-slider-input")[0].setAttribute("step", 1);
     document.getElementsByClassName("height-slider-input")[1].setAttribute("step", 1);
-    document.getElementsByClassName("height-slider-input")[0].setAttribute("min", minH);
-    document.getElementsByClassName("height-slider-input")[1].setAttribute("min", minH);
-    document.getElementsByClassName("height-slider-input")[0].setAttribute("max", maxH);
-    document.getElementsByClassName("height-slider-input")[1].setAttribute("max", maxH);
-    document.getElementsByClassName("height-slider-input")[0].setAttribute("value", leftHeight ); // minH
-    document.getElementsByClassName("height-slider-input")[1].setAttribute("value", rightHeight ); // maxH
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("value", leftHeight );
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("value", rightHeight );
 
     sliderLowerHandleController(document.getElementsByClassName("height-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("height-slider-input")[1]);
@@ -589,12 +623,8 @@ function loadParticipantsDataToFilter(pList){
     document.getElementsByClassName("height-slider-input")[1].addEventListener("click", heightSlider);
 
     //Update the Weight slider
-    document.getElementsByClassName("weight-slider-input")[0].setAttribute("min", minW);
-    document.getElementsByClassName("weight-slider-input")[1].setAttribute("min", minW);
-    document.getElementsByClassName("weight-slider-input")[0].setAttribute("max", maxW);
-    document.getElementsByClassName("weight-slider-input")[1].setAttribute("max", maxW);
-    document.getElementsByClassName("weight-slider-input")[0].setAttribute("value", leftWeight); // minW +1
-    document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", rightWeight ); // maxW
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("value", leftWeight);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", rightWeight );
     document.getElementsByClassName("weight-slider-input")[0].setAttribute("step", 0.5);
     document.getElementsByClassName("weight-slider-input")[1].setAttribute("step", 0.5);
 
@@ -627,27 +657,8 @@ function loadParticipantsDataToFilter(pList){
                         minAge = parseInt(filterDemo[i].Age);
                     if(parseInt(filterDemo[i].Age) > maxAge)
                         maxAge = parseInt(filterDemo[i].Age);
-
-                    // //Height
-                    // if((parseFloat(filterDemo[i].Height).toFixed(2))*100 < minH)
-                    //     minH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2)) *100;
-                    // if((parseFloat(filterDemo[i].Height).toFixed(2))*100 > maxH)
-                    //     maxH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2))*100;
-
-                    // minH = parseInt(minH);
-                    // maxH = parseInt(maxH);
-
-                    // //Weight
-                    // if(parseFloat(filterDemo[i].Weight) < minW)
-                    //     minW = parseInt(filterDemo[i].Weight);
-                    // if(parseFloat(filterDemo[i].Weight) > maxW)
-                    //     maxW = parseInt(filterDemo[i].Weight);
                 }
                 leftAge = minAge, rightAge = maxAge;
-                document.getElementsByClassName("age-slider-input")[0].setAttribute("min", 10);
-                document.getElementsByClassName("age-slider-input")[1].setAttribute("min", 10);
-                document.getElementsByClassName("age-slider-input")[0].setAttribute("max", 80);
-                document.getElementsByClassName("age-slider-input")[1].setAttribute("max", 80);
                 document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge); // minAge +5
                 document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge); // maxAge -5
 
@@ -657,9 +668,9 @@ function loadParticipantsDataToFilter(pList){
     });
 
     //Load participant IDs to current selectors
-    for(let i = 0; i< pList.length; i++) {
-        document.querySelector("#participant-list").innerHTML += "\n<option value=\"" + pList[i] + "\">" + pList[i] + "</option>";
-    }
+    // for(let i = 0; i< pList.length; i++) {
+    //     document.querySelector("#participant-list").innerHTML += "\n<option value=\"" + pList[i] + "\">" + pList[i] + "</option>";
+    // }
 }
 
 //Call this function everytime the filter changes => filter demo changes
