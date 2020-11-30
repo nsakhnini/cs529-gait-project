@@ -147,6 +147,7 @@ const animate = function () {
             const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
 
             groupChildren.forEach(function (d,i) {
+
                 if (i < participantsData.length) {
                     if (timestamp[i] >= participantsData[i].length) {
                         participantsState[i] = 0; //zero means ended
@@ -164,6 +165,7 @@ const animate = function () {
                         else {
                             move(participantsData[i][timestamp[i]], d, i);
                             d.rotation.z = Math.PI;
+
                         }
                     }
                 }
@@ -331,6 +333,10 @@ function move(data, person, personIndex){
         offsetY = (parseFloat(frameZ.L_FCC_Z) <= parseFloat(frameZ.R_FCC_Z))? parseFloat(frameZ.L_FCC_Y): parseFloat(frameZ.R_FCC_Y);
         offsetZ = (parseFloat(frameZ.L_FCC_Z) <= parseFloat(frameZ.R_FCC_Z))? parseFloat(frameZ.L_FCC_Z): parseFloat(frameZ.R_FCC_Z);
 
+        direction = participantsDirection.filter(function (w) {
+            return w.id == person.userData.id;
+        });
+
         person.children.forEach(function (d) {
             let joint = d.userData.joint;
             if (typeof joint === 'undefined'){
@@ -409,8 +415,17 @@ function move(data, person, personIndex){
                     }
                 })
             }
-            function setPointPosition(d,x,offsetX,y,offsetY,z,offsetZ){
 
+            if (d.userData.isbbox == true) {
+                if ( direction[0].dir == 0) {
+                    console.log(d);
+                    d.update();
+                }
+                else {
+                    d.update();
+                    d.update();
+                    d.rotation.z = Math.PI;
+                }
             }
             switch (joint) {
                 case "CV7":
@@ -571,6 +586,18 @@ function move(data, person, personIndex){
                     break;
                 default:
                     ;
+            }
+        });
+
+        scene.children.forEach(function (d) {
+            if (d.userData.isbbox == true) {
+                if ( direction[0].dir == 0) {
+                    d.update();
+                }
+                else {
+                    d.update();
+                    d.rotation.z = Math.PI;
+                }
             }
         });
     }
@@ -763,7 +790,7 @@ function applyFilters(){
 
     let delCounter = 0;
     while(scene.children.length > delCounter ){
-        if(typeof scene.children[delCounter].userData.id !== 'undefined')
+        if(typeof scene.children[delCounter].userData.id !== 'undefined' || typeof scene.children[delCounter].userData.isbbox !== 'undefined')
             scene.remove(scene.children[delCounter]);
         else{
             delCounter += 1;
@@ -772,7 +799,6 @@ function applyFilters(){
 
     filterData(ageLower,ageUpper,heightLower,heightUpper,weightLower,weightUpper,gender,speed,trial,[]);
 }
-
 
 //Update data when Filter button is clicked
 document.getElementById("filter-btn").addEventListener("click", applyFilters);
@@ -891,8 +917,6 @@ export function updateTrial(newTrial){
 }
 
 export function updateScene(){
-
-
     load3DView();
 }
 
