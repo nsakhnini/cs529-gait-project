@@ -1,4 +1,5 @@
 import {participantsDirection} from "./mainSceneMaker.js";
+import {scene} from "./mainSceneMaker.js";
 
 let participant, points = [];
 let humanoid, back, hips,
@@ -9,6 +10,7 @@ let humanoid, back, hips,
 let edgeGeometry, edge, updatedVector, direction, pDirection;
 
 const factor = new THREE.Matrix4();
+let bbox;
 
 factor.set(1,0,0,0,
     0,0,1,0,
@@ -129,6 +131,8 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.position.z = 0;
 
     scene.add(participant);
+
+
     console.log("done adding participant");
 }
 
@@ -424,6 +428,12 @@ export function drawHumanoid(humanData , offset, participant){
             humanoid.add(d);
         }
     });
+
+    bbox = new THREE.BoxHelper(humanoid, 0xffffff);
+    bbox.material.visible = false;
+    bbox.userData = {isbbox: true};
+    bbox.update();
+    scene.add(bbox);
 
     participant.add(humanoid);
 }
