@@ -31,10 +31,11 @@ let frameDelayCounter = 0;
 let isParticipantSelected = false;
 let backX, backY, backZ;
 let printedDataPerson = false;
+let animationRequest, loadingFirstTime = false;
 
 export let selectedParticipant, selectedParticipantDemo, selectedParticipantFootsteps; //To be connected for direct manipulation participant selection
 
-const scene = new THREE.Scene();
+export const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x010101 );
 
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 100000 );
@@ -65,6 +66,7 @@ let mainScene = document.getElementById("main-scene")
 let sceneKeyEvents = document.body;
 let movementVector = new THREE.Vector3();
 sceneKeyEvents.addEventListener("keydown",(ev)=>{
+    ev.preventDefault();
     switch (ev.key) {
         case 'ArrowUp':{
             camera.getWorldDirection(movementVector);
@@ -125,14 +127,13 @@ function onWindowResize() {
 
 window.addEventListener('resize', onWindowResize)
 
-
 const animate = function () {
 
     // limit frames number untill the animation is done (one loop)
     // if(frameCounter > 275) return;
     // wait for the number of frames to starty the animation (add delay after every loop)
 
-    requestAnimationFrame( animate );
+    animationRequest = requestAnimationFrame( animate );
     if(frameDelayCounter < 10){
         frameDelayCounter++;
     } else {
@@ -250,6 +251,17 @@ export async function load3DView(){
     var iterator = markerByParticipant.keys();
     var pID = iterator.next().value;
 
+    participants = [];
+    participantsData = [];
+    participantsState = [];
+    participantsTS =[];
+    participantsDirection = [];
+    timestamp = [];
+    offsetY = -250;
+    frameDelayCounter = 0;
+    isParticipantSelected = false;
+    printedDataPerson = false;
+
     while (typeof pID !==  "undefined") {
         participants.push(pID);
         participantsData.push(
@@ -274,16 +286,21 @@ export async function load3DView(){
 
     loadParticipantsDataToFilter(participants);
 
-    camera.position.x =-3238;
-    camera.position.y = 107.15;
-    camera.position.z =231.33;
+    if (loadingFirstTime == false) {
+        camera.position.x = -3238;
+        camera.position.y = 107.15;
+        camera.position.z = 231.33;
 
-    camera.rotation.x = -1.72353
-    camera.rotation.y = -1.3973
-    camera.rotation.z = 2.99
+        camera.rotation.x = -1.72353;
+        camera.rotation.y = -1.3973;
+        camera.rotation.z = 2.99;
+
+        loadingFirstTime = true;
+    }
 
     handleMainViewText(20,50,1.4,1.9,45,200);
     console.log(scene);
+    cancelAnimationFrame(animationRequest);
     animate();
     scene.scale.x = 1;
     scene.scale.y = 1;
@@ -559,22 +576,27 @@ function move(data, person, personIndex){
     }
 }
 
-function loadParticipantsDataToFilter(pList){
+function loadParticipantsDataToFilter(){
     minAge = 100, maxAge = 0, minW = 400, maxW =0, minH = 300, maxH = 0;
 
+    //Deprecated at Beta Release
     //Subset footsteps data to current participant selection
-    filterFootsteps = footsteps_data.filter(function(d,i){
-        return participants.indexOf(d.participantID) >= 0
-    });
+    // filterFootsteps = footsteps_data.filter(function(d,i){
+    //     return participants.indexOf(d.participantID) >= 0
+    // });
 
     selectedParticipant = filterMarkers[0];
     selectedParticipantDemo = filterDemo[0];
-    selectedParticipantFootsteps = filterFootsteps.filter(function (d) {
-        return (selectedParticipantDemo.ID == d.participantID) && (parseFloat(d.speed) == speed) && (parseFloat(d.trial)==trial);
-    })[0];
 
-    topViewMaker.createTopView(selectedParticipantFootsteps, selectedParticipant);
+    //Deprecated at Beta Release
+    // selectedParticipantFootsteps = filterFootsteps.filter(function (d) {
+    //     return (selectedParticipantDemo.ID == d.participantID) && (parseFloat(d.speed) == speed) && (parseFloat(d.trial)==trial);
+    // })[0];
 
+    //Deprecated at Beta Release
+    //topViewMaker.createTopView(selectedParticipantFootsteps, selectedParticipant);
+
+    let isFemale =false, isMale =false;
     //Get min and max of subset variables
     for (let i = 0; i<filterDemo.length; i++){
         //Age
@@ -589,84 +611,69 @@ function loadParticipantsDataToFilter(pList){
         if((parseFloat(filterDemo[i].Height).toFixed(2))*100 > maxH)
             maxH = parseFloat(parseFloat(filterDemo[i].Height).toFixed(2))*100;
 
-        minH = parseInt(minH);
-        maxH = parseInt(maxH);
-
         //Weight
         if(parseFloat(filterDemo[i].Weight) < minW)
             minW = parseInt(filterDemo[i].Weight);
         if(parseFloat(filterDemo[i].Weight) > maxW)
             maxW = parseInt(filterDemo[i].Weight);
+
+        if(filterDemo[i].Gender == 1)
+            isMale = true;
+        else
+            isFemale = true;
     }
 
     //Update the Age slider
-    leftAge = minAge, rightAge = maxAge;
-    document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge);
-    document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge);
+    document.getElementsByClassName("age-slider-input")[0].setAttribute("value", minAge);
+    document.getElementsByClassName("age-slider-input")[1].setAttribute("value", maxAge);
 
     sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
 
-    document.getElementsByClassName("age-slider-input")[0].addEventListener("click", ageSlider);
-    document.getElementsByClassName("age-slider-input")[1].addEventListener("click", ageSlider);
+    //Will only update at filter button click, very costly otherwise
+    //document.getElementsByClassName("age-slider-input")[0].addEventListener("click", ageSlider);
+    //document.getElementsByClassName("age-slider-input")[1].addEventListener("click", ageSlider);
 
     //Update the Height slider
     document.getElementsByClassName("height-slider-input")[0].setAttribute("step", 1);
     document.getElementsByClassName("height-slider-input")[1].setAttribute("step", 1);
-    document.getElementsByClassName("height-slider-input")[0].setAttribute("value", leftHeight );
-    document.getElementsByClassName("height-slider-input")[1].setAttribute("value", rightHeight );
+    document.getElementsByClassName("height-slider-input")[0].setAttribute("value", minH );
+    document.getElementsByClassName("height-slider-input")[1].setAttribute("value", maxH );
 
     sliderLowerHandleController(document.getElementsByClassName("height-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("height-slider-input")[1]);
 
-    document.getElementsByClassName("height-slider-input")[0].addEventListener("click", heightSlider);
-    document.getElementsByClassName("height-slider-input")[1].addEventListener("click", heightSlider);
+    //Will only update at filter button click, very costly otherwise
+    //document.getElementsByClassName("height-slider-input")[0].addEventListener("click", heightSlider);
+    //document.getElementsByClassName("height-slider-input")[1].addEventListener("click", heightSlider);
 
     //Update the Weight slider
-    document.getElementsByClassName("weight-slider-input")[0].setAttribute("value", leftWeight);
-    document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", rightWeight );
+    document.getElementsByClassName("weight-slider-input")[0].setAttribute("value", minW);
+    document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", maxW );
     document.getElementsByClassName("weight-slider-input")[0].setAttribute("step", 0.5);
     document.getElementsByClassName("weight-slider-input")[1].setAttribute("step", 0.5);
 
     sliderLowerHandleController(document.getElementsByClassName("weight-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("weight-slider-input")[1]);
 
-    document.getElementsByClassName("weight-slider-input")[0].addEventListener("click", weightSlider);
-    document.getElementsByClassName("weight-slider-input")[1].addEventListener("click", weightSlider);
+    //Will only update at filter button click, very costly otherwise
+    //document.getElementsByClassName("weight-slider-input")[0].addEventListener("click", weightSlider);
+    //document.getElementsByClassName("weight-slider-input")[1].addEventListener("click", weightSlider);
 
-    //Update data when Filter button is clicked
-    document.getElementById("filter-btn").addEventListener("click", localFilterData);
-    document.getElementById("filter-btn").addEventListener("click", (ev)=>{
-        let gender = -1;
-        if(document.getElementById("female-check").checked){
-            gender = 0;
-        }
-        if(document.getElementById("male-check").checked){
-            gender = 1;
-            if(document.getElementById("female-check").checked){
-                gender = -1;
-            }
-        }
-        filterData(-1,-1,-1,-1,-1,-1,gender,-1,-1,[])
-            .then(()=>{
-                minAge = 100;
-                maxAge = 0
-                for (let i = 0; i<filterDemo.length; i++){
-                    //Age
-                    if(parseInt(filterDemo[i].Age) < minAge)
-                        minAge = parseInt(filterDemo[i].Age);
-                    if(parseInt(filterDemo[i].Age) > maxAge)
-                        maxAge = parseInt(filterDemo[i].Age);
-                }
-                leftAge = minAge, rightAge = maxAge;
-                document.getElementsByClassName("age-slider-input")[0].setAttribute("value", leftAge); // minAge +5
-                document.getElementsByClassName("age-slider-input")[1].setAttribute("value", rightAge); // maxAge -5
+    //Update gender checkboxes
+    if(isFemale)
+        document.getElementById("female-check").checked = true;
+    else
+        document.getElementById("female-check").checked = false;
+    if(isMale)
+        document.getElementById("male-check").checked = true;
+    else
+        document.getElementById("male-check").checked = false;
 
-                sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
-                sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
-            })
-    });
+    document.getElementById("trial-val").value = trial;
+    document.getElementById("speed-val").value = speed;
 
+    //Deprecated
     //Load participant IDs to current selectors
     // for(let i = 0; i< pList.length; i++) {
     //     document.querySelector("#participant-list").innerHTML += "\n<option value=\"" + pList[i] + "\">" + pList[i] + "</option>";
@@ -721,6 +728,130 @@ function handleParticipantText(participant){
 }
 
 //================================================================================
+//Filter buttons
+
+function applyFilters(){
+    //cancelAnimationFrame(animationRequest);
+    let ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper =-1, weightLower = -1, weightUpper = -1, gender = -1;
+
+    //Get gender
+    if(document.getElementById("female-check").checked){
+        gender = 0;
+    }
+    if(document.getElementById("male-check").checked){
+        gender = 1;
+        if(document.getElementById("female-check").checked){
+            gender = -1;
+        }
+    }
+
+    //Get Age
+    ageLower = parseFloat(document.getElementsByClassName("age-slider-input")[0].value);
+    ageUpper = parseFloat(document.getElementsByClassName("age-slider-input")[1].value);
+
+    //Get Height
+    heightLower = parseFloat(document.getElementsByClassName("height-slider-input")[0].value)/100;
+    heightUpper = parseFloat(document.getElementsByClassName("height-slider-input")[1].value)/100;
+
+    //Get Weight
+    weightLower = parseFloat(document.getElementsByClassName("weight-slider-input")[0].value);
+    weightUpper = parseFloat(document.getElementsByClassName("weight-slider-input")[1].value);
+
+    //Get Speed
+    speed = parseInt(document.getElementById("speed-val").value);
+    trial = parseInt(document.getElementById("trial-val").value);
+
+    let delCounter = 0;
+    while(scene.children.length > delCounter ){
+        if(typeof scene.children[delCounter].userData.id !== 'undefined')
+            scene.remove(scene.children[delCounter]);
+        else{
+            delCounter += 1;
+        }
+    }
+
+    filterData(ageLower,ageUpper,heightLower,heightUpper,weightLower,weightUpper,gender,speed,trial,[]);
+}
+
+
+//Update data when Filter button is clicked
+document.getElementById("filter-btn").addEventListener("click", applyFilters);
+
+//Decrease speed
+document.getElementById("dec-speed-btn").addEventListener("click", (ev) => {
+    if(speed > 1){
+        if(speed <= 5)
+            document.getElementById("inc-speed-btn").disabled = false;
+
+        document.getElementById("dec-speed-btn").disabled = false;
+        speed -= 1;
+    }
+    if (speed == 1){
+        //Deactivate the button
+        document.getElementById("dec-speed-btn").disabled = true;
+        document.getElementById("inc-speed-btn").disabled = false;
+    }
+    document.getElementById("speed-val").value = speed;
+
+    applyFilters();
+});
+
+//Increase speed
+document.getElementById("inc-speed-btn").addEventListener("click", (ev) => {
+    if(speed < 5){
+        if(speed >= 1 )
+            document.getElementById("dec-speed-btn").disabled = false;
+
+        document.getElementById("inc-speed-btn").disabled = false;
+        speed += 1;
+    }
+    if (speed == 5){
+        //Deactivate the button
+        document.getElementById("inc-speed-btn").disabled = true;
+        document.getElementById("dec-speed-btn").disabled = false;
+    }
+    document.getElementById("speed-val").value = speed;
+
+    applyFilters();
+});
+
+//Decrease trial
+document.getElementById("dec-trial-btn").addEventListener("click", (ev) => {
+    if(trial > 1){
+        if(trial <= 5)
+            document.getElementById("inc-trial-btn").disabled = false;
+
+        document.getElementById("dec-trial-btn").disabled = false;
+        trial -= 1;
+    }
+    if (trial == 1){
+        //Deactivate the button
+        document.getElementById("dec-trial-btn").disabled = true;
+        document.getElementById("inc-trial-btn").disabled = false;
+    }
+    document.getElementById("trial-val").value = trial;
+    applyFilters();
+});
+
+//Increase trial
+document.getElementById("inc-trial-btn").addEventListener("click", (ev) => {
+    if(trial < 5){
+        if(trial >= 1 )
+            document.getElementById("dec-trial-btn").disabled = false;
+
+        document.getElementById("inc-trial-btn").disabled = false;
+        trial += 1;
+    }
+    if (trial == 5){
+        //Deactivate the button
+        document.getElementById("inc-trial-btn").disabled = true;
+        document.getElementById("dec-trial-btn").disabled = false;
+    }
+    document.getElementById("trial-val").value = trial;
+    applyFilters();
+});
+
+//================================================================================
 //Screenshot handlers
 export function save3DSceneView(dateString) {
     var screenshotData;
@@ -760,15 +891,9 @@ export function updateTrial(newTrial){
 }
 
 export function updateScene(){
-    scene.children.forEach(function (d){
-        if(typeof d.userData.id !== 'undefined')
-            scene.remove(d);
-    });
+
 
     load3DView();
-
-    //Hard-coded, need to be fixed
-    scene.remove(scene.children[1]);
 }
 
 export function clearFilterDemo(){
