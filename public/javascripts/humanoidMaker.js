@@ -114,6 +114,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.add(drawPoint(geometry, parseFloat(humanData.SXS_X) - humanoidOffsetX, parseInt(humanData.SXS_Y) + offset - humanoidOffsetY, parseFloat(humanData.SXS_Z) - humanoidOffsetZ,humanData.Participant, "SXS"));
     participant.add(drawPoint(geometry, parseFloat(humanData.TV10_X) - humanoidOffsetX, parseInt(humanData.TV10_Y) + offset - humanoidOffsetY, parseFloat(humanData.TV10_Z) - humanoidOffsetZ,humanData.Participant, "TV10"));
 
+
     participant.userData = {id: humanData.Participant,
         offset: myOffest,
         gender: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Gender,
@@ -151,9 +152,6 @@ function drawPoint(geometry, x,y,z,pid, joint){
 let partsArray;
 
 export function drawHumanoid(humanData , offset, participant){
-
-    //TODO: Update current humanoid instead of creating new one, current setting is breaking the memory
-
     humanoid = new THREE.Group();
 
     //Handling 1 participant with no CV7 point data
