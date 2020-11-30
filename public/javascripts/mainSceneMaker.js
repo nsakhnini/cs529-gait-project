@@ -33,6 +33,9 @@ let backX, backY, backZ;
 let printedDataPerson = false;
 let animationRequest, loadingFirstTime = false;
 
+let box = new THREE.Box3();
+let sizeVector = new THREE.Vector3();
+
 export let selectedParticipant, selectedParticipantDemo, selectedParticipantFootsteps; //To be connected for direct manipulation participant selection
 
 export const scene = new THREE.Scene();
@@ -40,6 +43,9 @@ scene.background = new THREE.Color( 0x010101 );
 
 export const camera = new THREE.PerspectiveCamera( 75, (window.innerWidth/2)/ (window.innerHeight*0.5) , 0.1, 100000 );
 camera.up.set(0, 0, 1);
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
 export const renderer = new THREE.WebGLRenderer({
     preserveDrawingBuffer: true
@@ -60,6 +66,8 @@ scene.controls.keys = {
     RIGHT: 39, // right arrow
     BOTTOM: 40 // down arrow
 }
+
+//Working with keyboard
 let mainScene = document.getElementById("main-scene")
     mainScene.appendChild( renderer.domElement );
     mainScene.tabIndex = -1;
@@ -124,16 +132,33 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
     renderer.setSize((window.innerWidth/2),window.innerHeight*0.5);
 }
+window.addEventListener('resize', onWindowResize);
 
-window.addEventListener('resize', onWindowResize)
+function onMouseClick(event) {
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    scene.children.forEach(function (d) {
+        if (d.userData.isbbox == true) {
+            box.setFromObject(d);
+            if(raycaster.ray.intersectsBox(box)){
+                console.log(d.userData.bboxID + " Yay!");
+            }
+        }
+    });
+
+}
+window.addEventListener( 'click', onMouseClick, false );
 
 const animate = function () {
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse,camera);
 
     // limit frames number untill the animation is done (one loop)
     // if(frameCounter > 275) return;
     // wait for the number of frames to starty the animation (add delay after every loop)
 
-    animationRequest = requestAnimationFrame( animate );
+    animationRequest = window.requestAnimationFrame( animate );
     if(frameDelayCounter < 10){
         frameDelayCounter++;
     } else {
@@ -414,18 +439,6 @@ function move(data, person, personIndex){
                         v.applyQuaternion(quaternion);
                     }
                 })
-            }
-
-            if (d.userData.isbbox == true) {
-                if ( direction[0].dir == 0) {
-                    console.log(d);
-                    d.update();
-                }
-                else {
-                    d.update();
-                    d.update();
-                    d.rotation.z = Math.PI;
-                }
             }
             switch (joint) {
                 case "CV7":

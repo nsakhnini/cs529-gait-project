@@ -10,7 +10,8 @@ let humanoid, back, hips,
 let edgeGeometry, edge, updatedVector, direction, pDirection;
 
 const factor = new THREE.Matrix4();
-let bbox;
+let bbox, box;
+let sizeVector = new THREE.Vector3();
 
 factor.set(1,0,0,0,
     0,0,1,0,
@@ -429,11 +430,12 @@ export function drawHumanoid(humanData , offset, participant){
         }
     });
 
-    bbox = new THREE.BoxHelper(humanoid, 0xffffff);
-    bbox.material.visible = false;
-    bbox.userData = {isbbox: true};
+    bbox = new THREE.BoxHelper(humanoid,0xffffff);
+    //bbox.material.visible = false;
+    bbox.userData = {isbbox: true, bboxID: humanData.Participant, updateObject: humanoid };
     bbox.update();
     scene.add(bbox);
 
     participant.add(humanoid);
 }
+
