@@ -1,4 +1,5 @@
 import {participantsDirection} from "./mainSceneMaker.js";
+import {scene} from "./mainSceneMaker.js";
 
 let participant, points = [];
 let humanoid, back, hips,
@@ -9,6 +10,7 @@ let humanoid, back, hips,
 let edgeGeometry, edge, updatedVector, direction, pDirection;
 
 const factor = new THREE.Matrix4();
+let bbox;
 
 factor.set(1,0,0,0,
     0,0,1,0,
@@ -114,6 +116,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.add(drawPoint(geometry, parseFloat(humanData.SXS_X) - humanoidOffsetX, parseInt(humanData.SXS_Y) + offset - humanoidOffsetY, parseFloat(humanData.SXS_Z) - humanoidOffsetZ,humanData.Participant, "SXS"));
     participant.add(drawPoint(geometry, parseFloat(humanData.TV10_X) - humanoidOffsetX, parseInt(humanData.TV10_Y) + offset - humanoidOffsetY, parseFloat(humanData.TV10_Z) - humanoidOffsetZ,humanData.Participant, "TV10"));
 
+
     participant.userData = {id: humanData.Participant,
         offset: myOffest,
         gender: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Gender,
@@ -128,6 +131,8 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     participant.position.z = 0;
 
     scene.add(participant);
+
+
     console.log("done adding participant");
 }
 
@@ -151,9 +156,6 @@ function drawPoint(geometry, x,y,z,pid, joint){
 let partsArray;
 
 export function drawHumanoid(humanData , offset, participant){
-
-    //TODO: Update current humanoid instead of creating new one, current setting is breaking the memory
-
     humanoid = new THREE.Group();
 
     //Handling 1 participant with no CV7 point data
@@ -426,6 +428,12 @@ export function drawHumanoid(humanData , offset, participant){
             humanoid.add(d);
         }
     });
+
+    bbox = new THREE.BoxHelper(humanoid, 0xffffff);
+    bbox.material.visible = false;
+    bbox.userData = {isbbox: true};
+    bbox.update();
+    scene.add(bbox);
 
     participant.add(humanoid);
 }

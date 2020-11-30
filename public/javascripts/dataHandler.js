@@ -5,7 +5,7 @@ data files:
 https://gait-visualizer.s3.amazonaws.com/markers/markers_2014001_1_1.csv
  */
 
-import {filterDemo, clearFilterDemo, filterMarkers, clearFilterMarkers, updateSpeed, updateTrial, updateScene, load3DView} from "./mainSceneMaker.js";
+import {filterDemo, clearFilterDemo, filterMarkers, clearFilterMarkers, updateSpeed, updateTrial, load3DView, scene} from "./mainSceneMaker.js";
 
 var demo_file = "https://gait-visualizer.s3.amazonaws.com/Demographics.csv";
 var footsteps_file = "./data/footsteps.csv";
@@ -13,8 +13,8 @@ var footsteps_file = "./data/footsteps.csv";
 let link, baseLink = "https://gait-visualizer.s3.amazonaws.com/markers/markers_";
 
 var demoData = [];
-
 let minAge = 100, maxAge = 0, minHeight = 100, maxHeight = 0, minWeight = 100, maxWeight = 0;
+
 async function loadDemoData() {
     await d3.csv(demo_file, function (d){
         demoData.push(d);
@@ -63,11 +63,12 @@ async function loadDemoData() {
     var dataList = ["2015002", "2015027", "2015042", "2015005"
         , "2015003", "2015004"]
 
-    filterData(18, 85, -1,-1,-1,60,-1,5,1,dataList);
+    initData(18, 85, -1,-1,-1,80,-1,3,2,dataList);
 }
 
 export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
                                  gender = -1, speed = -1, trial= -1, pIDs = []) {
+
     //Subset demographic data to current participant selection
     clearFilterDemo();
     if(pIDs.length == 0) {
@@ -111,29 +112,125 @@ export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1,
         });
     }
 
+
     //Here filterDemo has the demographic information for filtered participants
     //Now load their markers data
 
     clearFilterMarkers();
 
-    for (let i =0 ; i< filterDemo.length; i++){
-        if(speed == -1)
-            speed = 1;
-        if(trial == -1)
-            trial = 1;
+    if(filterDemo.length == 0){
+        updateSpeed(speed);
+        updateTrial(trial);
+    }
+    else {
+        for (let i = 0; i < filterDemo.length; i++) {
+            if (speed == -1)
+                speed = 1;
+            if (trial == -1)
+                trial = 1;
 
-        link = baseLink + filterDemo[i].ID + "_" + speed + "_" + trial +".csv";
-        await d3.csv(link, function (d) {
-            d.Speed= String(parseInt(d.Speed));
-            d.Trial= String(parseInt(d.Trial));
-            filterMarkers.push(d);
-        });
+            link = baseLink + filterDemo[i].ID + "_" + speed + "_" + trial + ".csv";
+            await d3.csv(link, function (d) {
+                d.Speed = String(parseInt(d.Speed));
+                d.Trial = String(parseInt(d.Trial));
+                filterMarkers.push(d);
+            });
+        }
+        updateSpeed(speed);
+        updateTrial(trial);
+
+
+        load3DView();
     }
 
-    updateSpeed(speed);
-    updateTrial(trial);
-    load3DView();
 
 }
 
+
+export async function initData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
+                                 gender = -1, speed = -1, trial= -1, pIDs = []) {
+        //Subset demographic data to current participant selection
+        clearFilterDemo();
+        if(pIDs.length == 0) {
+            if (ageLower == -1) {
+                ageLower = minAge;
+            }
+            if (ageUpper == -1) {
+                ageUpper = maxAge;
+            }
+            if (heightLower == -1) {
+                heightLower = minHeight;
+            }
+            if (heightUpper == -1) {
+                heightUpper = maxHeight;
+            }
+            if (weightLower == -1) {
+                weightLower = minWeight;
+            }
+            if (weightUpper == -1) {
+                weightUpper = maxAge;
+            }
+
+            demoData.forEach(function (d, i) {
+                if ((d.Age >= ageLower && d.Age <= ageUpper) && (d.Height >= heightLower && d.Height <= heightUpper) && (d.Weight >= weightLower && d.Weight <= weightUpper)) {
+                    if (gender == -1) {
+                        filterDemo.push(d);
+                    } else {
+                        if (d.Gender == gender) {
+                            filterDemo.push(d);
+                        }
+                    }
+                }
+            });
+        }
+        else{
+            //if participant selection is made, ignore all other filters
+            demoData.forEach(function (d, i) {
+                if(pIDs.indexOf(d.ID) >= 0){
+                    filterDemo.push(d);
+                }
+            });
+        }
+
+
+        //Here filterDemo has the demographic information for filtered participants
+        //Now load their markers data
+
+        clearFilterMarkers();
+
+        if(filterDemo.length == 0){
+            scene.children.forEach(function (d){
+                if(typeof d.userData.id !== 'undefined')
+                    scene.remove(d);
+            });
+            updateSpeed(speed);
+            updateTrial(trial);
+        }
+        else {
+            for (let i = 0; i < filterDemo.length; i++) {
+                if (speed == -1)
+                    speed = 1;
+                if (trial == -1)
+                    trial = 1;
+
+                link = baseLink + filterDemo[i].ID + "_" + speed + "_" + trial + ".csv";
+                await d3.csv(link, function (d) {
+                    d.Speed = String(parseInt(d.Speed));
+                    d.Trial = String(parseInt(d.Trial));
+                    filterMarkers.push(d);
+                });
+            }
+            updateSpeed(speed);
+            updateTrial(trial);
+
+            scene.children.forEach(function (d){
+                if(typeof d.userData.id !== 'undefined')
+                    scene.remove(d);
+            });
+
+            load3DView();
+        }
+
+}
 loadDemoData();
+
