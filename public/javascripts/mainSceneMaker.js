@@ -322,14 +322,11 @@ export async function load3DView(){
         pID = iterator.next().value;
     }
 
-    console.log(participantsDirection);
     //Here handle scrolling
     if(participants.length <= 6) {
         for (let i = 0; i < participants.length; i++) {
-            console.log(i)
             drawHumanDots(participantsData[i][0], offsetY);
             currentParticipantsData.push(participantsData[i]);
-            console.log(currentParticipantsData);
             offsetY = offsetY + 1200;
         }
         deactivateScrolling();
