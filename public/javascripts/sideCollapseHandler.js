@@ -109,38 +109,42 @@ function toggle2DBar() {
 
 }
 function renderCollapsedPanelView(){
-    document.getElementById("participant-list").style.display = "none";
-    document.getElementById("filter-title").style.display = "none";
+    //document.getElementById("participant-list").style.display = "none";
+    //document.getElementById("filter-title").style.display = "none";
     document.getElementById("slider-age").style.display = "none";
     document.getElementById("slider-height").style.display = "none";
     document.getElementById("slider-weight").style.display = "none";
     document.getElementById("gender-form").style.display = "none";
     document.getElementById("filter-btn").style.visibility = "hidden";
+    document.getElementById("speed-trial-view").style.display = "none";
 
-    document.getElementById("participant-list-readyonly").style.display = "block";
-
+    //document.getElementById("participant-list-readyonly").style.display = "block";
     document.getElementById("filter-readonly").style.display = "block";
     document.getElementById("age-viewonly").style.display = "block";
     document.getElementById("height-readonly").style.display = "block";
     document.getElementById("weight-readonly").style.display = "block";
     document.getElementById("gender-readonly").style.display = "block";
+    document.getElementById("speed-trial-readonly").style.display = "block";
 
 }
 function renderExpandedPanelView(){
-    document.getElementById("participant-list").style.display = "block";
-    document.getElementById("filter-title").style.display = "block";
+    //document.getElementById("participant-list").style.display = "block";
+    //document.getElementById("filter-title").style.display = "block";
     document.getElementById("slider-age").style.display = "block";
     document.getElementById("slider-height").style.display = "block";
     document.getElementById("slider-weight").style.display = "block";
     document.getElementById("gender-form").style.display = "block";
     document.getElementById("filter-btn").style.visibility = "visible";
+    document.getElementById("speed-trial-view").style.display = "flex";
 
-    document.getElementById("participant-list-readyonly").style.display = "none";
+
+    //document.getElementById("participant-list-readyonly").style.display = "none";
     document.getElementById("filter-readonly").style.display = "none";
     document.getElementById("age-viewonly").style.display = "none";
     document.getElementById("height-readonly").style.display = "none";
     document.getElementById("weight-readonly").style.display = "none";
     document.getElementById("gender-readonly").style.display = "none";
+    document.getElementById("speed-trial-readonly").style.display = "none";
 }
 
 document.querySelector("#minimize-filter").addEventListener('click', toggleFilterBar);

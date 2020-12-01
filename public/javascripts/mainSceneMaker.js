@@ -138,6 +138,9 @@ function onMouseClick(event) {
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
+    // mouse.x = ( event.clientX / document.getElementById("main-scene").offsetWidth ) * 2 - 1;
+    // mouse.y = - ( event.clientY / document.getElementById("main-scene").offsetHeight ) * 2 + 1;
+
     scene.children.forEach(function (d) {
         if (d.userData.isbbox == true) {
             box.setFromObject(d);
@@ -308,7 +311,7 @@ export async function load3DView(){
     for (let i = 0; i<participants.length; i++){
         //Change offset at X for rows (in front of each other)
         drawHumanDots(participantsData[i][0], offsetY);
-        offsetY = offsetY +1000;
+        offsetY = offsetY +1200;
     }
 
     loadParticipantsDataToFilter(participants);
@@ -666,6 +669,8 @@ function loadParticipantsDataToFilter(){
     //Update the Age slider
     document.getElementsByClassName("age-slider-input")[0].setAttribute("value", minAge);
     document.getElementsByClassName("age-slider-input")[1].setAttribute("value", maxAge);
+    document.getElementById("age-min").innerText = minAge;
+    document.getElementById("age-max").innerText = maxAge;
 
     sliderLowerHandleController(document.getElementsByClassName("age-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("age-slider-input")[1]);
@@ -679,6 +684,8 @@ function loadParticipantsDataToFilter(){
     document.getElementsByClassName("height-slider-input")[1].setAttribute("step", 1);
     document.getElementsByClassName("height-slider-input")[0].setAttribute("value", minH );
     document.getElementsByClassName("height-slider-input")[1].setAttribute("value", maxH );
+    document.getElementById("height-min").innerText = minH;
+    document.getElementById("height-max").innerText = maxH;
 
     sliderLowerHandleController(document.getElementsByClassName("height-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("height-slider-input")[1]);
@@ -692,6 +699,8 @@ function loadParticipantsDataToFilter(){
     document.getElementsByClassName("weight-slider-input")[1].setAttribute("value", maxW );
     document.getElementsByClassName("weight-slider-input")[0].setAttribute("step", 0.5);
     document.getElementsByClassName("weight-slider-input")[1].setAttribute("step", 0.5);
+    document.getElementById("weight-min").innerText = minW;
+    document.getElementById("weight-max").innerText = maxW;
 
     sliderLowerHandleController(document.getElementsByClassName("weight-slider-input")[0]);
     sliderUpperHandleController(document.getElementsByClassName("weight-slider-input")[1]);
@@ -701,17 +710,31 @@ function loadParticipantsDataToFilter(){
     //document.getElementsByClassName("weight-slider-input")[1].addEventListener("click", weightSlider);
 
     //Update gender checkboxes
-    if(isFemale)
+    if(isFemale) {
         document.getElementById("female-check").checked = true;
-    else
+        document.getElementsByClassName("female-read-only")[0].style.fill = "pink";
+        document.getElementsByClassName("female-read-only")[1].style.fill = "red";
+    }
+    else {
         document.getElementById("female-check").checked = false;
-    if(isMale)
+        document.getElementsByClassName("female-read-only")[0].style.fill = "#808080";
+        document.getElementsByClassName("female-read-only")[1].style.fill = "#444444";
+    }
+    if(isMale) {
         document.getElementById("male-check").checked = true;
-    else
+        document.getElementsByClassName("male-read-only")[0].style.fill = "skyblue";
+        document.getElementsByClassName("male-read-only")[1].style.fill = "blue";
+    }
+    else {
         document.getElementById("male-check").checked = false;
+        document.getElementsByClassName("male-read-only")[0].style.fill = "#808080";
+        document.getElementsByClassName("male-read-only")[1].style.fill = "#444444";
+    }
 
     document.getElementById("trial-val").value = trial;
     document.getElementById("speed-val").value = speed;
+    document.getElementById("trial-readonly").innerText = trial;
+    document.getElementById("speed-readonly").innerText = speed;
 
     //Deprecated
     //Load participant IDs to current selectors
