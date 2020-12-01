@@ -10,8 +10,7 @@ let humanoid, back, hips,
 let edgeGeometry, edge, updatedVector, direction, pDirection;
 
 const factor = new THREE.Matrix4();
-let bbox, box;
-let sizeVector = new THREE.Vector3();
+let bbox;
 
 factor.set(1,0,0,0,
     0,0,1,0,
@@ -134,7 +133,7 @@ export function createHumanoid(humanData, offset, demo_data, scene){
     scene.add(participant);
 
 
-    console.log("done adding participant");
+    console.log( humanData.Participant , "done adding participant", myOffest);
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){
@@ -431,7 +430,7 @@ export function drawHumanoid(humanData , offset, participant){
     });
 
     bbox = new THREE.BoxHelper(humanoid,0xffffff);
-    //bbox.material.visible = false;
+    bbox.material.visible = false;
     bbox.userData = {isbbox: true, bboxID: humanData.Participant, updateObject: humanoid };
     bbox.update();
     scene.add(bbox);

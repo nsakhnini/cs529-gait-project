@@ -6,15 +6,17 @@ import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitCo
 import * as humanoidMaker from './humanoidMaker.js';
 import * as topViewMaker from './topViewHandler.js';
 import {filterData} from './dataHandler.js';
+import {activateScrolling, deactivateScrolling, scrollDown, scrollUp} from './participantScrolling.js';
 
 let footsteps_data = [];
-let participants = [];
-let participantsData = [];
-let participantsState = [];
+export let participants = [];
+export let participantsData = [];
+export let participantsState = [];
+export let currentParticipantsData = [];
 let participantsTS = [];
 export let participantsDirection = [];
 let markerByParticipant, timestamp = [];
-export let trial = "1", speed = "1", offsetY = -250;
+export let trial = "1", speed = "1", offsetY = -2000;
 export let filterDemo, filterMarkers, filterFootsteps;
 
 var leftAge, rightAge, minAge, maxAge;
@@ -29,12 +31,15 @@ let direction;
 let frameDelayCounter = 0;
 
 let isParticipantSelected = false;
+let currentParticipantsLower = 1, currentParticipantsUpper = 6;
 let backX, backY, backZ;
 let printedDataPerson = false;
 let animationRequest, loadingFirstTime = false;
 
 let box = new THREE.Box3();
-let sizeVector = new THREE.Vector3();
+let sceneBound;
+
+export let scrollIndex = 0;
 
 export let selectedParticipant, selectedParticipantDemo, selectedParticipantFootsteps; //To be connected for direct manipulation participant selection
 
@@ -56,7 +61,7 @@ renderer.setSize( (window.innerWidth/2),window.innerHeight *0.5);
 scene.controls = new OrbitControls(camera, renderer.domElement);
 scene.controls.enableKeys = true;
 scene.controls.mouseButtons = {
-    LEFT:THREE.MOUSE.PAN,
+    //LEFT:THREE.MOUSE.PAN,
     MIDDLE: THREE.MOUSE.DOLLY,
     RIGHT: THREE.MOUSE.ROTATE
 }
@@ -135,31 +140,37 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize);
 
 function onMouseClick(event) {
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    sceneBound = document.getElementById("main-scene").getBoundingClientRect();
 
-    // mouse.x = ( event.clientX / document.getElementById("main-scene").offsetWidth ) * 2 - 1;
-    // mouse.y = - ( event.clientY / document.getElementById("main-scene").offsetHeight ) * 2 + 1;
+    mouse.x = ( (event.clientX - sceneBound.x)/sceneBound.width) * 2 - 1;
+    mouse.y = - ( (event.clientY - sceneBound.y)/sceneBound.height) *  2 + 1;
+
+    raycaster.setFromCamera(mouse,camera);
 
     scene.children.forEach(function (d) {
-        if (d.userData.isbbox == true) {
-            box.setFromObject(d);
-            if(raycaster.ray.intersectsBox(box)){
-                console.log(d.userData.bboxID + " Yay!");
+        if(!isParticipantSelected) { //only first participant clicked
+            if (d.userData.isbbox == true) {
+                box.setFromObject(d);
+                if (raycaster.ray.intersectsBox(box)) {
+                    isParticipantSelected = true;
+                    handleParticipantText(filterDemo.filter(function (w) {
+                        return w.ID == d.userData.bboxID;
+                    })[0]);
+                    console.log(d.userData.bboxID + " Yay!");
+                }
             }
         }
     });
+    isParticipantSelected = false;
 
+    //scene.add(new THREE.ArrowHelper( raycaster.ray.direction, raycaster.ray.origin, 20000, Math.random() * 0xffffff ));
 }
 window.addEventListener( 'click', onMouseClick, false );
 
 const animate = function () {
-    // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera(mouse,camera);
-
-    // limit frames number untill the animation is done (one loop)
+    // limit frames number until the animation is done (one loop)
     // if(frameCounter > 275) return;
-    // wait for the number of frames to starty the animation (add delay after every loop)
+    // wait for the number of frames to start the animation (add delay after every loop)
 
     animationRequest = window.requestAnimationFrame( animate );
     if(frameDelayCounter < 10){
@@ -175,9 +186,8 @@ const animate = function () {
             const groupChildren = scene.children.filter(child => child.type === "Group").filter(child => typeof child.userData.part === 'undefined')
 
             groupChildren.forEach(function (d,i) {
-
-                if (i < participantsData.length) {
-                    if (timestamp[i] >= participantsData[i].length) {
+                if (i < groupChildren.length) {
+                    if (timestamp[i] >= currentParticipantsData[i].length) {
                         participantsState[i] = 0; //zero means ended
                     } else {
                         timestamp[i] += 1;
@@ -188,14 +198,14 @@ const animate = function () {
                     });
                     if(participantsState[i] !== 0){
                         if ( direction[0].dir == 0) {
-                            move(participantsData[i][timestamp[i]], d, i);
+                            move(currentParticipantsData[i][timestamp[i]], d, i);
                         }
                         else {
-                            move(participantsData[i][timestamp[i]], d, i);
+                            move(currentParticipantsData[i][timestamp[i]], d, i);
                             d.rotation.z = Math.PI;
-
                         }
                     }
+                    i++;
                 }
             });
             if(!participantsState.includes(1)){
@@ -284,21 +294,25 @@ export async function load3DView(){
     participants = [];
     participantsData = [];
     participantsState = [];
+    currentParticipantsData = [];
     participantsTS =[];
     participantsDirection = [];
     timestamp = [];
-    offsetY = -250;
+    offsetY = -3500;
     frameDelayCounter = 0;
     isParticipantSelected = false;
     printedDataPerson = false;
+    currentParticipantsLower = 1;
+    currentParticipantsUpper = 6;
+    scrollIndex = 0;
 
     while (typeof pID !==  "undefined") {
         participants.push(pID);
         participantsData.push(
             markerByParticipant.get(pID).get(String(speed)).get(String(trial))
         );
-        participantsState.push(1); //1 is ready to move
-        participantsTS.push(markerByParticipant.get(pID).get(String(speed)).get(String(trial)).length)
+
+        participantsTS.push(markerByParticipant.get(pID).get(String(speed)).get(String(trial)).length);
         if (parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FCC_X) > parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
             participantsDirection.push({id: pID, dir: 1});
         } else if (parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FCC_X) < parseFloat(markerByParticipant.get(pID).get(String(speed)).get(String(trial))[0].L_FM2_X)) {
@@ -308,27 +322,43 @@ export async function load3DView(){
         pID = iterator.next().value;
     }
 
-    for (let i = 0; i<participants.length; i++){
-        //Change offset at X for rows (in front of each other)
-        drawHumanDots(participantsData[i][0], offsetY);
-        offsetY = offsetY +1200;
+    console.log(participantsDirection);
+    //Here handle scrolling
+    if(participants.length <= 6) {
+        for (let i = 0; i < participants.length; i++) {
+            console.log(i)
+            drawHumanDots(participantsData[i][0], offsetY);
+            currentParticipantsData.push(participantsData[i]);
+            console.log(currentParticipantsData);
+            offsetY = offsetY + 1200;
+        }
+        deactivateScrolling();
+        participantsState.push(1); //1 is ready to move
+    } else{
+        activateScrolling();
+        for (let i = 0; i < 6; i++) {
+            drawHumanDots(participantsData[i][0], offsetY);
+            currentParticipantsData.push(participantsData[i]);
+            offsetY = offsetY + 1200;
+        }
+        scrollIndex += 6;
+        participantsState.push(1); //1 is ready to move
     }
 
     loadParticipantsDataToFilter(participants);
 
     if (loadingFirstTime == false) {
-        camera.position.x = -3238;
-        camera.position.y = 107.15;
-        camera.position.z = 231.33;
+        camera.position.x = 4321.371707827416;
+        camera.position.y = -701.542953696328;
+        camera.position.z = 527.6958984550319;
 
-        camera.rotation.x = -1.72353;
-        camera.rotation.y = -1.3973;
-        camera.rotation.z = 2.99;
+        camera.rotation.x = 0.5949196177923847;
+        camera.rotation.y = 1.425921950516444;
+        camera.rotation.z = 0.9709790955379141;
 
         loadingFirstTime = true;
     }
 
-    handleMainViewText(20,50,1.4,1.9,45,200);
     console.log(scene);
     cancelAnimationFrame(animationRequest);
     animate();
@@ -345,11 +375,12 @@ function drawGrid(){
     scene.add( gridHelper );
 }
 
-function drawHumanDots(humanData, offset){
+export function drawHumanDots(humanData, offset){
     humanoidMaker.createHumanoid(humanData, offset, filterDemo, scene);
 }
 
 function move(data, person, personIndex){
+
     if(!printedDataPerson){
         printedDataPerson = true;
     }
@@ -736,6 +767,8 @@ function loadParticipantsDataToFilter(){
     document.getElementById("trial-readonly").innerText = trial;
     document.getElementById("speed-readonly").innerText = speed;
 
+    handleMainViewText(minAge,maxAge,minH/100,maxH/100,minW,maxW);
+
     //Deprecated
     //Load participant IDs to current selectors
     // for(let i = 0; i< pList.length; i++) {
@@ -753,14 +786,24 @@ function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerW
         + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
         lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
         lowerWeight + "-" + upperWeight +" kg</p>";
-    bottomText.innerHTML = "<p>Showing " + filterDemo.length + " participants</p>"
+    if (filterDemo.length <= 6){
+        bottomText.innerHTML = "<p>Showing " + filterDemo.length + " of " + filterDemo.length + " gaits</p>"
+    }
+    else {
+        bottomText.innerHTML = "<p>Showing " + currentParticipantsLower + " - "  + currentParticipantsUpper + " of " + filterDemo.length + " gaits</p>"
+    }
+
     //Make visible
     topText.style.visibility = "visible";
-    sideText.style.visibility = "visible";
+    topText.style.width = "100%";
+    sideText.style.visibility = "hidden";
     bottomText.style.visibility = "visible";
+}
 
-    isParticipantSelected = true;
-    handleParticipantText(filterDemo[0]);
+export function updateBottomText(value, upperValue){
+    var bottomText = document.getElementById("info-main-view-bottom");
+
+    bottomText.innerHTML = "<p>Showing " + value + " - "  + upperValue + " of " + filterDemo.length + " gaits</p>"
 }
 
 //Call this function whenever a participant is selected, pass demo row for participant
@@ -789,6 +832,7 @@ function handleParticipantText(participant){
         document.getElementById("info-main-view-side").style.visibility = "hidden";
     }
 }
+
 
 //================================================================================
 //Filter buttons
@@ -835,6 +879,11 @@ function applyFilters(){
 
     filterData(ageLower,ageUpper,heightLower,heightUpper,weightLower,weightUpper,gender,speed,trial,[]);
 }
+
+document.getElementById("scroll-down-btn").addEventListener("click", scrollDown);
+document.getElementById("scroll-down-btn-readonly").addEventListener("click", scrollDown);
+document.getElementById("scroll-up-btn").addEventListener("click", scrollUp);
+document.getElementById("scroll-up-btn-readonly").addEventListener("click", scrollUp);
 
 //Update data when Filter button is clicked
 document.getElementById("filter-btn").addEventListener("click", applyFilters);
@@ -962,4 +1011,20 @@ export function clearFilterDemo(){
 
 export function clearFilterMarkers() {
     filterMarkers = [];
+}
+
+export function setPOffset(value){
+    offsetY = value;
+}
+
+export function setScrollIndex(value){
+    scrollIndex = value;
+}
+
+export function emptyParticipantsState(){
+    participantsState = [];
+}
+export function emptyCurrentParticipantsData(){
+
+    currentParticipantsData = [];
 }

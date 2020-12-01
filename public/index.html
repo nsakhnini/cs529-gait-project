@@ -75,8 +75,6 @@
     </div>
     <br>
 
-
-
     <div class="row">
       <div class="col-1">
         <p>Age (years)</p>
@@ -194,7 +192,8 @@
         </g>
       </svg>
     </div>
-<hr>
+
+    <hr>
 
     <div class="row" id="speed-trial-view">
       <div class="col-1">
@@ -219,6 +218,17 @@
       <p>Speed: <span id="speed-readonly"></span>/5</p>
     </div>
 
+    <hr>
+
+    <div class="row" id="participant-scroll">
+        <input  type="button" id="scroll-down-btn" value="<< Previous 6 Gaits" class="scroll-button">
+        <input  type="button" id="scroll-up-btn" value="Next 6 Gaits >>" class="scroll-button">
+    </div>
+
+    <div class="row" id="participant-scroll-readonly" style="display: none;">
+        <input  type="button" id="scroll-down-btn-readonly" value="<<" class="scroll-button-readonly">
+        <input  type="button" id="scroll-up-btn-readonly" value=">>" class="scroll-button-readonly">
+    </div>
    <!-- <label for="participant-list"></label><br>
     <div class="participantList" style="display: none;">
       <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>

@@ -117,6 +117,7 @@ function renderCollapsedPanelView(){
     document.getElementById("gender-form").style.display = "none";
     document.getElementById("filter-btn").style.visibility = "hidden";
     document.getElementById("speed-trial-view").style.display = "none";
+    document.getElementById("participant-scroll").style.display = "none";
 
     //document.getElementById("participant-list-readyonly").style.display = "block";
     document.getElementById("filter-readonly").style.display = "block";
@@ -125,6 +126,7 @@ function renderCollapsedPanelView(){
     document.getElementById("weight-readonly").style.display = "block";
     document.getElementById("gender-readonly").style.display = "block";
     document.getElementById("speed-trial-readonly").style.display = "block";
+    document.getElementById("participant-scroll-readonly").style.display = "block";
 
 }
 function renderExpandedPanelView(){
@@ -136,6 +138,7 @@ function renderExpandedPanelView(){
     document.getElementById("gender-form").style.display = "block";
     document.getElementById("filter-btn").style.visibility = "visible";
     document.getElementById("speed-trial-view").style.display = "flex";
+    document.getElementById("participant-scroll").style.display = "flex";
 
 
     //document.getElementById("participant-list-readyonly").style.display = "none";
@@ -145,6 +148,7 @@ function renderExpandedPanelView(){
     document.getElementById("weight-readonly").style.display = "none";
     document.getElementById("gender-readonly").style.display = "none";
     document.getElementById("speed-trial-readonly").style.display = "none";
+    document.getElementById("participant-scroll-readonly").style.display = "none";
 }
 
 document.querySelector("#minimize-filter").addEventListener('click', toggleFilterBar);
