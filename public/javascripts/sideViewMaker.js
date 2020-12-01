@@ -260,7 +260,8 @@ async function loadViews() {
     data.push(d);
   });
 
-  let filtered_data = getFilteredData(data);
+  let participant1 = getFilteredData(data);
+  let participant2 = getParticipantData(data);
 
   // Front Slice View
   var svg = d3
@@ -288,10 +289,19 @@ async function loadViews() {
     .style("fill", "white")
     .text("Body Part Top View");
     
-    addBodyPartMarkers(svg, getBodyPartTopData(filtered_data));
+    addBodyPartMarkers(svg, getBodyPartTopData(participant1));
+    addBodyPartMarkers(svg, getBodyPartTopData(participant2));
 }
 
 loadViews();
+
+function getParticipantData(data) {
+  return data.filter(function (mark) {
+    return (
+      mark.Participant === "2014002" && mark.Speed === "1" && mark.Trial === "1"
+    );
+  });
+}
 
 function addBodyPartMarkers(svg, data) {
   var first = data[0];
@@ -325,9 +335,6 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[1].name;
-    })
     .attr("x1", function (d) {
       return d[0].X / SCALE_FACTOR;
     })
@@ -335,10 +342,10 @@ function addBodyPartMarkers(svg, data) {
       return d[0].Y / SCALE_FACTOR;
     })
     .attr("x2", function (d) {
-      return d[1].X / SCALE_FACTOR;
+      return d[2].X / SCALE_FACTOR;
     })
     .attr("y2", function (d) {
-      return d[1].Y / SCALE_FACTOR;
+      return d[2].Y / SCALE_FACTOR;
     })
     .attr("stroke", "yellow")
     .attr("stroke-width", 1)
@@ -350,14 +357,11 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[2].name;
-    })
     .attr("x1", function (d) {
-      return d[0].X / SCALE_FACTOR;
+      return d[1].X / SCALE_FACTOR;
     })
     .attr("y1", function (d) {
-      return d[0].Y / SCALE_FACTOR;
+      return d[1].Y / SCALE_FACTOR;
     })
     .attr("x2", function (d) {
       return d[2].X / SCALE_FACTOR;
@@ -375,14 +379,11 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[3].name;
-    })
     .attr("x1", function (d) {
-      return d[0].X / SCALE_FACTOR;
+      return d[1].X / SCALE_FACTOR;
     })
     .attr("y1", function (d) {
-      return d[0].Y / SCALE_FACTOR;
+      return d[1].Y / SCALE_FACTOR;
     })
     .attr("x2", function (d) {
       return d[3].X / SCALE_FACTOR;
@@ -400,14 +401,11 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[5].name;
-    })
     .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
+      return d[0].X / SCALE_FACTOR;
     })
     .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
+      return d[0].Y / SCALE_FACTOR;
     })
     .attr("x2", function (d) {
       return d[5].X / SCALE_FACTOR;
@@ -425,20 +423,39 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[6].name;
-    })
     .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
+      return d[2].X / SCALE_FACTOR;
     })
     .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
+      return d[2].Y / SCALE_FACTOR;
     })
     .attr("x2", function (d) {
-      return d[6].X / SCALE_FACTOR;
+      return d[4].X / SCALE_FACTOR;
     })
     .attr("y2", function (d) {
+      return d[4].Y / SCALE_FACTOR;
+    })
+    .attr("stroke", "yellow")
+    .attr("stroke-width", 1)
+    .attr("transform", "translate(0,20)");
+
+    svg
+    .append("g")
+    .selectAll("line")
+    .data([first])
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return d[6].X / SCALE_FACTOR;
+    })
+    .attr("y1", function (d) {
       return d[6].Y / SCALE_FACTOR;
+    })
+    .attr("x2", function (d) {
+      return d[8].X / SCALE_FACTOR;
+    })
+    .attr("y2", function (d) {
+      return d[8].Y / SCALE_FACTOR;
     })
     .attr("stroke", "yellow")
     .attr("stroke-width", 1)
@@ -450,20 +467,83 @@ function addBodyPartMarkers(svg, data) {
     .data([first])
     .enter()
     .append("line")
-    .attr("id", function (d) {
-      return d[7].name;
-    })
     .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
       return d[7].X / SCALE_FACTOR;
     })
-    .attr("y2", function (d) {
+    .attr("y1", function (d) {
       return d[7].Y / SCALE_FACTOR;
+    })
+    .attr("x2", function (d) {
+      return d[8].X / SCALE_FACTOR;
+    })
+    .attr("y2", function (d) {
+      return d[8].Y / SCALE_FACTOR;
+    })
+    .attr("stroke", "yellow")
+    .attr("stroke-width", 1)
+    .attr("transform", "translate(0,20)");
+
+  svg
+    .append("g")
+    .selectAll("line")
+    .data([first])
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return d[7].X / SCALE_FACTOR;
+    })
+    .attr("y1", function (d) {
+      return d[7].Y / SCALE_FACTOR;
+    })
+    .attr("x2", function (d) {
+      return d[9].X / SCALE_FACTOR;
+    })
+    .attr("y2", function (d) {
+      return d[9].Y / SCALE_FACTOR;
+    })
+    .attr("stroke", "yellow")
+    .attr("stroke-width", 1)
+    .attr("transform", "translate(0,20)");
+
+  svg  
+    .append("g")
+    .selectAll("line")
+    .data([first])
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return d[6].X / SCALE_FACTOR;
+    })
+    .attr("y1", function (d) {
+      return d[6].Y / SCALE_FACTOR;
+    })
+    .attr("x2", function (d) {
+      return d[11].X / SCALE_FACTOR;
+    })
+    .attr("y2", function (d) {
+      return d[11].Y / SCALE_FACTOR;
+    })
+    .attr("stroke", "yellow")
+    .attr("stroke-width", 1)
+    .attr("transform", "translate(0,20)");
+
+  svg  
+    .append("g")
+    .selectAll("line")
+    .data([first])
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return d[8].X / SCALE_FACTOR;
+    })
+    .attr("y1", function (d) {
+      return d[8].Y / SCALE_FACTOR;
+    })
+    .attr("x2", function (d) {
+      return d[10].X / SCALE_FACTOR;
+    })
+    .attr("y2", function (d) {
+      return d[10].Y / SCALE_FACTOR;
     })
     .attr("stroke", "yellow")
     .attr("stroke-width", 1)
@@ -473,10 +553,14 @@ function addBodyPartMarkers(svg, data) {
 function getBodyPartTopData(data) {
   return data.map(function (mark) {
     return [
+      { name: "L_FAL", X: mark.L_FAL_X, Y: mark.L_FAL_Y },
+      { name: "L_TAM", X: mark.L_TAM_X, Y: mark.L_TAM_Y },
       { name: "L_FCC", X: mark.L_FCC_X, Y: mark.L_FCC_Y },
       { name: "L_FM1", X: mark.L_FM1_X, Y: mark.L_FM1_Y },
       { name: "L_FM2", X: mark.L_FM2_X, Y: mark.L_FM2_Y },
       { name: "L_FM5", X: mark.L_FM5_X, Y: mark.L_FM5_Y },
+      { name: "R_FAL", X: mark.R_FAL_X, Y: mark.R_FAL_Y },
+      { name: "R_TAM", X: mark.R_TAM_X, Y: mark.R_TAM_Y },
       { name: "R_FCC", X: mark.R_FCC_X, Y: mark.R_FCC_Y },
       { name: "R_FM1", X: mark.R_FM1_X, Y: mark.R_FM1_Y },
       { name: "R_FM2", X: mark.R_FM2_X, Y: mark.R_FM2_Y },
