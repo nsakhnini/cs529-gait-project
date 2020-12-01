@@ -75,10 +75,6 @@
     </div>
     <br>
 
-
-    <div id="age-viewonly" class='viewonly-text'>
-      <span id="age-min">30</span> -  <span id="age-max">60</span>
-    </div>
     <div class="row">
       <div class="col-1">
         <p>Age (years)</p>
@@ -103,8 +99,11 @@
         </div>
       </div>
     </div>
+    <div id="age-viewonly" class='viewonly-text'>
+      <span id="age-min">30</span> -  <span id="age-max">60</span>
+    </div>
 
-    <div id="height-readonly" class='viewonly-text'>164 - 165</div>
+
     <div class="row">
       <div class="col-1">
         <p>Height (cm)</p>
@@ -129,8 +128,11 @@
     </div>
       </div>
     </div>
+    <div id="height-readonly" class='viewonly-text'>
+      <span id="height-min">30</span> -  <span id="height-max">60</span>
+    </div>
 
-    <div id="weight-readonly" class='viewonly-text'>66 - 67</div>
+
     <div class="row">
       <div class="col-1">
         <p>Weight (Kg)</p>
@@ -155,19 +157,11 @@
     </div>
       </div>
     </div>
-
-    <div id="gender-readonly" style="display: none;">
-      <svg xmlns="http://www.w3.org/2000/svg" height='35'>
-        <g>
-          <rect x="0" y="0" width="25" height="25" fill="pink"></rect>
-          <text x="5" y="20" font-family="Verdana" font-size="20" fill="red">F</text>
-        </g>
-        <g>
-          <rect x="25" y="0" width="25" height="25" fill="skyblue"></rect>
-          <text x="30" y="20" font-family="Verdana" font-size="20" fill="blue">M</text>
-        </g>
-      </svg>
+    <div id="weight-readonly" class='viewonly-text'>
+      <span id="weight-min">30</span> -  <span id="weight-max">60</span>
     </div>
+
+
     <div class="row">
         <div class="col-2">
           <p style="margin-top: 6px;">Gender</p>
@@ -186,9 +180,22 @@
         <input type="button" id="filter-btn" value="Filter">
       </div>
     </div>
-<hr>
+    <div id="gender-readonly" style="display: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" height='35'>
+        <g>
+          <rect class="female-read-only" x="0" y="0" width="25" height="25" fill="pink"></rect>
+          <text class="female-read-only" x="5" y="20" font-family="Verdana" font-size="20" fill="red">F</text>
+        </g>
+        <g>
+          <rect class="male-read-only" x="25" y="0" width="25" height="25" fill="skyblue"></rect>
+          <text class="male-read-only" x="30" y="20" font-family="Verdana" font-size="20" fill="blue">M</text>
+        </g>
+      </svg>
+    </div>
 
-    <div class="row">
+    <hr>
+
+    <div class="row" id="speed-trial-view">
       <div class="col-1">
         <p>Trial</p>
       </div>
@@ -206,7 +213,22 @@
         <input  type="button" id="inc-speed-btn" value="+" class="inc-dec-button" >
       </div>
     </div>
-    
+    <div id="speed-trial-readonly" style="display: none;">
+      <p>Trial: <span id="trial-readonly"></span>/5</p>
+      <p>Speed: <span id="speed-readonly"></span>/5</p>
+    </div>
+
+    <hr>
+
+    <div class="row" id="participant-scroll">
+        <input  type="button" id="scroll-down-btn" value="<< Previous 6 Gaits" class="scroll-button">
+        <input  type="button" id="scroll-up-btn" value="Next 6 Gaits >>" class="scroll-button">
+    </div>
+
+    <div class="row" id="participant-scroll-readonly" style="display: none;">
+        <input  type="button" id="scroll-down-btn-readonly" value="<<" class="scroll-button-readonly">
+        <input  type="button" id="scroll-up-btn-readonly" value=">>" class="scroll-button-readonly">
+      </div>
     <br>
     <div class="row" style="height: 50%">
       <div class="row">
@@ -217,7 +239,8 @@
         <div class="col" id="height-plot"></div>
         <div class="col" id="weight-plot"></div>
       </div>
-    </div>
+
+   
    <!-- <label for="participant-list"></label><br>
     <div class="participantList" style="display: none;">
       <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>

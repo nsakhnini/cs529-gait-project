@@ -426,11 +426,12 @@ export function drawHumanoid(humanData , offset, participant){
         }
     });
 
-    bbox = new THREE.BoxHelper(humanoid, 0xffffff);
+    bbox = new THREE.BoxHelper(humanoid,0xffffff);
     bbox.material.visible = false;
-    bbox.userData = {isbbox: true};
+    bbox.userData = {isbbox: true, bboxID: humanData.Participant, updateObject: humanoid };
     bbox.update();
     scene.add(bbox);
 
     participant.add(humanoid);
 }
+
