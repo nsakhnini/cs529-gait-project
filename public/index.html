@@ -228,7 +228,19 @@
     <div class="row" id="participant-scroll-readonly" style="display: none;">
         <input  type="button" id="scroll-down-btn-readonly" value="<<" class="scroll-button-readonly">
         <input  type="button" id="scroll-up-btn-readonly" value=">>" class="scroll-button-readonly">
-    </div>
+      </div>
+    <br>
+    <div class="row" style="height: 50%">
+      <div class="row">
+        <div class="col" id="gender-plot"></div>
+        <div class="col" id="age-plot"></div>
+      </div>
+      <div class="row">
+        <div class="col" id="height-plot"></div>
+        <div class="col" id="weight-plot"></div>
+      </div>
+
+   
    <!-- <label for="participant-list"></label><br>
     <div class="participantList" style="display: none;">
       <button id="b1" class="list-group-item">2014001: 35 y / 1.80 mt / 80.4 kg</button>
@@ -255,47 +267,31 @@
 
 
 
+
   </div>
   <div class="col-6" id="scene-section">
     <div class="row">
-      <div id="info-main-view-top">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </div>
-      <div id="info-main-view-side">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </div>
-      <div id="info-main-view-bottom">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </div>
+      <div id="info-main-view-top"></div>
+      <div id="info-main-view-side"></div>
+      <div id="info-main-view-bottom"></div>
       <div id="main-scene">
       </div>
       <div id="axes-helper"></div>
     </div>
-    <div class="row" style="height: 50%">
-      <div class="row">
-        <div class="col" id="gender-plot"></div>
-        <div class="col" id="age-plot"></div>
-      </div>
-      <div class="row">
-        <div class="col" id="height-plot"></div>
-        <div class="col" id="weight-plot"></div>
-      </div>
+    <br>
+    <div class="row" style="height: 40%">
+        <div class="col" id="front-slice"></div>
+        <div class="col" id="side-slice"></div>
     </div>
   </div>
   <div class="my-sidebar col-3" id="two-d-sidebar">
     <a href="javascript:void(0)" class="two-d-toggle-btn" id="minimize-two-d">></a>
     <div class="row" id="participant-id">
-      <h3 >P2014002</h3>
+      <!-- <h3 >P2014002</h3> -->
     </div>
-    <div class="row" id="top-view"></div>
-    <div class="row" style="height: 50%">
-      <div class="row">
-        <div class="col" id="front-slice"></div>
-      </div>
-      <div class="row">
-        <div class="col" id="side-slice"></div>
-      </div>
-    </div>
+    <div class="row" id="view-top"></div>
+    <div class="row" id="view-side"></div>
+    <div class="row" id="view-front"></div>
   </div>
 </div>
 

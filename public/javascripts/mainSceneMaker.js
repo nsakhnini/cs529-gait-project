@@ -359,7 +359,7 @@ export async function load3DView(){
         loadingFirstTime = true;
     }
 
-    console.log(scene);
+    // console.log(scene);
     cancelAnimationFrame(animationRequest);
     animate();
     scene.scale.x = 1;
