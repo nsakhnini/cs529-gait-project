@@ -301,7 +301,7 @@ export async function load3DView(){
     }
 
     handleMainViewText(20,50,1.4,1.9,45,200);
-    console.log(scene);
+    // console.log(scene);
     cancelAnimationFrame(animationRequest);
     animate();
     scene.scale.x = 1;

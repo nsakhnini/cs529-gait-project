@@ -124,16 +124,13 @@ export function createHumanoid(humanData, offset, demo_data, scene){
         weight: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Weight,
         height: demo_data.filter(function(d){return humanData.Participant == d.ID})[0].Height};
 
-
     drawHumanoid(humanData,offset, participant);
     participant.position.x = 0;
     participant.position.y = myOffest;
     participant.position.z = 0;
 
     scene.add(participant);
-
-
-    console.log("done adding participant");
+    // console.log("done adding participant");
 }
 
 function drawPoint(geometry, x,y,z,pid, joint){
