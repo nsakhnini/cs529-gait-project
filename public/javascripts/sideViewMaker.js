@@ -1,3 +1,11 @@
+
+import {filterDemo, currentParticipantsData} from "./mainSceneMaker.js";
+
+function loadSideView() {
+  console.log(currentParticipantsData);
+  console.log(filterDemo);
+}
+
 var margin = { top: 10, right: 30, bottom: 30, left: 60 },
   width = 350 - margin.left - margin.right,
   height = 270 - margin.top - margin.bottom;
@@ -60,7 +68,7 @@ async function loadPlots() {
     .style("fill", "white")
     .text("Side Slice View");
 
-  group_side = svg_side
+  let group_side = svg_side
     .append("g")
     .attr("transform", "translate(" + (margin.left + 60) + ",50)");
 
@@ -74,7 +82,7 @@ async function loadPlots() {
 
 loadPlots();
 const SCALE_FACTOR = 7;
-const VELOCITY = 10;
+const VELOCITY = 15;
 
 function addPoints(group, data, participant) {
   let participantGroup = group.append("g");
@@ -267,9 +275,9 @@ async function loadViews() {
     data.push(d);
   });
 
-  let filtered_data = getFilteredData(data, participant);
-
-  // Front Slice View
+  let filtered_data1 = getFilteredData(data, participant);
+  let filtered_data2 = getFilteredData(data, participant2);
+  
   var svg = d3
     .select("#view-top")
     .append("svg")
@@ -280,10 +288,10 @@ async function loadViews() {
       "transform",
       "translate(" + (margin.left + 80) + "," + margin.top + ")"
     );
-
+      
   svg
     .append("rect")
-    .attr("x", -110)
+    .attr("x", -100)
     .attr("y", 15)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -296,9 +304,11 @@ async function loadViews() {
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("fill", "white")
-    .text("Body Part Top View");
+    .text("Footsteps Top View");
 
-  addBodyPartMarkers(svg, getBodyPartTopData(filtered_data));
+  addBodyPartMarkers(svg, getBodyPartTopData(filtered_data1));
+  addBodyPartMarkers(svg, getBodyPartTopData(filtered_data2));
+  // await loadSideView();
 }
 
 loadViews();
@@ -328,156 +338,6 @@ function addBodyPartMarkers(svg, data) {
 
     animate(svg, point.name, data, { id: "" });
   }
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[1].name;
-    })
-    .attr("x1", function (d) {
-      return d[0].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[0].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[1].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[1].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[2].name;
-    })
-    .attr("x1", function (d) {
-      return d[0].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[0].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[2].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[2].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[3].name;
-    })
-    .attr("x1", function (d) {
-      return d[0].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[0].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[3].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[3].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[5].name;
-    })
-    .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[5].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[5].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[6].name;
-    })
-    .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[6].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[6].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
-
-  svg
-    .append("g")
-    .selectAll("line")
-    .data([first])
-    .enter()
-    .append("line")
-    .attr("id", function (d) {
-      return d[7].name;
-    })
-    .attr("x1", function (d) {
-      return d[4].X / SCALE_FACTOR;
-    })
-    .attr("y1", function (d) {
-      return d[4].Y / SCALE_FACTOR;
-    })
-    .attr("x2", function (d) {
-      return d[7].X / SCALE_FACTOR;
-    })
-    .attr("y2", function (d) {
-      return d[7].Y / SCALE_FACTOR;
-    })
-    .attr("stroke", "yellow")
-    .attr("stroke-width", 1)
-    .attr("transform", "translate(0,20)");
 }
 
 function getBodyPartTopData(data) {
