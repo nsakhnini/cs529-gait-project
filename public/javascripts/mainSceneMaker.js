@@ -7,6 +7,7 @@ import * as humanoidMaker from './humanoidMaker.js';
 import * as topViewMaker from './topViewHandler.js';
 import {filterData} from './dataHandler.js';
 import {activateScrolling, deactivateScrolling, scrollDown, scrollUp} from './participantScrolling.js';
+import {loadSideView} from "./sideViewMaker.js";
 
 let footsteps_data = [];
 export let participants = [];
@@ -365,6 +366,8 @@ export async function load3DView(){
     scene.scale.x = 1;
     scene.scale.y = 1;
     scene.scale.z = 1;
+
+    loadSideView();
 }
 
 function drawGrid(){
@@ -1139,12 +1142,18 @@ export function emptyCurrentParticipantsData(){
 
 //===========================================================
 //Filter button manage
-let timer, miliseconds = 4000;
+let timer, miliseconds = 4000, isGlowing = false;
 
 function glowFilterButton() {
     clearTimeout(timer);
-    document.getElementById("filter-btn").id = "filter-btn-glowing";
-    setTimeout(()=>{document.getElementById("filter-btn-glowing").id = "filter-btn";}, miliseconds);
+    if(!isGlowing) {
+        isGlowing = true;
+        document.getElementById("filter-btn").id = "filter-btn-glowing";
+        setTimeout(() => {
+            document.getElementById("filter-btn-glowing").id = "filter-btn";
+            isGlowing = false;
+        }, miliseconds);
+    }
 }
 
 //Age slider change listener
