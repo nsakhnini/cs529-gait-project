@@ -1028,3 +1028,30 @@ export function emptyCurrentParticipantsData(){
 
     currentParticipantsData = [];
 }
+
+//===========================================================
+//Filter button manage
+let timer, miliseconds = 4000;
+
+function glowFilterButton() {
+    clearTimeout(timer);
+    document.getElementById("filter-btn").id = "filter-btn-glowing";
+    setTimeout(()=>{document.getElementById("filter-btn-glowing").id = "filter-btn";}, miliseconds);
+}
+
+//Age slider change listener
+document.getElementsByClassName("age-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("age-slider-input")[1].addEventListener("change", glowFilterButton);
+
+//Height slider change listener
+document.getElementsByClassName("height-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("height-slider-input")[1].addEventListener("change", glowFilterButton);
+
+
+//Weight slider change listener
+document.getElementsByClassName("weight-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("weight-slider-input")[1].addEventListener("change", glowFilterButton);
+
+//Checkboxes
+document.getElementById("female-check").addEventListener("change", glowFilterButton);
+document.getElementById("male-check").addEventListener("change", glowFilterButton);

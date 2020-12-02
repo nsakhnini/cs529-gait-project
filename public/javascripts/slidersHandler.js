@@ -16,4 +16,3 @@ function sliderUpperHandleController(val){
     children[9].style.left=value+'%';children[13].style.left=value+'%';
     children[13].childNodes[1].innerHTML=val.value;
 }
-
