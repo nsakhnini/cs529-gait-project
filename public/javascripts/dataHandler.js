@@ -67,6 +67,8 @@ async function loadDemoData() {
 
 export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
                                  gender = -1, speed = -1, trial= -1, pIDs = []) {
+    document.getElementById("loading-view").style.display = "block";
+    //document.getElementById("content-view").style.display = "none";
 
     //Subset demographic data to current participant selection
     clearFilterDemo();
@@ -142,12 +144,17 @@ export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1,
         load3DView();
     }
 
-
+    document.getElementById("loading-view").style.display = "none";
+    //document.getElementById("content-view").style.display = "flex";
 }
 
 
 export async function initData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
                                  gender = -1, speed = -1, trial= -1, pIDs = []) {
+
+    document.getElementById("loading-view").style.display = "block";
+    //document.getElementById("content-view").style.display = "none";
+
         //Subset demographic data to current participant selection
         clearFilterDemo();
         if(pIDs.length == 0) {
@@ -229,7 +236,8 @@ export async function initData(ageLower = -1, ageUpper = -1, heightLower = -1, h
 
             load3DView();
         }
-
+    document.getElementById("loading-view").style.display = "none";
+    //document.getElementById("content-view").style.display = "flex";
 }
 loadDemoData();
 

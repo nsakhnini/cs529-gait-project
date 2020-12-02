@@ -67,7 +67,12 @@
 
 </nav>
 
-<div class="row" style="height: 100%">
+<div id="loading-view">
+  <div id="loading-spinner"></div>
+  <p id="loading-text">Loading...</p>
+</div>
+
+<div class="row" id="content-view" style="height: 100%">
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
     <div style="display: none;" id="filter-readonly">

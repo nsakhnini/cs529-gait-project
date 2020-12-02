@@ -287,13 +287,16 @@ function weightSlider() {
 }
 
 export async function load3DView(){
+
+    console.log(document.getElementById("loading-view").style.display)
+
     markerByParticipant = d3.group(filterMarkers, d => d.Participant, d=>d.Speed, d=>d.Trial);
     var iterator = markerByParticipant.keys();
     var pID = iterator.next().value;
 
     participants = [];
     participantsData = [];
-    participantsState = [];
+    participantsState = [];.0000
     currentParticipantsData = [];
     participantsTS =[];
     participantsDirection = [];

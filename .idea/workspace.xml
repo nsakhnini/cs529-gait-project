@@ -4,6 +4,9 @@
     <list default="true" id="087f7dde-4193-4526-a6a3-4df6565bbe6c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/dataHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/dataHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +80,7 @@
       <workItem from="1606585153982" duration="4405000" />
       <workItem from="1606785623684" duration="122000" />
       <workItem from="1606785889205" duration="22629000" />
+      <workItem from="1606928982097" duration="3572000" />
     </task>
     <servers />
   </component>
