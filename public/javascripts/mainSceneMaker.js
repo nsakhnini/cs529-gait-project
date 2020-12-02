@@ -156,7 +156,7 @@ function onMouseClick(event) {
                     handleParticipantText(filterDemo.filter(function (w) {
                         return w.ID == d.userData.bboxID;
                     })[0]);
-                    console.log(d.userData.bboxID + " Yay!");
+                    // console.log(d.userData.bboxID + " Yay!");
                 }
             }
         }

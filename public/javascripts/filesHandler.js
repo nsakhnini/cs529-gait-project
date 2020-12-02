@@ -3,10 +3,10 @@ import {updateScene} from "./mainSceneMaker.js";
 
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
-    console.log("test");
+    // console.log("test");
     if (this.readyState == 4) {
         if (this.responseText != "error") {
-            console.log(this.responseText);
+            // console.log(this.responseText);
         }
     }
 }
