@@ -765,10 +765,16 @@ hr{
   animation: spin 2s linear infinite;
 }
 #content-view{
-  /*display: none;*/
   position: absolute;
-  top: 5.6%;
+  top: 8%;
   left: -10px;
+}
+.navbar{
+  position: absolute;
+  top:0;
+  left: 0;
+  height: 8%;
+  width: 100%;
 }
 #loading-text{
   padding-top: 1%;
