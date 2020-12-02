@@ -67,7 +67,12 @@
 
 </nav>
 
-<div class="row" style="height: 100%">
+<div id="loading-view">
+  <div id="loading-spinner"></div>
+  <p id="loading-text">Loading...</p>
+</div>
+
+<div class="row" id="content-view" style="height: 100%">
   <div class="my-sidebar col-3" id="filter-sidebar">
     <a href="javascript:void(0)" class="filter-toggle-btn" id="minimize-filter"><</a>
     <div style="display: none;" id="filter-readonly">
@@ -199,15 +204,15 @@
       <div class="col-1">
         <p>Trial</p>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <input  type="button" id="dec-trial-btn" value="&ndash;" class="inc-dec-button">
         <input type="text" id="trial-val" name="trial" value="1" class="inc-dec-text">
         <input  type="button" id="inc-trial-btn" value="+" class="inc-dec-button">
       </div>
       <div class="col-2">
-        <p style="text-align: right;">Speed</p>
+        <p style="text-align: right;">Speed (m/s)</p>
       </div>
-      <div class="col-4" id="speed-controller">
+      <div class="col-6" id="speed-controller">
         <input  type="button" id="dec-speed-btn" value="&ndash;" class="inc-dec-button" >
         <input type="text" id="speed-val" name="speed" value="5" class="inc-dec-text">
         <input  type="button" id="inc-speed-btn" value="+" class="inc-dec-button" >
@@ -291,7 +296,7 @@
     <div class="row" id="view-top"></div>
   </div>
 </div>
-
+age-slider-input
 <script type="module" src="javascripts/dataHandler.js"></script>
 <script type="module" src="javascripts/mainSceneMaker.js"></script>
 <script>

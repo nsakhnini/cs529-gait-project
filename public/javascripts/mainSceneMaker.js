@@ -79,9 +79,9 @@ let mainScene = document.getElementById("main-scene")
 let sceneKeyEvents = document.body;
 let movementVector = new THREE.Vector3();
 sceneKeyEvents.addEventListener("keydown",(ev)=>{
-    ev.preventDefault();
     switch (ev.key) {
         case 'ArrowUp':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             movementVector.z = 0;
             movementVector.multiplyScalar(50);
@@ -89,6 +89,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowDown':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             movementVector.z = 0;
             movementVector.multiplyScalar(-50);
@@ -96,6 +97,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowLeft':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
             movementVector.z = 0;
@@ -105,6 +107,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowRight':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
             movementVector.z = 0;
@@ -156,7 +159,7 @@ function onMouseClick(event) {
                     handleParticipantText(filterDemo.filter(function (w) {
                         return w.ID == d.userData.bboxID;
                     })[0]);
-                    // console.log(d.userData.bboxID + " Yay!");
+                    console.log(d.userData.bboxID + " clicked!");
                 }
             }
         }
@@ -293,7 +296,7 @@ export async function load3DView(){
 
     participants = [];
     participantsData = [];
-    participantsState = [];
+    participantsState = [];.0000
     currentParticipantsData = [];
     participantsTS =[];
     participantsDirection = [];
@@ -760,7 +763,27 @@ function loadParticipantsDataToFilter(){
     }
 
     document.getElementById("trial-val").value = trial;
-    document.getElementById("speed-val").value = speed;
+
+    switch (speed){
+        case 1:
+            document.getElementById("speed-val").value ="0-0.4";
+            break;
+        case 2:
+            document.getElementById("speed-val").value ="0.4-0.8";
+            break;
+        case 3:
+            document.getElementById("speed-val").value ="0.8-1.2";
+            break;
+        case 4:
+            document.getElementById("speed-val").value ="spontaneous";
+            break;
+        case 5:
+            document.getElementById("speed-val").value ="fast";
+            break;
+        default:
+            break;
+    }
+
     document.getElementById("trial-readonly").innerText = trial;
     document.getElementById("speed-readonly").innerText = speed;
 
@@ -779,10 +802,41 @@ function handleMainViewText(lowerAge, upperAge, lowerHeight, upperHeight, lowerW
     var sideText = document.getElementById("info-main-view-side");
     var bottomText = document.getElementById("info-main-view-bottom");
 
-    topText.innerHTML = "<p>Speed: " + speed + "/5<span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
-        + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
-        lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
-        lowerWeight + "-" + upperWeight +" kg</p>";
+    switch (speed){
+        case 1:
+            topText.innerHTML = "<p>Speed: 0-0.4 m/s <span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                lowerWeight + "-" + upperWeight +" kg</p>";
+            break;
+        case 2:
+            topText.innerHTML = "<p>Speed: 0.4-0.8 m/s <span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                lowerWeight + "-" + upperWeight +" kg</p>";
+            break;
+        case 3:
+            topText.innerHTML = "<p>Speed: 0.8-1.2 m/s <span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                lowerWeight + "-" + upperWeight +" kg</p>";
+            break;
+        case 4:
+            topText.innerHTML = "<p>Speed: choice spontaneous speed <span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                lowerWeight + "-" + upperWeight +" kg</p>";
+            break;
+        case 5:
+            topText.innerHTML = "<p>Speed: choice fast speed <span class=\"tab\"></span>Trial: " + trial + "/5<span class=\"tab\"></span>Age: "
+                + lowerAge + "-" + upperAge+"<span class=\"tab\"></span>Height: " +
+                lowerHeight + "-" + upperHeight+ " m<span class=\"tab\"></span>Weight: " +
+                lowerWeight + "-" + upperWeight +" kg</p>";
+            break;
+        default:
+            break;
+    }
+
     if (filterDemo.length <= 6){
         bottomText.innerHTML = "<p>Showing " + filterDemo.length + " of " + filterDemo.length + " gaits</p>"
     }
@@ -862,7 +916,27 @@ function applyFilters(){
     weightUpper = parseFloat(document.getElementsByClassName("weight-slider-input")[1].value);
 
     //Get Speed
-    speed = parseInt(document.getElementById("speed-val").value);
+    switch (document.getElementById("speed-val").value){
+        case "0-0.4":
+            speed = 1;
+            break;
+        case "0.4-0.8":
+            speed = 2;
+            break;
+        case "0.8-1.2":
+            speed = 3;
+            break;
+        case "spontaneous":
+            speed = 4;
+            break;
+        case "fast":
+            speed = 5;
+            break;
+        default:
+            break;
+    }
+
+    //set trial value
     trial = parseInt(document.getElementById("trial-val").value);
 
     let delCounter = 0;
@@ -899,7 +973,26 @@ document.getElementById("dec-speed-btn").addEventListener("click", (ev) => {
         document.getElementById("dec-speed-btn").disabled = true;
         document.getElementById("inc-speed-btn").disabled = false;
     }
-    document.getElementById("speed-val").value = speed;
+
+    switch (speed){
+        case 1:
+            document.getElementById("speed-val").value ="0-0.4";
+            break;
+        case 2:
+            document.getElementById("speed-val").value ="0.4-0.8";
+            break;
+        case 3:
+            document.getElementById("speed-val").value ="0.8-1.2";
+            break;
+        case 4:
+            document.getElementById("speed-val").value ="spontaneous";
+            break;
+        case 5:
+            document.getElementById("speed-val").value ="fast";
+            break;
+        default:
+            break;
+    }
 
     applyFilters();
 });
@@ -918,7 +1011,25 @@ document.getElementById("inc-speed-btn").addEventListener("click", (ev) => {
         document.getElementById("inc-speed-btn").disabled = true;
         document.getElementById("dec-speed-btn").disabled = false;
     }
-    document.getElementById("speed-val").value = speed;
+    switch (speed){
+        case 1:
+            document.getElementById("speed-val").value ="0-0.4";
+            break;
+        case 2:
+            document.getElementById("speed-val").value ="0.4-0.8";
+            break;
+        case 3:
+            document.getElementById("speed-val").value ="0.8-1.2";
+            break;
+        case 4:
+            document.getElementById("speed-val").value ="spontaneous";
+            break;
+        case 5:
+            document.getElementById("speed-val").value ="fast";
+            break;
+        default:
+            break;
+    }
 
     applyFilters();
 });
@@ -1025,3 +1136,30 @@ export function emptyCurrentParticipantsData(){
 
     currentParticipantsData = [];
 }
+
+//===========================================================
+//Filter button manage
+let timer, miliseconds = 4000;
+
+function glowFilterButton() {
+    clearTimeout(timer);
+    document.getElementById("filter-btn").id = "filter-btn-glowing";
+    setTimeout(()=>{document.getElementById("filter-btn-glowing").id = "filter-btn";}, miliseconds);
+}
+
+//Age slider change listener
+document.getElementsByClassName("age-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("age-slider-input")[1].addEventListener("change", glowFilterButton);
+
+//Height slider change listener
+document.getElementsByClassName("height-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("height-slider-input")[1].addEventListener("change", glowFilterButton);
+
+
+//Weight slider change listener
+document.getElementsByClassName("weight-slider-input")[0].addEventListener("change", glowFilterButton);
+document.getElementsByClassName("weight-slider-input")[1].addEventListener("change", glowFilterButton);
+
+//Checkboxes
+document.getElementById("female-check").addEventListener("change", glowFilterButton);
+document.getElementById("male-check").addEventListener("change", glowFilterButton);
