@@ -1,7 +1,20 @@
-
 var margin = { top: 10, right: 30, bottom: 30, left: 60 },
-    width = 350 - margin.left - margin.right,
-    height = 270 - margin.top - margin.bottom;
+  width = 350 - margin.left - margin.right,
+  height = 270 - margin.top - margin.bottom;
+
+const participant = {
+  id: "2014001",
+  speed: "3",
+  trial: "1",
+  color: "red",
+};
+const participant2 = {
+  id: "2014002",
+  speed: "3",
+  trial: "1",
+  color: "yellow",
+};
+const selected_participant = [participant, participant2];
 
 async function loadPlots() {
   let data = [];
@@ -9,81 +22,74 @@ async function loadPlots() {
     data.push(d);
   });
 
-  let filtered_data = getFilteredData(data);
-
   // Front Slice View
-  var svg = d3
+  var svg_front = d3
     .select("#front-slice")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .style("background-color", "black");
 
-  svg
-    .append("rect")
-    .attr("x", -150)
-    .attr("y", 20)
-    .attr("width", width + margin.left + margin.right + 80)
-    .attr("height", height + margin.top + margin.bottom)
-    .attr("fill", "black");
-
-  svg
+  svg_front
     .append("text")
-    .attr("x", width / 2 - 15)
-    .attr("y", margin.top)
+    .attr("x", width / 2)
+    .attr("y", "30")
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("fill", "white")
     .text("Front Slice View");
 
-  addPoints(svg, getFrontViewData(filtered_data));
+  let group_front = svg_front
+    .append("g") // All participants group
+    .attr("transform", "translate(100,50)"); //translate(" + margin.left + "," + margin.top + ")");
 
   // Side Slice View
-  svg = d3
+  let svg_side = d3
     .select("#side-slice")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + (margin.left+60) + "," + margin.top + ")");
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .style("background-color", "black");
 
-  svg
-    .append("rect")
-    .attr("x", -150)
-    .attr("y", 20)
-    .attr("width", width + margin.left + margin.right + 80)
-    .attr("height", height + margin.top + margin.bottom)
-    .attr("fill", "black");
-
-  svg
+  svg_side
     .append("text")
-    .attr("x", width / 2 - 70)
-    .attr("y", margin.top)
+    .attr("x", width / 2)
+    .attr("y", "30")
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("fill", "white")
     .text("Side Slice View");
 
-  addPoints(svg, getSideViewData(filtered_data));
+  group_side = svg_side
+    .append("g")
+    .attr("transform", "translate(" + (margin.left + 60) + ",50)");
+
+  let filtered_data;
+  selected_participant.forEach((participant) => {
+    filtered_data = getFilteredData(data, participant);
+    addPoints(group_front, getFrontViewData(filtered_data), participant);
+    addPoints(group_side, getSideViewData(filtered_data), participant);
+  });
 }
 
 loadPlots();
 const SCALE_FACTOR = 7;
+const VELOCITY = 10;
 
-function addPoints(svg, data) {
+function addPoints(group, data, participant) {
+  let participantGroup = group.append("g");
+
   var first = data[0];
   for (var i = 0; i < first.length; i++) {
     var point = first[i];
-    svg
-      .append("g")
-
+    participantGroup
+      //.append("g")
       .selectAll(point.name)
       .data([point])
       .enter()
       .append("circle")
       .attr("id", function (d) {
-        return d.name;
+        return d.name + participant.id;
       })
       .attr("cx", function (d) {
         return d.X / SCALE_FACTOR;
@@ -92,22 +98,21 @@ function addPoints(svg, data) {
         return height - d.Y / SCALE_FACTOR;
       })
       .attr("r", 1.5)
-      .style("fill", "#00ff48")
-      .attr("transform", "translate(0,20)");
+      .style("fill", participant.color); //"#00ff48"
 
-    animate(svg, point.name, data);
+    animate(participantGroup, point.name, data, participant);
   }
 }
 
-function animate(svg, body_label, data) {
+function animate(svg, body_label, data, participant) {
   let time = 1;
   let body_markers = data[time];
   let marker = body_markers.find(({ name }) => name === body_label);
   svg
-    .selectAll("#" + body_label)
+    .selectAll("#" + body_label + participant.id)
     .transition()
     //.delay(function(d,i){return(i*3)})
-    .duration(10)
+    .duration(VELOCITY)
     .attr("cx", function (d) {
       return marker.X / SCALE_FACTOR;
     })
@@ -128,10 +133,12 @@ function animate(svg, body_label, data) {
     });
 }
 
-function getFilteredData(data) {
+function getFilteredData(data, participant) {
   return data.filter(function (mark) {
     return (
-      mark.Participant === "2014001" && mark.Speed === "1" && mark.Trial === "1"
+      mark.Participant === participant.id &&
+      mark.Speed === participant.speed &&
+      mark.Trial === participant.trial
     );
   });
 }
@@ -260,7 +267,7 @@ async function loadViews() {
     data.push(d);
   });
 
-  let filtered_data = getFilteredData(data);
+  let filtered_data = getFilteredData(data, participant);
 
   // Front Slice View
   var svg = d3
@@ -269,7 +276,10 @@ async function loadViews() {
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + (margin.left+80) + "," + margin.top + ")");
+    .attr(
+      "transform",
+      "translate(" + (margin.left + 80) + "," + margin.top + ")"
+    );
 
   svg
     .append("rect")
@@ -287,8 +297,8 @@ async function loadViews() {
     .style("font-size", "16px")
     .style("fill", "white")
     .text("Body Part Top View");
-    
-    addBodyPartMarkers(svg, getBodyPartTopData(filtered_data));
+
+  addBodyPartMarkers(svg, getBodyPartTopData(filtered_data));
 }
 
 loadViews();
@@ -316,7 +326,7 @@ function addBodyPartMarkers(svg, data) {
       .style("fill", "yellow")
       .attr("transform", "translate(0,20)");
 
-    animate(svg, point.name, data);
+    animate(svg, point.name, data, { id: "" });
   }
 
   svg
@@ -344,7 +354,7 @@ function addBodyPartMarkers(svg, data) {
     .attr("stroke-width", 1)
     .attr("transform", "translate(0,20)");
 
-  svg  
+  svg
     .append("g")
     .selectAll("line")
     .data([first])
@@ -394,7 +404,7 @@ function addBodyPartMarkers(svg, data) {
     .attr("stroke-width", 1)
     .attr("transform", "translate(0,20)");
 
-  svg  
+  svg
     .append("g")
     .selectAll("line")
     .data([first])
@@ -419,7 +429,7 @@ function addBodyPartMarkers(svg, data) {
     .attr("stroke-width", 1)
     .attr("transform", "translate(0,20)");
 
-  svg  
+  svg
     .append("g")
     .selectAll("line")
     .data([first])
@@ -444,7 +454,7 @@ function addBodyPartMarkers(svg, data) {
     .attr("stroke-width", 1)
     .attr("transform", "translate(0,20)");
 
-  svg  
+  svg
     .append("g")
     .selectAll("line")
     .data([first])

@@ -595,3 +595,9 @@ hr{
   margin-bottom: 8px;
 }
 
+#front-slice{
+  padding-left: 0px;
+}
+#side-slice{
+  padding-right: 0px;
+}
