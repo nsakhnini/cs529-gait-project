@@ -79,9 +79,9 @@ let mainScene = document.getElementById("main-scene")
 let sceneKeyEvents = document.body;
 let movementVector = new THREE.Vector3();
 sceneKeyEvents.addEventListener("keydown",(ev)=>{
-    ev.preventDefault();
     switch (ev.key) {
         case 'ArrowUp':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             movementVector.z = 0;
             movementVector.multiplyScalar(50);
@@ -89,6 +89,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowDown':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             movementVector.z = 0;
             movementVector.multiplyScalar(-50);
@@ -96,6 +97,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowLeft':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
             movementVector.z = 0;
@@ -105,6 +107,7 @@ sceneKeyEvents.addEventListener("keydown",(ev)=>{
             break;
         }
         case 'ArrowRight':{
+            ev.preventDefault();
             camera.getWorldDirection(movementVector);
             let eulerRot = new THREE.Euler(0,0,1.52,'XYZ');
             movementVector.z = 0;
