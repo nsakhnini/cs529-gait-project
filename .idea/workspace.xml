@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="087f7dde-4193-4526-a6a3-4df6565bbe6c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/mainSceneMaker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/javascripts/sideViewMaker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/sideViewMaker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/participantScrolling.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/participantScrolling.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +80,8 @@
       <workItem from="1606785623684" duration="122000" />
       <workItem from="1606785889205" duration="22629000" />
       <workItem from="1606928982097" duration="10721000" />
-      <workItem from="1606941321526" duration="90000" />
+      <workItem from="1606941321526" duration="335000" />
+      <workItem from="1606947658581" duration="630000" />
     </task>
     <servers />
   </component>

@@ -367,7 +367,7 @@ export async function load3DView(){
     scene.scale.y = 1;
     scene.scale.z = 1;
 
-    loadSideView();
+    //loadSideView();
 }
 
 function drawGrid(){
