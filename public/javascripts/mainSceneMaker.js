@@ -896,7 +896,7 @@ function handleParticipantText(participant){
 
 function applyFilters(){
 
-    if(typeof document.getElementById("filter-btn-glowing") != 'undefined')
+    if(document.getElementById("filter-btn-glowing") != null)
         document.getElementById("filter-btn-glowing").id = "filter-btn";
     //cancelAnimationFrame(animationRequest);
     let ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper =-1, weightLower = -1, weightUpper = -1, gender = -1;
@@ -1156,8 +1156,10 @@ function glowFilterButton() {
         isGlowing = true;
         document.getElementById("filter-btn").id = "filter-btn-glowing";
         setTimeout(() => {
-            document.getElementById("filter-btn-glowing").id = "filter-btn";
-            isGlowing = false;
+            if (document.getElementById("filter-btn-glowing") != null) {
+                document.getElementById("filter-btn-glowing").id = "filter-btn";
+                isGlowing = false;
+            }
         }, miliseconds);
     }
 }
