@@ -60,7 +60,7 @@ async function loadPlots() {
   let svg_side = d3
       .select("#side-slice")
       .append("svg")
-      .attr("width", "100%")
+      .attr("width", "97%")
       .attr("height", "100%")
       .style("background-color", "black");
 
@@ -320,6 +320,9 @@ async function loadViews() {
 
   let filtered_data1 = getFilteredData(data, participant);
   let filtered_data2 = getFilteredData(data, participant2);
+
+  width = document.getElementById("two-d-sidebar").getBoundingClientRect().width *0.65;
+  height = document.getElementById("two-d-sidebar").getBoundingClientRect().height *0.28;
 
   var svg = d3
       .select("#view-top")

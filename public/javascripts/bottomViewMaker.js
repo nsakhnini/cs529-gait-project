@@ -5,7 +5,7 @@ export function loadPlots() {
     removeAllPlots();
 
     var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = document.getElementById("filter-sidebar").getBoundingClientRect().width *0.88;
+    width = document.getElementById("filter-sidebar").getBoundingClientRect().width *0.79;
     //height = 200 - margin.top - margin.bottom;
 
     var yLabels = 'Male Female'.split(' ')
@@ -22,7 +22,7 @@ export function loadPlots() {
     var svg = d3.select("#gender-plot")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", window.innerHeight * 0.1)
+      .attr("height", window.innerHeight * 0.2)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -38,7 +38,7 @@ export function loadPlots() {
 
     var y = d3.scaleBand()
       .domain(Object.keys(genderDataObject))
-      .range([window.innerHeight * 0.07, 0])
+      .range([window.innerHeight * 0.14, 0])
       .padding(0.2);
 
     svg.append("g")
@@ -91,20 +91,20 @@ export function loadPlots() {
         })
         .attr("y", function(d, i) {
             if(i == 0){
-                return y("Male")+10
+                return y("Male")+23
             } else if(i == 1){
-                return y("Female")+10
+                return y("Female")+23
             }
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
+        .attr("font-size", "20px")
         .attr("fill", "black");
 
     // Age plot
     svg = d3.select("#age-plot")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", window.innerHeight * 0.1)
+      .attr("height", window.innerHeight * 0.2)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -114,12 +114,12 @@ export function loadPlots() {
       .padding(0.2);
 
     svg.append("g")
-      .attr("transform", "translate(0," + window.innerHeight * 0.07 + ")")
+      .attr("transform", "translate(0," + window.innerHeight * 0.14 + ")")
       .call(d3.axisBottom(x).tickValues([]))
 
     var y = d3.scaleLinear()
       .domain([0, 70]) // dataset range for ages 19-67
-      .range([window.innerHeight * 0.07, 0]);
+      .range([window.innerHeight * 0.14, 0]);
 
     svg.append("g")
       .call(d3.axisLeft(y).ticks(3.5));
@@ -131,7 +131,7 @@ export function loadPlots() {
         .attr("x", function(d, i) { return x(i+1); })
         .attr("y", function(d) { return y(d.Age); })
         .attr("width", x.bandwidth())
-        .attr("height", function(d) { return (window.innerHeight * 0.07) - y(d.Age); })
+        .attr("height", function(d) { return (window.innerHeight * 0.14) - y(d.Age); })
         .attr("fill", "#00adb5");
 
     svg.append("text")
@@ -142,11 +142,13 @@ export function loadPlots() {
       .style("fill", "white")
       .text("Ages");
 
+    width = document.getElementById("two-d-sidebar").getBoundingClientRect().width *0.79;
+
     // Height plot
     svg = d3.select("#height-plot")
     .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height",window.innerHeight * 0.1)
+      .attr("height",window.innerHeight * 0.25)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -156,12 +158,12 @@ export function loadPlots() {
       .padding(0.2);
 
     svg.append("g")
-      .attr("transform", "translate(0," + window.innerHeight * 0.07 + ")")
+      .attr("transform", "translate(0," + window.innerHeight * 0.175 + ")")
       .call(d3.axisBottom(x).tickValues([])) ;
 
     var y = d3.scaleLinear()
       .domain([140, 195]) // dataset range for height 154-192
-      .range([window.innerHeight * 0.07, 0]);
+      .range([window.innerHeight * 0.175, 0]);
 
     svg.append("g")
       .call(d3.axisLeft(y).ticks(7));
@@ -173,7 +175,7 @@ export function loadPlots() {
         .attr("x", function(d, i) { return x(i+1); })
         .attr("y", function(d) { return y(d.Height*100); })
         .attr("width", x.bandwidth())
-        .attr("height", function(d) { return (window.innerHeight * 0.07) - y(d.Height*100); })
+        .attr("height", function(d) { return (window.innerHeight * 0.175) - y(d.Height*100); })
         .attr("fill", "#00adb5");
 
     svg.append("text")
@@ -188,7 +190,7 @@ export function loadPlots() {
     svg = d3.select("#weight-plot")
     .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", window.innerHeight * 0.1)
+      .attr("height", window.innerHeight * 0.25)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -198,12 +200,12 @@ export function loadPlots() {
       .padding(0.2);
 
     svg.append("g")
-      .attr("transform", "translate(0," + window.innerHeight * 0.07 + ")")
+      .attr("transform", "translate(0," + window.innerHeight * 0.175 + ")")
       .call(d3.axisBottom(x).tickValues([]));
 
     var y = d3.scaleLinear()
       .domain([40, 100]) // dataset range for weight 50-98
-      .range([window.innerHeight * 0.07, 0]);
+      .range([window.innerHeight * 0.175, 0]);
 
     svg.append("g")
       .call(d3.axisLeft(y).ticks(5));
@@ -215,7 +217,7 @@ export function loadPlots() {
         .attr("x", function(d, i) { return x(i+1); })
         .attr("y", function(d) { return y(d.Weight); })
         .attr("width", x.bandwidth())
-        .attr("height", function(d) { return (window.innerHeight * 0.07) - y(d.Weight); })
+        .attr("height", function(d) { return (window.innerHeight * 0.175) - y(d.Weight); })
         .attr("fill", "#00adb5");
 
     svg.append("text")

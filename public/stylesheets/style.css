@@ -744,7 +744,10 @@ hr{
 #side-slice{
   padding-right: 0px;
 }
-
+#view-top{
+  padding: 0;
+  margin: 0;
+}
 #loading-view{
   width: 100%;
   height: 100%;
