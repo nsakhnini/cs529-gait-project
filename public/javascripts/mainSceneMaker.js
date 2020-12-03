@@ -8,6 +8,7 @@ import * as topViewMaker from './topViewHandler.js';
 import {filterData} from './dataHandler.js';
 import {activateScrolling, deactivateScrolling, scrollDown, scrollUp} from './participantScrolling.js';
 import {loadSideView} from "./sideViewMaker.js";
+import {loadPlots} from "./bottomViewMaker.js";
 
 let footsteps_data = [];
 export let participants = [];
@@ -368,6 +369,7 @@ export async function load3DView(){
     scene.scale.z = 1;
 
     loadSideView();
+    loadPlots();
 }
 
 function drawGrid(){
