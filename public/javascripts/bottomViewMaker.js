@@ -2,6 +2,7 @@
 import {filterDemo} from "./mainSceneMaker.js";
 
 export async function loadPlots() {
+    removeAllPlots();
     let data = [];
     await d3.csv("./data/demographics.csv", function(d) {
         data.push(d);
@@ -166,4 +167,11 @@ export async function loadPlots() {
       .style("fill", "white") 
       .style("text-decoration", "underline")
       .text("Weight distribution")
+}
+
+function removeAllPlots(){
+    d3.select("#gender-plot").html("");
+    d3.select("#age-plot").html("");
+    d3.select("#weight-plot").html("");
+    d3.select("#height-plot").html("");
 }
