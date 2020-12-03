@@ -60,9 +60,9 @@ async function loadDemoData() {
         "2014009", "2014031",
         "2014053", "2014030", "2014008", "2014001", "2014006", "2014052"]
 
-    var dataList = ["2014053", "2014030", "2014008", "2014001", "2014006", "2014052"]
+    var dataList = ["2014002", "2014030", "2015030", "2014001", "2014006", "2014052"]
 
-    initData(18, 85, -1,-1,-1,80,-1,3,2,dataList);
+    initData(18, 85, -1,-1,-1,80,-1,1,1,dataList);
 }
 
 export async function filterData(ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper = -1, weightLower =-1, weightUpper = -1,
