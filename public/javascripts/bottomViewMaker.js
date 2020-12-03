@@ -230,6 +230,10 @@ export function loadPlots() {
 }
 
 function removeAllPlots(){
+    d3.select("#gender-plot").select("svg").remove();
+    d3.select("#age-plot").select("svg").remove();
+    d3.select("#weight-plot").select("svg").remove();
+    d3.select("#height-plot").select("svg").remove();
     d3.select("#gender-plot").html("");
     d3.select("#age-plot").html("");
     d3.select("#weight-plot").html("");

@@ -358,6 +358,9 @@ async function loadViews() {
 }
 
 function removeAllPlots(){
+  d3.select("#front-slice").select("svg").remove();
+  d3.select("#side-slice").select("svg").remove();
+  d3.select("#view-top").select("svg").remove();
   d3.select("#front-slice").html("");
   d3.select("#side-slice").html("");
   d3.select("#view-top").html("");
