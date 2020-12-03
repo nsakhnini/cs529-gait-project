@@ -49,7 +49,11 @@ export function scrollDown(){
         }
 
         setScrollIndex(scrollIndex - 6);
-        updateBottomText(scrollIndex, scrollIndex + 6);
+
+        if(scrollIndex > 0)
+            updateBottomText(scrollIndex, scrollIndex + 6);
+        else
+            updateBottomText(1, scrollIndex + 6);
 
         for (let i = scrollIndex; i < scrollIndex + 6; i++) {
             drawHumanDots(participantsData[i][0], offsetY);

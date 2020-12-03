@@ -368,6 +368,7 @@ export async function load3DView(){
     scene.scale.y = 1;
     scene.scale.z = 1;
 
+
     loadSideView();
     loadPlots();
 }
@@ -894,6 +895,9 @@ function handleParticipantText(participant){
 //Filter buttons
 
 function applyFilters(){
+
+    if(typeof document.getElementById("filter-btn-glowing") != 'undefined')
+        document.getElementById("filter-btn-glowing").id = "filter-btn";
     //cancelAnimationFrame(animationRequest);
     let ageLower = -1, ageUpper = -1, heightLower = -1, heightUpper =-1, weightLower = -1, weightUpper = -1, gender = -1;
 
