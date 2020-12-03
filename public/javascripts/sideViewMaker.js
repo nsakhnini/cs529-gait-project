@@ -2,10 +2,6 @@
 import {filterDemo, currentParticipantsData} from "./mainSceneMaker.js";
 
 export function loadSideView() {
-  console.log(currentParticipantsData);
-  console.log(filterDemo);
-
-
   var margin = {top: 10, right: 30, bottom: 30, left: 60},
       width = 350 - margin.left - margin.right,
       height = 270 - margin.top - margin.bottom;
