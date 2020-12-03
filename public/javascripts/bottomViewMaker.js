@@ -87,7 +87,7 @@ export function loadPlots() {
         .attr("dy", ".5em")
         .attr("x", function(d, i) {
             console.log(d)
-            return x(d)-10;
+            return x(d)-18;
         })
         .attr("y", function(d, i) {
             if(i == 0){
