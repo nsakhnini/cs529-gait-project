@@ -4,10 +4,9 @@ import {filterDemo} from "./mainSceneMaker.js";
 export function loadPlots() {
     removeAllPlots();
 
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    var margin = {top: 10, right: 30, bottom: 20, left: 60},
     width = document.getElementById("filter-sidebar").getBoundingClientRect().width *0.79;
-    //height = 200 - margin.top - margin.bottom;
-
+    
     var yLabels = 'Male Female'.split(' ')
 
     var yData = [0, 0];
@@ -17,24 +16,19 @@ export function loadPlots() {
     let genderData = [];
     genderData.push(genderDataObject);
 
-
     // Gender plot
     var svg = d3.select("#gender-plot")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", window.innerHeight * 0.2)
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + margin.top * 3 + ")");
 
     var max = Math.max(yData[0], yData[1])
     var x = d3.scaleBand()
-        .domain(Array.from(Array(max+1).keys()).slice(1, max+1))
+      .domain(Array.from(Array(max+1).keys()).slice(1, max+1))
       .range([0, width])
       .padding(0);
-
-    // svg.append("g")
-    //   .attr("transform", "translate(0," + window.innerHeight * 0.07 + ")")
-    //   .call(d3.axisBottom(x).ticks(max+1));
 
     var y = d3.scaleBand()
       .domain(Object.keys(genderDataObject))
@@ -44,7 +38,6 @@ export function loadPlots() {
     svg.append("g")
       .call(d3.axisLeft(y));
 
-
     svg.selectAll(".genderBars")
     .data(yData)
     .enter()
@@ -52,8 +45,6 @@ export function loadPlots() {
       .attr("class", "genderBars")
       .attr("x", x(0))
       .attr("y",  function (d, i) {
-          //i=0 males
-          //i=1 females
           if(i == 0){
               return y("Male")
           } else if(i == 1){
@@ -66,11 +57,9 @@ export function loadPlots() {
       .attr("height", y.bandwidth())
       .attr("fill", "#00adb5")
 
-
-
     svg.append("text")
       .attr("x", (width / 2))             
-      .attr("y", margin.top -10)
+      .attr("y", margin.top - 5)
       .attr("text-anchor", "middle")  
       .style("font-size", "14px")
       .style("fill", "white")
@@ -86,7 +75,6 @@ export function loadPlots() {
         .attr("text-anchor", "middle")
         .attr("dy", ".5em")
         .attr("x", function(d, i) {
-            console.log(d)
             return x(d)-18;
         })
         .attr("y", function(d, i) {
@@ -118,7 +106,7 @@ export function loadPlots() {
       .call(d3.axisBottom(x).tickValues([]))
 
     var y = d3.scaleLinear()
-      .domain([0, 70]) // dataset range for ages 19-67
+      .domain([0, 75]) // dataset range for ages 19-67
       .range([window.innerHeight * 0.14, 0]);
 
     svg.append("g")
@@ -136,7 +124,7 @@ export function loadPlots() {
 
     svg.append("text")
       .attr("x", (width / 2))             
-      .attr("y", margin.top)
+      .attr("y", margin.top - 10)
       .attr("text-anchor", "middle")  
       .style("font-size", "14px")
       .style("fill", "white")
